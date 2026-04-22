@@ -5,30 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css"  href="styles/style.css">
     <title>CADASTRE-SE</title>
+    <script src="scripts/pagina-inicial.js"></script>
 </head>
 <body>
 
    <div class="card-cadastro">
     
-   <h3> Cadastre-se agora</h3>
+   <h4> Cadastre-se agora</h4>
 
    <form>
+    <div class="label"> 
     <label>Nome Completo</label>
-   <input id="vic" type="text"  > 
+    </div>
+
+   <input  type="text" name="nome-completo"  > 
+   <div class="label">
    <label>Email</label>
-   <input type="text" id="ade" >
+   </div>
+   <input type="text" name="email" id="mail" >
+
+   <div class="label">
    <label>Senha</label>
+   </div>
    <input type="password" id="senha" >
+   <div class="label">
    <label>Repetir Senha</label>
+   </div>
    <input type="password" id="repetir" >
+   <div class="label">
    <label>Data de Nascimento</label>
-   <input type="text" >
+   </div>
+   <input  type="date" name="data_nascimento" >
 
     <div class="checkbox-container">
     <input type="checkbox" id="termos" name="termos">
+    <div class="label-termos">
     <label for="termos">Li e concordo com os Termos de Uso e a Política de Privacidade.</label>
+    </div>
 </div>
-   <button>Cadastrar</button>
+   <button id="btn">Cadastrar</button>
  
    
    </form>

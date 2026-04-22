@@ -13,26 +13,36 @@ body {
     width: 579px;
     height: 537px;
     background-color: white;
+     border-top-left-radius: 10px;
+    border-top-right-radius:10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
     
 }
 
-h3{
+h4{
    
     margin-left:45px;
+    font-family: "Inter", sans-serif; 
+    margin-top:52px;
 }
 
 form{
     display: flex;
     flex-direction: column;
+    margin-top:40px;
   
 }
 
 
 
 
-label{
+.label{
     margin-left:45px;
-    margin-top:6px;
+    margin-top:12px;
+    font-family: "Inter", sans-serif;
+    font-size:12px;  
+    font-style: normal; 
 }
 
 input{
@@ -40,6 +50,10 @@ input{
     height:15px;
     margin-left:45px;
     margin-top:6px;
+    border-top-left-radius: 6px;
+    border-top-right-radius:6px;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
 }
 
 
@@ -48,8 +62,11 @@ form button {
     align-self: center;
     padding: 10px 20px;
     width:253px;
-    margin-top: 20px;
-    border: 1px solid #ccc;
+    margin-top: 60px;
+    border-top-left-radius: 10px;
+    border-top-right-radius:10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
     background-color: #834D87;
     cursor: pointer;
     font-size:15px;
@@ -69,6 +86,7 @@ form a{
     gap: 10px;          
     margin-top: 10px;
     cursor: pointer;
+    
 }
 
 
@@ -83,3 +101,11 @@ form a{
     font-size: 14px;
 
 }
+
+.label-termos{
+  margin-right:15px;
+  
+}
+
+
+
