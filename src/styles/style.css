@@ -52,6 +52,7 @@ form button {
     width: 90%;
     max-width: 253px;
     margin-top: 60px;
+    margin-bottom:35px;
     border-radius: 10px;
     background-color: #834D87;
     cursor: pointer;
@@ -62,6 +63,7 @@ form button {
 form a {
     align-self: center;
     margin-top: 25px;
+    
 }
 
 .checkbox-container {
@@ -117,6 +119,8 @@ form a {
 
 a {
     font-size: 18px;
+    color:white;
+    margin-left:18px;
 }
 
 .busca {
@@ -210,3 +214,4 @@ footer {
     font-size: 14px;
     text-align: center;
 }
+
