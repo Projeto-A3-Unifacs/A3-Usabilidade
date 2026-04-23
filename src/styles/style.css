@@ -1,94 +1,79 @@
-body {
-
+#corpo {
     min-height: 100vh;
-    margin: 0; 
+    margin: 0;
+    padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('../imagens/fundo.png'); 
-    background-size: cover; 
+    background-image: url('../imagens/fundo.png');
+    background-size: cover;
 }
 
 .card-cadastro {
-    width: 579px;
-    height: 537px;
+    width: 90%;
+    max-width: 579px;
+    height: auto;
     background-color: white;
-     border-top-left-radius: 10px;
-    border-top-right-radius:10px;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    
+    border-radius: 10px;
 }
 
-h4{
-   
-    margin-left:45px;
-    font-family: "Inter", sans-serif; 
-    margin-top:52px;
+h4 {
+    margin-top: 52px;
+    font-family: "Inter", sans-serif;
+    text-align: center;
 }
 
-form{
+form {
     display: flex;
     flex-direction: column;
-    margin-top:40px;
-  
+    align-items: center;
+    margin-top: 40px;
 }
 
-
-
-
-.label{
-    margin-left:45px;
-    margin-top:12px;
+.label {
+    width: 90%;
+    max-width: 436px;
+    margin-top: 12px;
     font-family: "Inter", sans-serif;
-    font-size:12px;  
-    font-style: normal; 
+    font-size: 12px;
 }
 
-input{
-    width:436px;
-    height:15px;
-    margin-left:45px;
-    margin-top:6px;
-    border-top-left-radius: 6px;
-    border-top-right-radius:6px;
-    border-bottom-right-radius: 6px;
-    border-bottom-left-radius: 6px;
+input {
+    width: 90%;
+    max-width: 436px;
+    height: 35px;
+    margin-top: 6px;
+    border-radius: 6px;
 }
-
-
 
 form button {
     align-self: center;
     padding: 10px 20px;
-    width:253px;
+    width: 90%;
+    max-width: 253px;
     margin-top: 60px;
-    border-top-left-radius: 10px;
-    border-top-right-radius:10px;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-radius: 10px;
     background-color: #834D87;
     cursor: pointer;
-    font-size:15px;
-    color:white;
-}
-form a{
-  align-self:center;
-  margin-top:25px;
+    font-size: 15px;
+    color: white;
 }
 
-
+form a {
+    align-self: center;
+    margin-top: 25px;
+}
 
 .checkbox-container {
-    display: flex;       
-    flex-direction: row; 
-    align-items: center; 
-    gap: 10px;          
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
     margin-top: 10px;
     cursor: pointer;
-    
+    width: 90%;
+    max-width: 436px;
 }
-
 
 .checkbox-container input[type="checkbox"] {
     width: 18px;
@@ -99,13 +84,129 @@ form a{
 .checkbox-container label {
     cursor: pointer;
     font-size: 14px;
-
 }
 
-.label-termos{
-  margin-right:15px;
-  
+.label-termos {
+    margin-right: 15px;
+}
+
+.topo {
+    display: flex;
+    flex-direction: row;
+    background: linear-gradient(to right, #C67097, #583470);
+    color: white;
+    width: 100%;
+    min-height: 55px;
+    font-family: "Inter", sans-serif;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 18px;
+    gap: 10px;
+}
+
+  .links{
+    margin-top:18px;
+    gap:42%;
+  }
+
+.img {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+}
+
+a {
+    font-size: 18px;
+}
+
+.busca {
+    margin-top: 18px;
+}
+
+.secao-jogos {
+    margin-left: 28px;
+    margin-top: 62px;
+    font-size: 18px;
 }
 
 
 
+
+
+.nomes-jogos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to right, #C67097, #583470);
+    color: white;
+    width: 100%;
+    min-height: 115px;
+    font-family: "Inter", sans-serif;
+    margin-top: 38px;
+    padding: 20px;
+}
+
+.logo {
+    width: 100%;
+    max-width: 168px;
+    height: auto;
+}
+
+#paragrafo-rodape {
+    margin-left: 28px;
+    margin-bottom: 32px;
+}
+
+.categoria {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.cat {
+    width: 100%;
+    max-width: 138px;
+    height: 138px;
+    background: linear-gradient(to right, #C67097, #583470);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Inter", sans-serif;
+    font-size: 18px;
+    color: white;
+    border-radius: 10px;
+}
+
+@media (max-width: 600px) {
+    h4 {
+        text-align: center;
+    }
+
+    a {
+        margin-left: 0;
+    }
+}
+
+.lista-jogos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.jogo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 120px;
+}
+
+.nome {
+    margin-top: 8px;
+    font-size: 14px;
+    text-align: center;
+}
