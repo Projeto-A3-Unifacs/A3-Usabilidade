@@ -108,7 +108,7 @@ form a {
 
   .links{
     margin-top:18px;
-    gap:42%;
+    gap:62%;
   }
 
 .img {
@@ -131,6 +131,8 @@ a {
     margin-left: 28px;
     margin-top: 62px;
     font-size: 18px;
+    font-family: "Inter", sans-serif;
+    
 }
 
 
