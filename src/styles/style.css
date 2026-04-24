@@ -51,7 +51,7 @@ form button {
     padding: 10px 20px;
     width: 90%;
     max-width: 253px;
-    margin-top: 60px;
+    margin-top: 25px;
     margin-bottom:35px;
     border-radius: 10px;
     background-color: #834D87;
@@ -194,6 +194,17 @@ footer {
     a {
         margin-left: 0;
     }
+
+    .btn, .btn-voltar {
+        padding: 10px 15px;
+        font-size: 14px;
+        width: 100%; 
+    }
+
+    .button-container {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 .lista-jogos {
@@ -213,5 +224,31 @@ footer {
     margin-top: 8px;
     font-size: 14px;
     text-align: center;
+}
+
+.btn-voltar {
+    align-self: center;
+    padding: 10px 20px;
+    width: 96%;
+    max-width: 253px;
+    margin-top: 25px;
+    margin-bottom:35px;
+    border-radius: 10px;
+    background-color:#C67097;
+    cursor: pointer;
+    font-size: 15px;
+    color: white;
+}
+
+.btn-voltar:hover {
+    background-color: #FD5AA4; 
+}
+
+
+.button-container{
+    display:flex;
+    flex-direction:row;
+    gap:28px;
+   
 }
 
