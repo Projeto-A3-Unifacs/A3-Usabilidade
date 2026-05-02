@@ -3,5 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" type="text/css"  href="styles/style.css">
+    <title>CADASTRE-SE</title>
+</head>
+<body id="corpo">
+
+   <div class="card-cadastro">
+    
+   <h4> Cadastre-se agora</h4>
+
+   <form>
+    <div class="label"> 
+    <label>Nome Completo</label>
+    </div>
+
+   <input  type="text" name="nome-completo"  > 
+   <div class="label">
+   <label>Email</label>
+   </div>
+   <input type="text" name="email" id="mail" >
+
+   <div class="label">
+   <label>Senha</label>
+   </div>
+   <input type="password" id="senha" >
+   <div class="label">
+   <label>Repetir Senha</label>
+   </div>
+   <input type="password" id="repetir" >
+   <div class="label">
+   <label>Data de Nascimento</label>
+   </div>
+   <input  type="date" name="data_nascimento" >
+
+    <div class="checkbox-container">
+    <input type="checkbox" id="termos" name="termos">
+    <div class="label-termos">
+    <label for="termos">Li e concordo com os Termos de Uso e a Política de Privacidade.</label>
+    </div>
+</div>
+ 
+   
+   <div class="button-container">
+       <button type="button" class="btn-voltar" onclick="window.history.back()">Voltar</button>
+       <button id="btn">Cadastrar</button>
+    </div>
+  
+   </form>
+   </div>
+  <script src="./scripts/validaCadastro.js"></script>
+
+</body>
 </html>
