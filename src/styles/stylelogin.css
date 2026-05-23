@@ -4,14 +4,14 @@
     box-sizing: border-box;
 }
 
-body {
+#body-login {
     font-family: Inter, sans-serif;
     background-image: url('../imagens/fundo.png');
     background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .card-login {
@@ -47,8 +47,8 @@ body {
     text-align: left;
 }
 
-input[type="email"],
-input[type="password"] {
+.card-login input[type="email"],
+.card-login input[type="password"] {
     width: 100%;
     padding: 8px;
     margin: 15px 0;
@@ -104,16 +104,18 @@ button:hover {
 }
 
 .create-account {
-    margin-top: 40px;
+    
     font-size: 15px;
     margin-bottom: 20px;
 }
 
 .create-account a {
-    color: #696772;
+    color: #5C3672;
     text-decoration: none;
+     font-size: 15px;
 }
 
 .create-account a:hover {
     text-decoration: underline;
+    
 }
