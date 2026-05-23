@@ -128,37 +128,7 @@ return (
             onChange={(event) => setDataNascimento(event.target.value)}
           />
   
-          <div className="Tipo-Conta">
-            <input
-            type="checkbox"
-            checked={contaUsuario}
-            onChange={() => {
-              setContaUsuario(true)
-              setContaAdm(false)
-            }
-
-
-            }
-            />
-           <label className="label-contas">
-            Conta Usuário
-           </label>
-
-            <input
-
-            type="checkbox"
-            checked={contaAdm}
-            onChange={ () => {
-              setContaAdm(true)
-              setContaUsuario(false)
-            }
-           
-            }
-            />
-            <label  className="label-contas">
-            Conta administrador
-            </label>
-          </div>
+          
 
 
 
