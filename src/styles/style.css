@@ -148,19 +148,19 @@ a {
     gap: 20px;
 }
 
-footer {
+ footer {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     background: linear-gradient(to right, #C67097, #583470);
     color: white;
-    width: 100%;
-    min-height: 115px;
+    width:100%;
+    min-height: 8px;
     font-family: "Inter", sans-serif;
     margin-top: 38px;
     padding: 20px;
 }
 
-.logo {
+.footer img {
     width: 100%;
     max-width: 168px;
     height: auto;

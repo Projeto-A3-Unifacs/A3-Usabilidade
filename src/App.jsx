@@ -2,6 +2,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
+import PaginaInicial from './pages/PaginaInicial';
 
 
 function App() {
@@ -20,6 +21,13 @@ function App() {
           path="/cadastro"
           element={<Cadastro />}
         />
+
+        <Route
+        path="/"
+        element={< PaginaInicial />}
+        />
+
+        
 
       </Routes>
 

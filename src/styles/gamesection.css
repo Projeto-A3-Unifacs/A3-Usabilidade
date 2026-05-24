@@ -1,0 +1,34 @@
+.games-row{
+
+   display:flex;
+
+   gap:20px;
+
+   overflow-x:auto;
+
+   padding:10px 0;
+   margin-left:32px;
+
+}
+
+.games-row::-webkit-scrollbar{
+
+   height:8px;
+
+}
+
+
+.games-row::-webkit-scrollbar-thumb{
+
+   background:#8d4fa8;
+
+   border-radius:10px;
+
+}
+
+.section-top{
+    margin-left:32px;
+    font-family: "Inter", sans-serif;
+    margin-top:12px;
+}
+
