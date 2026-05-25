@@ -18,8 +18,14 @@ import l from '../assets/games/l.png';
 import m from '../assets/games/m.png';
 import n from '../assets/games/n.png';
 import o from '../assets/games/o.png';
+import logoBusca from '../assets/lupa.png';
+import { FaSearch } from "react-icons/fa";
+import estrela from '../assets/estrela.png';
+import fogete from '../assets/foguete.png';
+import incendio from '../assets/incendio.png';
+import promo from '../assets/promo.png';
 
-import semImagem from '../assets/games/default.png';
+import semImagem from '../assets/games/padrao.png';
 
 function PaginaInicial(){
 
@@ -42,6 +48,7 @@ function PaginaInicial(){
   
 
    const [jogos, setJogos] = useState([]);
+   const [usuarioLogado, setUsuarioLogado] = useState(false);
 
    useEffect(() => {
 
@@ -90,27 +97,30 @@ function PaginaInicial(){
   
 
    const destaques =
-      jogos.slice(0,6);
+   jogos.slice(0,10);
 
-   const lancamentos =
-      jogos.slice(6,12);
+const lancamentos =
+   jogos.slice(5,15);
 
-   const promocoes =
-      jogos.filter(
-         jogo => jogo.desconto > 0
-      );
+const promocoes =
+   jogos
+      .filter(jogo => jogo.preco < 40)
+      .slice(0,10);
 
-   const maisVendidos =
-      jogos.slice(12,18);
-
+const maisVendidos =
+   jogos.slice(10,20);
 
     return(
         <div className="inicial">
         <div className="topo">
-    <input 
+         
+         <div className="busca-container">
+         <img src={logoBusca} className="icone-busca" />
+         <input 
     className="busca" 
-    placeholder="Buscar"  
+    placeholder="Buscar"    
     type="text"/>
+    </div>
 
     <div className="links">
        <Link to="/login">
@@ -122,21 +132,25 @@ function PaginaInicial(){
 
    <GameSection
             titulo="Destaques"
+              icone={estrela}
             jogos={destaques}
          />
 
          <GameSection
             titulo="Lançamentos"
+              icone={fogete}
             jogos={lancamentos}
          />
 
          <GameSection
             titulo="Promoções"
+            icone={promo}
             jogos={promocoes}
          />
 
          <GameSection
             titulo="Mais vendidos"
+              icone={incendio}
             jogos={maisVendidos}
          />
 
@@ -147,7 +161,7 @@ function PaginaInicial(){
     <div className="logo">
      <img src={logo} />
      </div>
-      <p>© 2026 GameNest - Todos os direitos reservados</p>
+      <p>© 2026 Arcade Corporation. Todos os direitos reservados. Todas as marcas registradas são propriedade dos seus respectivos donos no Brasil e em outros países.</p>
 
       <div className="footer-links">
         <a href="#">Termos de Uso</a>

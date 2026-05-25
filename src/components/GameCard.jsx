@@ -6,25 +6,23 @@ function GameCard({ jogo }){
 
       <div className="game-card">
 
-        <img src={jogo.imagem} 
-        alt={jogo.nome} 
-        />
+    <div className="imagem-container">
 
-         <div className="game-info">
+        <img src={jogo.imagem} />
 
-            <span className="preco">
-               R$ {jogo.preco}
-            </span>
+        <span className="preco">
+            R$ {jogo.preco}
+        </span>
 
-            <button>
-               + Carrinho
-            </button>
+        <button className="btn-carrinho">
+            + Carrinho
+        </button>
 
-         </div>
+    </div>
 
-         <p>{jogo.nome}</p>
+    <p>{jogo.nome}</p>
 
-      </div>
+</div>
 
    )
 

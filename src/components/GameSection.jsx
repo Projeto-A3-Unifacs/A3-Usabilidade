@@ -2,7 +2,8 @@ import GameCard from './GameCard';
 
 import '../styles/gamesection.css';
 
-function GameSection({ titulo, jogos }){
+
+function GameSection({ titulo, icone, jogos }){
 
    return(
 
@@ -10,11 +11,12 @@ function GameSection({ titulo, jogos }){
 
          <div className="section-top">
 
-            <h2>{titulo}</h2>
+            <img
+               src={icone}
+               className="icone-section"
+            />
 
-            <a href="#">
-               Ver mais
-            </a>
+            <h2>{titulo}</h2>
 
          </div>
 

@@ -98,20 +98,25 @@ form a {
 .topo {
     display: flex;
     flex-direction: row;
-    background: linear-gradient(to right, #C67097, #583470);
-    color: white;
+     justify-content: space-between;
+     background: linear-gradient(to right, #C67097, #583470);
     width: 100%;
-    min-height: 55px;
+    height: 60px;
+    padding: 0 18px;
+    box-sizing: border-box;
+    color: white;
     font-family: "Inter", sans-serif;
     flex-wrap: wrap;
     align-items: center;
-    padding: 18px;
     gap: 10px;
 }
 
-  .links{
+
+
+  .links a{
     margin-top:18px;
     gap:62%;
+    text-decoration: none;
   }
 
 .img {
@@ -126,38 +131,83 @@ a {
     margin-left:18px;
 }
 
-.busca {
-    margin-top: 18px;
+.busca-container{
+
+    display:flex;
+  flex-direction:row;
+    align-items:center;
+
+    background:white;
+
+    width:320px;
+
+    height:42px;
+
+    border-radius:25px;
+
+    padding:0 15px;
+
+    gap:10px;
 }
 
-.secao-jogos {
-    margin-left: 28px;
-    margin-top: 62px;
-    font-size: 18px;
-    font-family: "Inter", sans-serif;
-    
+.icone-busca{
+
+    width:18px;
+
+    height:18px;
+
+    object-fit:contain;
+
+    flex-shrink:0;
+}
+
+
+.busca{
+
+    border:none;
+
+    outline:none;
+
+    background:transparent;
+
+    width:100%;
+
+    height:100%;
+
+    font-size:15px;
+
+    color:black;
+}
+
+.busca::placeholder{
+    color: grey;
 }
 
 
 
 
 
-.nomes-jogos {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
+
 
  footer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     background: linear-gradient(to right, #C67097, #583470);
     color: white;
     width:100%;
-    min-height: 8px;
+    height: auto;
     font-family: "Inter", sans-serif;
     margin-top: 38px;
     padding: 20px;
+    
+}
+
+.footer-links{
+    margin-top:12px;
+}
+
+footer a{
+      text-decoration:none;
 }
 
 .footer img {
@@ -212,18 +262,9 @@ a {
     }
 }
 
-.lista-jogos {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
 
-.jogo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 120px;
-}
+
+
 
 .nome {
     margin-top: 8px;

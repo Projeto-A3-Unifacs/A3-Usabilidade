@@ -1,19 +1,22 @@
 .games-row{
 
-   display:flex;
+    display:flex;
 
-   gap:20px;
+    gap:20px;
 
-   overflow-x:auto;
+    overflow-x:auto;
 
-   padding:10px 0;
-   margin-left:32px;
+    padding:10px 20px;
 
+    scroll-behavior:smooth;
+    
 }
 
 .games-row::-webkit-scrollbar{
 
    height:8px;
+
+    display:none;
 
 }
 
@@ -21,7 +24,6 @@
 .games-row::-webkit-scrollbar-thumb{
 
    background:#8d4fa8;
-
    border-radius:10px;
 
 }
@@ -30,5 +32,15 @@
     margin-left:32px;
     font-family: "Inter", sans-serif;
     margin-top:12px;
+    display:flex;
+    flex-direction:row;
+    gap:12px;
+    align-items:center;
+    
+}
+.section-top img{
+   width:18px;
+    height:18px;
+
 }
 
