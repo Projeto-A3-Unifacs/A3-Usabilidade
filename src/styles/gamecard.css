@@ -1,17 +1,33 @@
 .game-card{
 
     width:130px;
+    border-radius:12px;
+    overflow:hidden;
+    flex-shrink:0;
 
     color:black;
+    align-items:center;
 }
+
+
+ .game-card p{
+
+    margin-top:8px;
+
+    font-size:14px;
+    text-align:center;
+    font-family: "Inter", sans-serif;
+}
+
+
 
 .imagem-container{
 
     position:relative;
 
-    width:100%;
+    width:80%;
 
-    height:180px;
+    height:130px;
 
     border-radius:10px;
 
@@ -61,6 +77,7 @@
 
     width:90%;
 
+
     border:none;
 
     background:#8a4fa3;
@@ -76,24 +93,54 @@
     font-size:12px;
 }
 
-.game-card p{
 
-    margin-top:8px;
 
-    font-size:14px;
 
-    text-align:center;
-    font-family: "Inter", sans-serif;
+.game-card img{
+    width:100%;
+    aspect-ratio:3/4;
+    object-fit:cover;
+}
+
+@media (max-width: 768px){
+
+    .games-row{
+        justify-content:center;
+        gap:14px;
+    }
+
+    .game-card{
+        width:140px;
+    }
+
+    .game-card img{
+        height:180px;
+    }
+
+    .section-top h2{
+        font-size:20px;
+    }
+
 }
 
 
-@media(max-width:768px){
+@media (max-width: 480px){
 
-   .game-card{
+    .game-card{
+        width:120px;
+    }
 
-      width:160px;
+    .game-card img{
+        height:160px;
+    }
 
-   }
+    .game-card p{
+        font-size:14px;
+    }
+
+    .btn-carrinho{
+        font-size:13px;
+    }
 
 }
 

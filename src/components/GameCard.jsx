@@ -20,7 +20,7 @@ function GameCard({ jogo }){
 
     </div>
 
-    <p>{jogo.nome}</p>
+    <p className="game-title">{jogo.nome}</p>
 
 </div>
 

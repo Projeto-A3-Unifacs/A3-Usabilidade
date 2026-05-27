@@ -9,8 +9,12 @@
     padding:10px 20px;
 
     scroll-behavior:smooth;
+
+     flex-wrap:wrap;
+     
     
 }
+
 
 .games-row::-webkit-scrollbar{
 
@@ -35,8 +39,8 @@
     display:flex;
     flex-direction:row;
     gap:12px;
+    font-size:12px;
     align-items:center;
-    
 }
 .section-top img{
    width:18px;

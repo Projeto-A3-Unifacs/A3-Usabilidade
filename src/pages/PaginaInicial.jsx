@@ -4,6 +4,8 @@ import '../styles/style.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import GameSection from '../components/GameSection';
+import GameCard from '../components/GameCard';
+import Rodape from '../components/Rodape';
 import a from '../assets/games/a.png';
 import b from '../assets/games/b.png';
 import c from '../assets/games/c.png';
@@ -17,7 +19,6 @@ import k from '../assets/games/k.png';
 import l from '../assets/games/l.png';
 import m from '../assets/games/m.png';
 import n from '../assets/games/n.png';
-import o from '../assets/games/o.png';
 import logoBusca from '../assets/lupa.png';
 import { FaSearch } from "react-icons/fa";
 import estrela from '../assets/estrela.png';
@@ -43,12 +44,26 @@ function PaginaInicial(){
    l,
    m,
    n,
-   o
 ];
   
 
    const [jogos, setJogos] = useState([]);
    const [usuarioLogado, setUsuarioLogado] = useState(false);
+   const [busca, setBusca] = useState('');
+   const [resultadoBusca, setResultadoBusca] = useState([]);
+   function buscarJogos(){
+
+   const filtrados = jogos.filter((jogo) =>
+
+      jogo.nome
+         .toLowerCase()
+         .includes(busca.toLowerCase())
+
+   );
+
+   setResultadoBusca(filtrados);
+
+}
 
    useEffect(() => {
 
@@ -62,7 +77,7 @@ function PaginaInicial(){
 
             setJogos(resposta.data);
 
-                const jogosComImagem = resposta.data.map((jogo, index) => {
+         const jogosComImagem = resposta.data.map((jogo, index) => {
 
    return{
 
@@ -71,7 +86,7 @@ function PaginaInicial(){
       imagem:
          imagens[index] || semImagem
 
-   }
+   }  
 
 });
 
@@ -110,35 +125,105 @@ const promocoes =
 const maisVendidos =
    jogos.slice(10,20);
 
+   
+
     return(
         <div className="inicial">
         <div className="topo">
          
          <div className="busca-container">
-         <img src={logoBusca} className="icone-busca" />
+         
          <input 
     className="busca" 
     placeholder="Buscar"    
-    type="text"/>
+    type="text"
+    value={busca}
+   onChange={(e) => setBusca(e.target.value)}
+   />
+
+    <img src={logoBusca} 
+    className="icone-busca"
+
+     onClick={buscarJogos}
+    />
+
     </div>
 
     <div className="links">
-       <Link to="/login">
-      Entrar
-     </Link>
+      
+     {
+         usuarioLogado ? (
+
+            <>
+
+               <Link to="/perfil">Perfil</Link>
+
+               <Link to="/carrinho">Carrinho</Link>
+
+               <Link to="/biblioteca">Biblioteca</Link>
+
+               <Link to="/logout">Sair</Link>
+
+            </>
+
+         ) : (
+
+            <Link to="/login">Entrar</Link>
+
+         )
+      }
+
     </div>
   </div>
-<div >
 
-   <GameSection
+  <div className="conteudo">
+
+
+{
+   busca.trim() !== '' ? (
+
+      <div className="resultado-busca">
+
+         <h2>Resultados da busca</h2>
+
+         <div className="games-row">
+
+            {
+               resultadoBusca.length > 0 ? (
+
+                 resultadoBusca.map((jogo) => (
+
+                     <GameCard
+                        key={jogo.id}
+                        jogo={jogo}
+                     />
+
+                  ))
+
+               ) : (
+
+                  <p>Nenhum jogo encontrado.</p>
+
+               )
+            }
+
+         </div>
+
+      </div>
+
+   ) : (
+
+      <>
+      
+         <GameSection
             titulo="Destaques"
-              icone={estrela}
+            icone={estrela}
             jogos={destaques}
          />
 
          <GameSection
             titulo="Lançamentos"
-              icone={fogete}
+            icone={fogete}
             jogos={lancamentos}
          />
 
@@ -150,27 +235,25 @@ const maisVendidos =
 
          <GameSection
             titulo="Mais vendidos"
-              icone={incendio}
+            icone={incendio}
             jogos={maisVendidos}
          />
 
-      </div>
-   
+      </>
 
-   <footer className="footer">
-    <div className="logo">
-     <img src={logo} />
-     </div>
-      <p>© 2026 Arcade Corporation. Todos os direitos reservados. Todas as marcas registradas são propriedade dos seus respectivos donos no Brasil e em outros países.</p>
+   )
+}
 
-      <div className="footer-links">
-        <a href="#">Termos de Uso</a>
-        <a href="#">Privacidade</a>
-        <a href="#">Contato</a>
       </div>
 
-    </footer>
-    </div>
+      
+    <Rodape
+     logo={logo}
+     />
+
+
+    
+</div>
    
     )
 }
