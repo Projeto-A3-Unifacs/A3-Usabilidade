@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import '../styles/style.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 function Cadastro() {
 
   const [nome, setNome] = useState('');
@@ -8,12 +10,12 @@ function Cadastro() {
   const [senha, setSenha] = useState('');
   const [repetirSenha, setRepetirSenha] = useState('');
   const [dataNascimento, setDataNascimento] = useState('');
-  const [contaUsuario, setContaUsuario]=useState(false);
-  const [contaAdm, setContaAdm]=useState(false);
+  const [validacaoErro, setValidacaoErro]
+   = useState('');
   const [termos, setTermos] = useState(false);
- const [erroSenha, setErroSenha] = useState(false);
- const [modalSucesso, setModalSucesso] = useState(false);
- 
+  const [mensagemErro, setMensagemErro]
+   = useState('');
+ const navigate = useNavigate();
 
   async function cadastrar(event) {
 
@@ -21,17 +23,22 @@ function Cadastro() {
 
   if (!termos) {
 
-    alert('Aceite os termos');
+    setValidacaoErro(
+      'Aceite os termos.'
+   );
 
-    return;
+   return;
+
 
   }
 
   if (senha !== repetirSenha) {
 
-    alert('As senhas não coincidem');
+      setValidacaoErro(
+      'As senhas não coincidem.'
+   );
 
-    return;
+   return;
 
   }
 
@@ -54,12 +61,14 @@ function Cadastro() {
     );
 
     
-
-    alert('Usuario cadastrado com sucesso!');
+        navigate('/login');
 
   } catch (erro) {
+     setMensagemErro(
 
-    console.log (erro.response.data.message);
+      erro.response.data.message
+     )
+      
 
    
 
@@ -74,7 +83,18 @@ return (
       <div className="card-cadastro">
 
         <h4>Cadastre-se agora</h4>
+        {
+          mensagemErro
+          && (
 
+      <p className="erro-cadastro">
+
+         {mensagemErro}
+
+      </p>
+          )
+        }
+      
         <form onSubmit={cadastrar}>
 
           <div className="label">
@@ -107,6 +127,7 @@ return (
             value={senha}
             onChange={(event) => setSenha(event.target.value)}
           />
+          
 
           <div className="label">
             <label>Repetir Senha</label>
@@ -130,6 +151,17 @@ return (
   
           
 
+           {
+   validacaoErro && (
+
+      <p className="erro-validacao">
+
+         {validacaoErro}
+
+      </p>
+
+   )
+}
 
 
 

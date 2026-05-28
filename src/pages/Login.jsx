@@ -3,13 +3,20 @@ import '../styles/stylelogin.css';
 import axios from 'axios';
 import logo from '../assets/logodois.png';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+
 
 function Login(){
     const[email,setEmail]=useState('');
     const[senha, setSenha]=useState('')
+    const navigate = useNavigate();
+    const [mensagemErro, setMensagemErro]
+   = useState('');
 
      
      async function fazerLogin(event){
+      
          event.preventDefault();
 
           try {
@@ -19,12 +26,22 @@ function Login(){
              senha
             }
          );
-         console.log(resultado.data)
 
-         alert('Usuario Logado com sucesso')
+           localStorage.setItem(
+         "token",
+         resultado.data.token
+      );
+          navigate('/');
+         
 
         }catch(erro){
-            console.log(erro)
+          setMensagemErro(
+
+         erro.response?.data?.message ||
+
+         'Erro ao fazer login.'
+
+      );
         }
 
 }
@@ -34,10 +51,25 @@ function Login(){
       <div id="body-login">
     <div className="card-login">
       <div className="logo-card">
-       <img src={logo} />
+       <img src={logo}
+       onClick={() => navigate('/')}
+       />
       </div>
       <h3>Login</h3>
       <form onSubmit={fazerLogin} id="login-form">
+
+        
+        {
+   mensagemErro && (
+
+      <p className="erro-login">
+
+         {mensagemErro}
+
+      </p>
+
+   )
+}
      <input
         type="email"
         id="email"
@@ -69,6 +101,12 @@ function Login(){
       </div>
   )
 
+ 
+   function voltarInicio(){
+
+   navigate('/');
+
+}
 
 }
 

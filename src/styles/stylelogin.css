@@ -119,3 +119,14 @@ button:hover {
     text-decoration: underline;
     
 }
+
+
+.erro-login{
+
+    color:red;
+
+    font-size:14px;
+
+    margin-top:10px;
+
+}

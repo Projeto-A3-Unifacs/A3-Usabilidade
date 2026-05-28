@@ -6,6 +6,7 @@ import axios from 'axios';
 import GameSection from '../components/GameSection';
 import GameCard from '../components/GameCard';
 import Rodape from '../components/Rodape';
+import Navbar from '../components/Navbar';
 import a from '../assets/games/a.png';
 import b from '../assets/games/b.png';
 import c from '../assets/games/c.png';
@@ -45,13 +46,23 @@ function PaginaInicial(){
    m,
    n,
 ];
-  
+   function logout(){
+
+      localStorage.removeItem('token');
+
+      setUsuarioLogado(false);
+
+      navigate('/');
+
+   }
 
    const [jogos, setJogos] = useState([]);
    const [usuarioLogado, setUsuarioLogado] = useState(false);
    const [busca, setBusca] = useState('');
    const [resultadoBusca, setResultadoBusca] = useState([]);
+ 
    function buscarJogos(){
+      
 
    const filtrados = jogos.filter((jogo) =>
 
@@ -66,6 +77,14 @@ function PaginaInicial(){
 }
 
    useEffect(() => {
+
+        const token = localStorage.getItem('token');
+
+   if(token){
+
+      setUsuarioLogado(true);
+
+   }
 
       async function buscarJogos(){
 
@@ -87,6 +106,8 @@ function PaginaInicial(){
          imagens[index] || semImagem
 
    }  
+
+        
 
 });
 
@@ -149,31 +170,11 @@ const maisVendidos =
 
     </div>
 
-    <div className="links">
-      
-     {
-         usuarioLogado ? (
-
-            <>
-
-               <Link to="/perfil">Perfil</Link>
-
-               <Link to="/carrinho">Carrinho</Link>
-
-               <Link to="/biblioteca">Biblioteca</Link>
-
-               <Link to="/logout">Sair</Link>
-
-            </>
-
-         ) : (
-
-            <Link to="/login">Entrar</Link>
-
-         )
-      }
-
-    </div>
+   <Navbar
+   usuarioLogado={usuarioLogado}
+   logout={logout}
+/>
+    
   </div>
 
   <div className="conteudo">

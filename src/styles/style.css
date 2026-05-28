@@ -106,7 +106,7 @@ form a {
     box-sizing: border-box;
     color: white;
     font-family: "Inter", sans-serif;
-    flex-wrap: wrap;
+   flex-wrap: nowrap;
     align-items: center;
     gap: 10px;
 }
@@ -136,13 +136,12 @@ a {
 .busca-container{
 
     display:flex;
-  flex-direction:row;
+    flex-direction:row;
     align-items:center;
-
+    flex-shrink:0;
     background:white;
 
-    width:320px;
-     max-width:100%;
+    width:360px;
     height:42px;
 
     border-radius:25px;
@@ -250,6 +249,62 @@ footer a{
     }
 }
 
+@media(max-width:768px){
+
+    .topo{
+
+        height:auto;
+
+        flex-direction:column;
+
+        align-items:center;
+
+        padding:12px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .links{
+
+        display:flex;
+
+        flex-wrap:wrap;
+
+        justify-content:center;
+
+        gap:15px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .busca-container{
+
+        width:100%;
+
+        max-width:350px;
+
+    }
+
+}
+
+@media(max-width:768px){
+    .footer-links{
+        display:flex;
+
+        justify-content:center;
+
+        gap:15px;
+    }
+
+}
+
+
 
 
 
@@ -304,4 +359,27 @@ footer a{
 
 .conteudo{
     flex:1;
+}
+
+.logo-card{
+
+    cursor:pointer;
+
+}
+
+.erro-cadastro{
+    color: red;
+    font-size:18px;
+    text-align:center;
+    margin-top:20px;
+    font-family: "Inter", sans-serif;
+}
+
+.erro-validacao{
+    color: red;
+    font-size:18px;
+    text-align:center;
+    margin-top:20px;
+    font-family: "Inter", sans-serif;
+
 }
