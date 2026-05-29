@@ -3,11 +3,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import PaginaInicial from './pages/PaginaInicial';
-
+import { Toaster } from 'react-hot-toast';
 
 function App() {
    return (
-
+    <>
+     <Toaster />
     <BrowserRouter>
 
       <Routes>
@@ -32,7 +33,7 @@ function App() {
       </Routes>
 
     </BrowserRouter>
-
+       </>     
   );
 
 }

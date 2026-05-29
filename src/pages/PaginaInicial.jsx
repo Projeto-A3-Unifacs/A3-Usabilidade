@@ -91,7 +91,7 @@ function PaginaInicial(){
          try{
 
             const resposta = await axios.get(
-               "http://localhost:3000/api/v1/public/jogos"
+               "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/public/jogos"
             );
 
             setJogos(resposta.data);

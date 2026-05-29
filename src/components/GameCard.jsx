@@ -1,6 +1,12 @@
 import '../styles/gamecard.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 function GameCard({ jogo }){
+    const navigate =
+useNavigate();
+    
 
    return(
 
@@ -14,7 +20,9 @@ function GameCard({ jogo }){
             R$ {jogo.preco}
         </span>
 
-        <button className="btn-carrinho">
+        <button className="btn-carrinho"
+          onClick={adicionarAoCarrinho}
+        >
             + Carrinho
         </button>
 
@@ -25,6 +33,73 @@ function GameCard({ jogo }){
 </div>
 
    )
+
+
+
+   async function adicionarAoCarrinho(){
+    console.log('---------------------------------')
+     console.log(jogo.id);
+     console.log('---------------------------------')
+    try{
+
+      const token =
+         localStorage.getItem(
+            'token'
+         );
+
+      if(!token){
+
+        navigate('/login')
+
+         return;
+
+      }
+
+      const resposta =
+         await axios.post(
+
+            'https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/carrinho/add',
+
+            {
+
+               jogoId:
+                  jogo.id
+
+            },
+
+            {
+
+               headers:{
+
+                  Authorization:
+                     `Bearer ${token}`
+
+               }
+
+            }
+
+         );
+
+      console.log(
+         resposta.data
+      );
+
+      toast.success(
+'Jogo adicionado ao carrinho!'
+
+);
+
+   }catch(erro){
+
+      console.log(erro);
+
+      toast.error(
+         erro.response?.data?.message
+      );
+
+   }
+
+   }
 
 }
 

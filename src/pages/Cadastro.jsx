@@ -51,7 +51,7 @@ function Cadastro() {
   try {
 
     const resposta = await axios.post(
-      'http://localhost:3000/api/v1/auth/register',
+      'https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/auth/register',
       {
         nome,
         email,

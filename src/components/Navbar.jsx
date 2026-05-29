@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
+import '../styles/style.css'
 
 function Navbar({ usuarioLogado, logout }){
 
    return(
-
+  
       <div className="links">
 
          {
@@ -36,6 +37,7 @@ function Navbar({ usuarioLogado, logout }){
          }
 
       </div>
+     
 
    )
 

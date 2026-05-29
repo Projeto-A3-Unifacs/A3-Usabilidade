@@ -21,7 +21,7 @@ function Login(){
 
           try {
          const resultado= await axios.post(
-            'http://localhost:3000/api/v1/auth/login',
+            'https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/auth/login',
             {email,
              senha
             }
