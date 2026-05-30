@@ -31,7 +31,8 @@ function Navbar({ usuarioLogado, logout }){
 
                <Link to="/cadastro">
                   Cadastre-se
-               </Link>
+               </Link>               
+
                 </>      
             )
          }

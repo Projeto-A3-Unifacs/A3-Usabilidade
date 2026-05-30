@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import PaginaInicial from './pages/PaginaInicial';
 import { Toaster } from 'react-hot-toast';
+import Carrinho from './pages/Carrinho';
 
 function App() {
    return (
@@ -28,7 +29,10 @@ function App() {
         element={< PaginaInicial />}
         />
 
-        
+        <Route
+          path="/carrinho"
+          element={<Carrinho />}
+        />        
 
       </Routes>
 
