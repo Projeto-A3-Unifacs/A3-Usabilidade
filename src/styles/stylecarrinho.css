@@ -28,7 +28,8 @@ nav a.active { text-decoration: underline; }
 
 .page-title { font-size: 22px; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .page-title img { width: 24px; height: 24px; }
-p { margin-top: 0; margin-bottom: 20px; color: #737373; }
+
+.container p { margin-top: 0; margin-bottom: 20px; color: #737373; }
 
 .cart-item {
   display: flex;

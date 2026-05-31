@@ -10,22 +10,31 @@ function Carrinho() {
   const [carrinho, setCarrinho] = useState([]);
   const [total, setTotal] = useState(0);
   const navigate = useNavigate();
+  const [usuarioLogado, setUsuarioLogado] = useState(false);
+
+   function logout(){
+
+      localStorage.removeItem('token');
+
+      setUsuarioLogado(false);
+
+      navigate('/');
+
+   }
 
   const fetchCarrinho = async () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        console.error('Usuário não logado');
-        navigate('/login'); // redireciona para login
+        navigate('/login'); 
         return;
       }
-
+    setUsuarioLogado(true);
       const response = await axios.get('https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/carrinho/ativo', {
         headers: { Authorization: `Bearer ${token}` },
-        withCredentials: true
       });
 
-      const itensCarrinho = response.data.carrinho || [];
+      const itensCarrinho = response.data.carrinho.itens || [];
 
       if (itensCarrinho.length === 0) {
         setCarrinho([]);
@@ -37,7 +46,6 @@ function Carrinho() {
         itensCarrinho.map(async (item) => {
           const jogoResp = await axios.get(`https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/jogos/${item.fkJogo}`, {
             headers: { Authorization: `Bearer ${token}` },
-            withCredentials: true
           });
           return { ...jogoResp.data, itemId: item.id, selecionado: true };
         })
@@ -77,7 +85,10 @@ function Carrinho() {
     <div>
       <header>
         <img src={logo} alt="Logo Game Nest" className="logo" />
-        <Navbar />
+        <Navbar 
+        usuarioLogado={usuarioLogado}
+        logout={logout}
+        />
       </header>
 
       <main className="container">
