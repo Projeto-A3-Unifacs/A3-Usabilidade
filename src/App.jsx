@@ -5,6 +5,7 @@ import Cadastro from './pages/Cadastro';
 import PaginaInicial from './pages/PaginaInicial';
 import { Toaster } from 'react-hot-toast';
 import Carrinho from './pages/Carrinho';
+import MeusJogos from './pages/MeusJogos';
 
 function App() {
    return (
@@ -33,6 +34,11 @@ function App() {
           path="/carrinho"
           element={<Carrinho />}
         />        
+
+        <Route
+          path="/meusjogos"
+          element={<MeusJogos />}
+        />
 
       </Routes>
 

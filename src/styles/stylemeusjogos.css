@@ -1,0 +1,147 @@
+body {
+  font-family: 'Yinmar', sans-serif;
+  margin: 0;
+  background-color: #FAF8FC;
+  color: #000;
+}
+
+.meusjogos-header {
+  background: linear-gradient(200deg, #C67097 5%, #583470 400%);
+  padding: 5px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.meusjogos-logo { height: 60px; }
+nav a { color: #fff; text-decoration: none; margin-left: 60px; font-weight: bold; font-size: 16px; }
+nav a.active { text-decoration: underline; }
+
+.meusjogos-container-principal {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+.meusjogos-games-section { display: flex; flex-direction: column; gap: 20px; }
+
+.meusjogos-page-title { font-size: 22px; margin-bottom: 8px; }
+
+.meusjogos-header-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.meusjogos-summary-cards {
+  display: flex;
+  gap: 25px;
+}
+.meusjogos-summary-card-small {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border-radius: 18px;
+  padding: 18px 22px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  font-size: 16px;
+  min-width: 160px;
+}
+.meusjogos-summary-card-small img { width: 42px; height: 42px; }
+.meusjogos-summary-card-small span { display: flex; flex-direction: column; font-size: 15px; }
+
+.meusjogos-paragrafo { margin-top: 0; margin-bottom: 20px; color: #737373; }
+
+.meusjogos-search-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 25px;
+  align-items: center;
+}
+.meusjogos-search-box {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+.meusjogos-search-box input {
+  width: 92%;
+  padding: 10px 35px 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+.meusjogos-search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+}
+select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* Grid de Jogos */
+.meusjogos-games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  gap: 20px;
+}
+
+/* Cards de Jogos */
+.meusjogos-game-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  gap: 20px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+}
+.meusjogos-game-img { width: 140px; height: 90px; object-fit: cover; border-radius: 10px; }
+.meusjogos-game-info { flex: 1; }
+.meusjogos-platforms img { width: 24px; height: 24px; margin-right: 4px; }
+.meusjogos-game-buttons { display: flex; gap: 10px; flex-direction: column; }
+.meusjogos-btn-game, .meusjogos-btn-info, .meusjogos-btn-remove {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.meusjogos-btn-game { background: #5B1686; color: #fff; }
+.meusjogos-btn-info { background: #C9B8F0; color: #5B1686; }
+.meusjogos-btn-remove { background: #fff; color: #FF4C4C; border: 1px solid #FF4C4C; }
+
+/* Paginação */
+.meusjogos-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+.meusjogos-page-btn {
+  padding: 8px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #fff;
+}
+.meusjogos-active {
+  background: #5B1686;
+  color: #fff;
+  border-color: #5B1686;
+}
+
+@media(max-width: 960px) {
+  .meusjogos-game-card { flex-direction: column; align-items: flex-start; }
+  .meusjogos-summary-cards { flex-direction: column; gap: 15px; }
+  .meusjogos-search-filters { flex-direction: column; gap: 10px; }
+  .meusjogos-header-top { flex-direction: column; gap: 10px; }
+}
