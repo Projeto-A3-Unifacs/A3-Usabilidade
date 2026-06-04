@@ -6,6 +6,7 @@ import PaginaInicial from './pages/PaginaInicial';
 import { Toaster } from 'react-hot-toast';
 import Carrinho from './pages/Carrinho';
 import MeusJogos from './pages/MeusJogos';
+import Compraaprovada from './pages/Compraaprovada'
 
 function App() {
    return (
@@ -38,6 +39,11 @@ function App() {
         <Route
           path="/meusjogos"
           element={<MeusJogos />}
+        />
+
+ <Route
+          path="/compraaprovada"
+          element={<Compraaprovada />}
         />
 
       </Routes>
