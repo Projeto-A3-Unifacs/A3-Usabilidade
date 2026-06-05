@@ -1,0 +1,230 @@
+.body {
+  font-family: 'Yinmar', sans-serif;
+  margin: 0;
+  background-color: #FAF8FC;
+  color: #000;
+}
+
+.header {
+  background: linear-gradient(200deg, #C67097 5%, #583470 400%);
+  padding: 5px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  height: 60px;
+}
+
+.navLink {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 40px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.navLinkActive {
+  text-decoration: underline;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.adminPanel h1,
+.adminPanel h2 {
+  color: #5B1686;
+  margin-bottom: 10px;
+}
+
+.adminPanel p {
+  margin-bottom: 20px;
+  color: #737373;
+}
+
+.cardForm {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.cardForm h2 {
+  color: black;
+  margin-bottom: 15px;
+}
+
+.gamesTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.gamesTable th,
+.gamesTable td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.gamesTable th {
+  background-color: #f5f0fa;
+  color: #5B1686;
+}
+
+.gamesTable td img.gameThumb {
+  width: 80px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.btnEdit,
+.btnDelete {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 4px;
+}
+
+.btnEdit {
+  background-color: #5B1686;
+  color: #fff;
+  margin-bottom: 10px; /* aumenta o espaço entre Editar e Excluir */
+}
+
+.btnDelete {
+  background-color: #E74C3C;
+  color: #fff;
+}
+
+.formRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.formRow input,
+.formRow select {
+  flex: 1;
+  min-width: 150px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #C9B8F0;
+  font-size: 14px;
+  color: #000; /* garante texto visível */
+}
+
+/* Placeholder visível */
+.formRow input::placeholder,
+.formRow select::placeholder,
+.cardForm textarea::placeholder {
+  color: #737373;
+  opacity: 1;
+}
+
+.cardForm textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #C9B8F0;
+  font-size: 14px;
+  margin-bottom: 12px;
+  color: #000; /* garante que o texto digitado apareça */
+}
+
+.formButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.formButtons button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.formButtonsReset {
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #5B1686;
+}
+
+.formButtonsSubmit {
+  background: #5B1686;
+  color: #fff;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.pageBtn {
+  padding: 8px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #fff;
+}
+
+.pageBtnActive {
+  background: #5B1686;
+  color: #fff;
+  border-color: #5B1686;
+}
+
+.footer {
+  background: linear-gradient(200deg, #C67097 5%, #583470 400%);
+  padding: 8px 40px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 14px;
+}
+
+.footer img {
+  height: 50px;
+}
+
+.footer span {
+  flex: 1;
+}
+
+@media (max-width: 960px) {
+  nav a {
+    margin-left: 20px;
+    font-size: 14px;
+  }
+
+  .formRow {
+    flex-direction: column;
+  }
+
+  .cardForm textarea {
+    width: 100%;
+  }
+
+  .formButtons {
+    justify-content: stretch;
+    flex-direction: column;
+  }
+}

@@ -7,6 +7,7 @@ import { Toaster } from 'react-hot-toast';
 import Carrinho from './pages/Carrinho';
 import MeusJogos from './pages/MeusJogos';
 import Compraaprovada from './pages/Compraaprovada'
+import PainelJogo from './pages/PainelJogo';
 
 function App() {
    return (
@@ -44,6 +45,11 @@ function App() {
  <Route
           path="/compraaprovada"
           element={<Compraaprovada />}
+        />
+
+        <Route
+          path="/paineljogo"
+          element={<PainelJogo />}
         />
 
       </Routes>
