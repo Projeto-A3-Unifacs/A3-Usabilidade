@@ -1,0 +1,83 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f7f4f8;
+  color: #111;
+  font-size: 12px;
+  margin: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+header {
+  width: 100%;
+  height: 43px;
+  background: #c16699;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 22px;
+  width: auto;
+  object-fit: contain;
+}
+
+nav {
+  display: flex;
+  gap: 45px;
+  align-items: center;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+}
+
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.lista {
+  background: white;
+  border-radius: 6px;
+  padding: 15px 20px;
+}
+
+.jogo {
+  display: grid;
+  grid-template-columns: 275px 1fr 120px 180px;
+}
+
+.btn {
+  width: 58px;
+  height: 73px;
+}
+
+.comprar {
+  border: 1px solid #9b76bd;
+  color: #8b4db3;
+}
+
+.remover {
+  border: 1px solid #ff0000;
+  color: #ff0000;
+}
+
+footer {
+  width: 100%;
+  min-height: 37px;
+  background: linear-gradient(180deg, #c16699, #45236d);
+}

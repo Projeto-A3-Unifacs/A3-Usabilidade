@@ -8,6 +8,7 @@ import Carrinho from './pages/Carrinho';
 import MeusJogos from './pages/MeusJogos';
 import Compraaprovada from './pages/Compraaprovada'
 import PainelJogo from './pages/PainelJogo';
+import Listadedesejos from './pages/Listadedesejos';
 
 function App() {
    return (
@@ -50,6 +51,11 @@ function App() {
         <Route
           path="/paineljogo"
           element={<PainelJogo />}
+        />
+
+          <Route
+          path="/listadedesejos"
+          element={<Listadedesejos />}
         />
 
       </Routes>
