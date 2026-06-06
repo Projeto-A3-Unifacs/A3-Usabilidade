@@ -9,7 +9,7 @@ import MeusJogos from './pages/MeusJogos';
 import Compraaprovada from './pages/Compraaprovada'
 import PainelJogo from './pages/PainelJogo';
 import Listadedesejos from './pages/Listadedesejos';
-
+import Finalizarpagamento from './pages/Finalizarpagamento';
 function App() {
    return (
     <>
@@ -17,11 +17,6 @@ function App() {
     <BrowserRouter>
 
       <Routes>
-
-        <Route
-          path="/login"
-          element={<Login />}
-        />
 
         <Route
           path="/cadastro"
@@ -56,6 +51,10 @@ function App() {
           <Route
           path="/listadedesejos"
           element={<Listadedesejos />}
+        />
+     <Route
+          path="/pagamento"
+          element={<Finalizarpagamento />}
         />
 
       </Routes>

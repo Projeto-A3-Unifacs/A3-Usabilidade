@@ -1,0 +1,257 @@
+/* PAGAMENTO */
+
+.payment-page {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+/* LEFT */
+
+.payment-left {
+  flex: 1;
+}
+
+.page-title {
+  margin-bottom: 30px;
+}
+
+.page-title h1 {
+  font-size: 34px;
+  margin-bottom: 10px;
+  color: #111111;
+}
+
+.page-title p {
+  color: #737373;
+  margin: 0;
+  font-size: 16px;
+}
+
+/* CARDS */
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #f3f1f6;
+  border-radius: 15px;
+  padding: 30px;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  color: #8a2cb5;
+  font-weight: bold;
+  margin-bottom: 25px;
+  font-size: 18px;
+}
+
+/* INPUTS */
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 13px;
+  border-radius: 10px;
+  border: 1px solid #bdbdbd;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  font-size: 15px;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+}
+
+.row .form-group {
+  flex: 1;
+}
+
+/* MÉTODOS DE PAGAMENTO */
+
+.payment-methods {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.method {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.method input {
+  width: auto;
+}
+
+.payment-methods img {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+}
+
+/* BOTÃO */
+
+.payment-button {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.payment-button button {
+  width: 320px;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: #b05b8c;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.payment-button button:hover {
+  background-color: #94466f;
+}
+
+.secure-text {
+  text-align: center;
+  margin-top: 15px;
+  color: #737373;
+  font-size: 14px;
+}
+
+/* RIGHT */
+
+.payment-right {
+  width: 320px;
+}
+
+/* RESUMO */
+
+.summary-game {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.summary-game img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #e6e6e6;
+}
+
+.summary-game h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.summary-game p {
+  margin: 0;
+  color: #737373;
+  font-size: 14px;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 18px;
+  font-size: 15px;
+}
+
+.summary-line.total {
+  font-weight: bold;
+  color: #b05b8c;
+  font-size: 18px;
+}
+
+.divider {
+  border: none;
+  border-bottom: 1px solid #e6e6e6;
+  margin: 20px 0;
+}
+
+/* PIX */
+
+.pix-box {
+  text-align: center;
+}
+
+.pix-box img {
+  width: 170px;
+  margin: 20px 0;
+}
+
+.pix-box p {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* SUPORTE */
+
+.support-box {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.support-icon {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+}
+
+.support-box h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.support-box a {
+  color: #b05b8c;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 960px) {
+  .payment-page {
+    flex-direction: column;
+  }
+
+  .payment-right {
+    width: 100%;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+  .payment-button button {
+    width: 100%;
+  }
+}
