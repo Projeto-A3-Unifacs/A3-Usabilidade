@@ -1,48 +1,55 @@
-import "../styles/compraaprovada.css"
-import fone from "../assets/fone.png"
-import cartao from "../assets/cartao.png"
-import download from "../assets/download.png"
-import logo from "../assets/logodois.png"
-import '../styles/style.css';
-import Navbar from '../components/Navbar';
-import {useState } from 'react';
+import "../styles/compraaprovada.css";
+import "../styles/style.css";
+
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+import Navbar from "../components/Navbar";
+
+import fone from "../assets/fone.png";
+import cartao from "../assets/cartao.png";
+import download from "../assets/download.png";
+import logo from "../assets/logodois.png";
 
 function CompraAprovada() {
+  const navigate = useNavigate();
+
   const [usuarioLogado, setUsuarioLogado] = useState(false);
-  const token = localStorage.getItem('token');
 
-  function logout(){
+  const token = localStorage.getItem("token");
 
-      localStorage.removeItem('token');
+  const venda = JSON.parse(
+    localStorage.getItem("ultimaVenda")
+  );
 
-      setUsuarioLogado(false);
-
-      navigate('/');
-
-   }
-
-  if(token){
-
+  useEffect(() => {
+    if (token) {
       setUsuarioLogado(true);
-   }
+    }
+  }, [token]);
+
+  function logout() {
+    localStorage.removeItem("token");
+    setUsuarioLogado(false);
+    navigate("/");
+  }
+
   return (
     <div className="compra-aprovada">
-<div className = "topo">
-<Navbar
-   usuarioLogado={usuarioLogado}
-   logout={logout}
-/>
+      <div className="topo">
+        <Navbar
+          usuarioLogado={usuarioLogado}
+          logout={logout}
+        />
 
+        <img
+          src={logo}
+          alt="Logo Game Nest"
+          className="logo"
+        />
+      </div>
 
-
-      <img
-        src = {logo}
-        alt="Logo Game Nest"
-        className="logo"
-      />
-</div>
       <main className="purchase-container">
-
         <section className="success-area">
           <div className="success-circle">✓</div>
           <h1>Compra aprovada!</h1>
@@ -50,24 +57,34 @@ function CompraAprovada() {
         </section>
 
         <section className="purchase-card">
-
           <div className="purchase-info">
-
             <div className="info-box">
               <span>Valor</span>
-              <strong>R$ 94,90</strong>
+              <strong>
+                {venda
+                  ? venda.valorTotal.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })
+                  : "R$ 0,00"}
+              </strong>
             </div>
 
             <div className="info-box">
               <span>Quantidade</span>
-              <strong>1</strong>
+              <strong>
+                {venda ? venda.quantidade : 0}
+              </strong>
             </div>
 
             <div className="info-box">
               <span>Data e hora</span>
-              <strong>20/05/2026 | 14:32</strong>
+              <strong>
+                {venda
+                  ? new Date(venda.data).toLocaleString("pt-BR")
+                  : "-"}
+              </strong>
             </div>
-
           </div>
 
           <div className="success-alert">
@@ -76,23 +93,27 @@ function CompraAprovada() {
           </div>
 
           <div className="buttons">
-            <button className="btn btn-library">
+            <button
+              className="btn btn-library"
+              onClick={() => navigate("/biblioteca")}
+            >
               Ir para minha biblioteca
             </button>
 
-            <button className="btn btn-store">
+            <button
+              className="btn btn-store"
+              onClick={() => navigate("/loja")}
+            >
               Continuar comprando
             </button>
           </div>
-
         </section>
 
         <section className="benefits">
-
           <div className="benefit-card">
             <img
               src={download}
-              alt="download"
+              alt="Download"
               className="benefit-icon"
             />
 
@@ -105,7 +126,7 @@ function CompraAprovada() {
           <div className="benefit-card">
             <img
               src={cartao}
-              alt="pagamento"
+              alt="Pagamento"
               className="benefit-icon"
             />
 
@@ -118,7 +139,7 @@ function CompraAprovada() {
           <div className="benefit-card">
             <img
               src={fone}
-              alt="suporte"
+              alt="Suporte"
               className="benefit-icon"
             />
 
@@ -127,11 +148,8 @@ function CompraAprovada() {
               <p>Conte com nossa equipe sempre que precisar.</p>
             </div>
           </div>
-
         </section>
-
       </main>
-
     </div>
   );
 }
