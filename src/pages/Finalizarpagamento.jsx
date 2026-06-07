@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useState,  useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
-
-import logo from "../assets/logo.png";
+import cadeado from  "../assets/cadeado.png";
+import logo from "../assets/logodois.png";
 import pix from "../assets/pix.jpg";
 import boleto from "../assets/boleto.png";
-import credito from "../assets/cred.png";
+import credito from "../assets/cartao.png";
 import suporte from "../assets/fone.png";
 
 import "../styles/Finalizarpagamento.css";
@@ -15,6 +15,21 @@ function Pagamento() {
   const navigate = useNavigate();
 
   const [metodoPagamento, setMetodoPagamento] = useState("cartao");
+  const [usuarioLogado, setUsuarioLogado] = useState(false);
+  
+  const token = localStorage.getItem("token");
+
+    useEffect(() => {
+      if (token) {
+        setUsuarioLogado(true);
+      }
+    }, [token]);
+  
+    function logout() {
+      localStorage.removeItem("token");
+      setUsuarioLogado(false);
+      navigate("/");
+    }
 
   async function finalizarCompra() {
     try {
@@ -34,12 +49,26 @@ function Pagamento() {
 
   return (
     <>
-      <Navbar />
+    <header>
+      <img
+       src={logo}
+       className="logo"
+       />
+      <Navbar 
+      usuarioLogado={usuarioLogado}
+          logout={logout}
+       />
 
+    </header>
       <main className="payment-page">
         <section className="payment-left">
           <div className="page-title">
+            <div className="titulo">
+              <img className="cadeado"
+              src={cadeado}
+              />
             <h1>Finalizar pagamento</h1>
+            </div>
             <p>Preencha os dados abaixo para concluir sua compra.</p>
           </div>
 

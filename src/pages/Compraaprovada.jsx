@@ -10,6 +10,8 @@ import fone from "../assets/fone.png";
 import cartao from "../assets/cartao.png";
 import download from "../assets/download.png";
 import logo from "../assets/logodois.png";
+import Rodape from "../components/Rodape";
+
 
 function CompraAprovada() {
   const navigate = useNavigate();
@@ -34,20 +36,23 @@ function CompraAprovada() {
     navigate("/");
   }
 
+
+
   return (
     <div className="compra-aprovada">
-      <div className="topo">
+      <header>
+      <img
+          src={logo}
+          alt="Logo Game Nest"
+          className="logo"
+        />
+    
         <Navbar
           usuarioLogado={usuarioLogado}
           logout={logout}
         />
 
-        <img
-          src={logo}
-          alt="Logo Game Nest"
-          className="logo"
-        />
-      </div>
+      </header>
 
       <main className="purchase-container">
         <section className="success-area">
@@ -95,14 +100,14 @@ function CompraAprovada() {
           <div className="buttons">
             <button
               className="btn btn-library"
-              onClick={() => navigate("/biblioteca")}
+              onClick={() => navigate("/meusjogos")}
             >
               Ir para minha biblioteca
             </button>
 
             <button
               className="btn btn-store"
-              onClick={() => navigate("/loja")}
+              onClick={() => navigate("/")}
             >
               Continuar comprando
             </button>
@@ -150,7 +155,12 @@ function CompraAprovada() {
           </div>
         </section>
       </main>
+    <Rodape
+    logo={logo}
+    />
+
     </div>
+    
   );
 }
 

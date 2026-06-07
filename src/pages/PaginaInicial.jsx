@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logodois.png';
 import '../styles/style.css';
 import { useEffect, useState } from 'react';

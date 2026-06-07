@@ -122,7 +122,11 @@ function Carrinho() {
         </section>
 
         <aside className="sidebar">
-          <button className="btn-pay">Seguir para pagamento</button>
+          <button className="btn-pay"
+          onClick={() => navigate("/pagamento")}
+          >Seguir para pagamento
+            
+          </button>
         </aside>
       </main>
 

@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import Rodape from "../components/Rodape";
 
 // Importando imagens
-import logodois from "../assets/logodois.png";
+import logo from "../assets/logodois.png";
 
 // Importando CSS Modules
 import styles from "../styles/stylepaineljogo.module.css";
@@ -86,7 +86,7 @@ function PainelJogo() {
   return (
     <div>
       <header className={styles.header}>
-        <img src={logodois} alt="Logo Game Nest" className={styles.logo} />
+        <img src={logo} alt="Logo Game Nest" className={styles.logo} />
         <Navbar usuarioLogado={usuarioLogado} logout={logout} />
       </header>
 
@@ -101,7 +101,6 @@ function PainelJogo() {
             <table className={styles.gamesTable}>
               <thead>
                 <tr>
-                  <th>Imagem</th>
                   <th>Nome</th>
                   <th>Categoria</th>
                   <th>Preço</th>
@@ -180,7 +179,9 @@ function PainelJogo() {
         </section>
       </main>
 
-      <Rodape />
+      <Rodape
+      logo={logo}
+      />
     </div>
   );
 }

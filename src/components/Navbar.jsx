@@ -14,7 +14,7 @@ function Navbar({ usuarioLogado, logout }){
 
                <Link to="/carrinho">Carrinho</Link>
 
-               <Link to="/biblioteca">Biblioteca</Link>
+               <Link to="/meusjogos">Biblioteca</Link>
 
                <Link to="/perfil">Perfil</Link>
                <a onClick={logout}>

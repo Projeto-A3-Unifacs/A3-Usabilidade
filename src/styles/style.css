@@ -95,7 +95,7 @@ form a {
     font-family: "Inter", sans-serif;
 }
 
-.topo {
+ .inicial .topo {
     display: flex;
     flex-direction: row;
     justify-content: space-between;

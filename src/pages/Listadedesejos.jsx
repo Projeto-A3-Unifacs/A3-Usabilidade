@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/Listadedesejos.css";
-
+import Navbar from '../components/Navbar';
+import Rodape from '../components/Rodape';
 import a from '../assets/games/a.png';
 import b from '../assets/games/b.png';
 import c from '../assets/games/c.png';
@@ -15,6 +16,7 @@ import k from '../assets/games/k.png';
 import l from '../assets/games/l.png';
 import m from '../assets/games/m.png';
 import n from '../assets/games/n.png';
+import logo from '../assets/logodois.png'
 
 const imagensJogos = [
   "a.png", "b.png", "c.png", "d.png", "e.png", "f.png",
@@ -29,15 +31,31 @@ function pegarImagemDoJogo(id) {
 function Listadedesejos() {
   const [jogos, setJogos] = useState([]);
   const [carregando, setCarregando] = useState(true);
+  const [usuarioLogado, setUsuarioLogado] = useState(false);
+  
+ 
 
   useEffect(() => {
+   
     carregarListaDesejos();
   }, []);
 
-  async function carregarListaDesejos() {
-    try {
-      const token = localStorage.getItem("token");
 
+  function logout() {
+    localStorage.removeItem("token");
+    setUsuarioLogado(false);
+    navigate("/");
+  }
+
+
+  async function carregarListaDesejos() {
+    
+      const token = localStorage.getItem("token");
+    try {
+     
+
+
+     
       if (!token) {
         window.location.href = "/login";
         return;
@@ -55,11 +73,21 @@ function Listadedesejos() {
       const jogosComDados = await Promise.all(
         resposta.data.map(async (jogo) => {
           const empresaResposta = await axios.get(
-            `https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/empresas/${jogo.fk_empresa}`
+            `https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/empresas/${jogo.fk_empresa}`,
+             {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }
           );
 
           const categoriaResposta = await axios.get(
-            `https://api-vendas-jogos-digitais-9fvp.onrender.com/api/categorias/${jogo.fk_categoria}`
+            `https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/categorias/${jogo.fk_categoria}`,
+             {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }
           );
 
           return {
@@ -74,33 +102,39 @@ function Listadedesejos() {
       setJogos(jogosComDados);
     } catch (erro) {
       console.log("Erro ao carregar lista de desejos:", erro);
+        console.log("Status:", erro.response?.status);
+  console.log("Data:", erro.response?.data);
+  console.log("Token:", localStorage.getItem("token"));
+   console.log("HEADERS ENVIADOS:", {
+  Authorization: `Bearer ${token}`
+});
     } finally {
       setCarregando(false);
     }
   }
 
   return (
-    <>
+    <div className="lista-desejos-page">
       <header>
-        <div className="brand">
-          <img src="/imagens/logo.png" alt="Logo Game Nest" className="logo" />
-        </div>
+        
+          <img src={logo} 
+          alt="Logo Game Nest" 
+          className="logo" />
+            
 
-        <nav>
-          <a href="/">Página Inicial</a>
-          <a href="#">Explorar</a>
-          <a href="/carrinho">Carrinho</a>
-          <a href="/meusjogos">Biblioteca</a>
-          <a href="#">Perfil</a>
-          <a href="#">Sair</a>
-        </nav>
+         <Navbar
+         usuarioLogado={usuarioLogado}
+         logout={logout}
+         />
+
+        
       </header>
 
       <main>
         <section className="topo">
           <div>
             <h1>Lista de Desejos</h1>
-            <p>Aqui estão os jogos que você adicionou à sua lista de desejos.</p>
+            <p id="paragrafo">Aqui estão os jogos que você adicionou à sua lista de desejos.</p>
           </div>
 
           <div className="acoes-topo">
@@ -108,31 +142,30 @@ function Listadedesejos() {
             <button className="limpar">Limpar lista</button>
           </div>
         </section>
-
+     
         <section className="lista">
+             <div className="lista-vazia">
           {carregando && <p>Carregando lista de desejos...</p>}
-
+           </div>
+            
           {!carregando && jogos.length === 0 && (
-            <p>Nenhum jogo encontrado na lista de desejos.</p>
-          )}
+   <div className="lista-vazia">
+      <p>Nenhum jogo encontrado na lista de desejos.</p>
+   </div>
+)}
 
           {!carregando &&
             jogos.map((jogo) => (
               <Jogo key={jogo.id} jogo={jogo} />
             ))}
         </section>
+
       </main>
 
-      <footer>
-        <div className="brand">
-          <img src="/imagens/logo.png" alt="Logo Game Nest" className="logo" />
-        </div>
-
-        <p>
-          © 2026 Arcade Corporation. Todos os direitos reservados.
-        </p>
-      </footer>
-    </>
+      <Rodape
+      logo={logo}
+      />
+    </div>
   );
 }
 
