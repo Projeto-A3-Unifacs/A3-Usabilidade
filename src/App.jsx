@@ -10,6 +10,8 @@ import Compraaprovada from './pages/Compraaprovada'
 import PainelJogo from './pages/PainelJogo';
 import Listadedesejos from './pages/Listadedesejos';
 import Finalizarpagamento from './pages/Finalizarpagamento';
+import DetalheJogo from './pages/DetalheJogo';
+
 function App() {
    return (
     <>
@@ -61,6 +63,11 @@ function App() {
           path="/pagamento"
           element={<Finalizarpagamento />}
         />
+
+        <Route
+           path="/detalhejogo"
+           element={<DetalheJogo />}
+           />
 
       </Routes>
 
