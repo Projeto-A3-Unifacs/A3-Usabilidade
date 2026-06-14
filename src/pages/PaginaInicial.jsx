@@ -8,6 +8,7 @@ import GameSection from '../components/GameSection';
 import GameCard from '../components/GameCard';
 import Rodape from '../components/Rodape';
 import Navbar from '../components/Navbar';
+import funil from '../assets/funil.png';
 import a from '../assets/games/a.png';
 import b from '../assets/games/b.png';
 import c from '../assets/games/c.png';
@@ -30,233 +31,227 @@ import promo from '../assets/promo.png';
 
 import semImagem from '../assets/games/padrao.png';
 
-function PaginaInicial(){
+function PaginaInicial() {
 
-     const imagens = [
-   a,
-   b,
-   c,
-   d,
-   e,
-   f,
-   h,
-   i,
-   j,
-   k,
-   l,
-   m,
-   n,
-];
-   function logout(){
+    const imagens = [a, b, c, d, e, f, h, i, j, k, l, m, n];
 
-      localStorage.removeItem('token');
+    const navigate = useNavigate();
 
-      setUsuarioLogado(false);
+    function logout() {
+        localStorage.removeItem('token');
+        setUsuarioLogado(false);
+        navigate('/');
+    }
 
-      navigate('/');
-
-   }
-
-   const [jogos, setJogos] = useState([]);
-   const [usuarioLogado, setUsuarioLogado] = useState(false);
-   const [busca, setBusca] = useState('');
-   const [resultadoBusca, setResultadoBusca] = useState([]);
- 
-   function buscarJogos(){
-      
-
-   const filtrados = jogos.filter((jogo) =>
-
-      jogo.nome
-         .toLowerCase()
-         .includes(busca.toLowerCase())
-
-   );
-
-   setResultadoBusca(filtrados);
-
-}
-
-   useEffect(() => {
-
-        const token = localStorage.getItem('token');
-
-   if(token){
-
-      setUsuarioLogado(true);
-
-   }
-
-      async function buscarJogos(){
-
-         try{
-
-            const resposta = await axios.get(
-               "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/public/jogos"
-            );
-
-            setJogos(resposta.data);
-
-         const jogosComImagem = resposta.data.map((jogo, index) => {
-
-   return{
-
-      ...jogo,
-
-      imagem:
-         imagens[index] || semImagem
-
-   }  
-
-        
-
-});
-
-         setJogos(jogosComImagem);
-
-
-         }catch(erro){
-
-            console.log(erro);
-
-         }
-
-     
-
-      }
-
-       
-
-      buscarJogos();
-
-   }, []);
-
-  
-
-   const destaques =
-   jogos.slice(0,10);
-
-const lancamentos =
-   jogos.slice(5,15);
-
-const promocoes =
-   jogos
-      .filter(jogo => jogo.preco < 40)
-      .slice(0,10);
-
-const maisVendidos =
-   jogos.slice(10,20);
-
-   
-
-    return(
-        <div className="inicial">
-        <div className="topo">
-         
-         <div className="busca-container">
-         
-         <input 
-    className="busca" 
-    placeholder="Buscar"    
-    type="text"
-    value={busca}
-   onChange={(e) => setBusca(e.target.value)}
-   />
-
-    <img src={logoBusca} 
-    className="icone-busca"
-
-     onClick={buscarJogos}
-    />
-
-    </div>
-
-   <Navbar
-   usuarioLogado={usuarioLogado}
-   logout={logout}
-/>
+    const [jogos, setJogos] = useState([]);
+    const [usuarioLogado, setUsuarioLogado] = useState(false);
+    const [busca, setBusca] = useState('');
     
-  </div>
+    const [mostrarFiltro, setMostrarFiltro] = useState(false);
+    const [ordenacao, setOrdenacao] = useState('Mais populares');
+    const [categorias, setCategorias] = useState([]);
+    const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
 
-  <div className="conteudo">
-
-
-{
-   busca.trim() !== '' ? (
-
-      <div className="resultado-busca">
-
-         <h2>Resultados da busca</h2>
-
-         <div className="games-row">
-
-            {
-               resultadoBusca.length > 0 ? (
-
-                 resultadoBusca.map((jogo) => (
-
-                     <GameCard
-                        key={jogo.id}
-                        jogo={jogo}
-                     />
-
-                  ))
-
-               ) : (
-
-                  <p>Nenhum jogo encontrado.</p>
-
-               )
+    async function carregarJogos() {
+        try {
+            const resposta = await axios.get("https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/public/jogos");
+            
+            if (resposta.data && Array.isArray(resposta.data)) {
+                const jogosComImagem = resposta.data.map((jogo, index) => {
+                    return {
+                        ...jogo,
+                        imagem: imagens[index] || semImagem
+                    }
+                });
+                setJogos(jogosComImagem);
+            } else {
+                setJogos([]);
             }
+        } catch (erro) {
+            console.log(erro);
+            setJogos([]);
+        }
+    }
 
-         </div>
+    function alternarGenero(nomeCategoria) {
+        if (categoriaSelecionada === nomeCategoria) {
+            setCategoriaSelecionada(null);
+        } else {
+            setCategoriaSelecionada(nomeCategoria);
+        }
+    }
 
-      </div>
+    function limparFiltros() {
+        setCategoriaSelecionada(null);
+        setBusca('');
+        setOrdenacao('Mais populares');
+    }
 
-   ) : (
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setUsuarioLogado(true);
+        }
 
-      <>
-      
-         <GameSection
-            titulo="Destaques"
-            icone={estrela}
-            jogos={destaques}
-         />
+        async function carregarDadosIniciais() {
+            try {
+                const tokenAtual = localStorage.getItem('token');
+                const config = tokenAtual ? { headers: { Authorization: `Bearer ${tokenAtual}` } } : {};
+                
+                const respostaCategorias = await axios.get("https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/categorias", config);
+                setCategorias(respostaCategorias.data || []);
+            } catch (erro) {
+                console.log(erro);
+            }
+            
+            carregarJogos();
+        }
 
-         <GameSection
-            titulo="Lançamentos"
-            icone={fogete}
-            jogos={lancamentos}
-         />
+        carregarDadosIniciais();
+    }, []);
 
-         <GameSection
-            titulo="Promoções"
-            icone={promo}
-            jogos={promocoes}
-         />
+    let jogosParaExibir = [...jogos];
 
-         <GameSection
-            titulo="Mais vendidos"
-            icone={incendio}
-            jogos={maisVendidos}
-         />
+    if (busca.trim() !== '') {
+        jogosParaExibir = jogosParaExibir.filter((jogo) => 
+            jogo.nome.toLowerCase().includes(busca.toLowerCase())
+        );
+    }
 
-      </>
+    if (categoriaSelecionada !== null) {
+        jogosParaExibir = jogosParaExibir.filter((jogo) => {
+            if (jogo.categoria) {
+                return jogo.categoria.trim() === categoriaSelecionada.trim();
+            }
+            return false;
+        });
+    }
 
-   )
-}
+    if (ordenacao === 'Menor preço') {
+        jogosParaExibir.sort((a, b) => parseFloat(a.preco) - parseFloat(b.preco));
+    } else if (ordenacao === 'Maior preço') {
+        jogosParaExibir.sort((a, b) => parseFloat(b.preco) - parseFloat(a.preco));
+    }
 
-      </div>
+    const isFiltrando = busca.trim() !== '' || categoriaSelecionada !== null || ordenacao !== 'Mais populares';
 
-      
-    <Rodape
-     logo={logo}
-     />
+    const destaques = jogos.slice(0, 10);
+    const lancamentos = jogos.slice(5, 15);
+    const promocoes = jogos.filter(jogo => jogo.preco < 40).slice(0, 10);
+    const maisVendidos = jogos.slice(10, 20);
 
+    return (
+        <div className="inicial">
+            <div className="topo">
+                <div className="busca-wrapper">
+                    <div className="busca-container">
+                        <input
+                            className="busca"
+                            placeholder="Buscar"
+                            type="text"
+                            value={busca}
+                            onChange={(e) => setBusca(e.target.value)}
+                            onClick={() => setMostrarFiltro(!mostrarFiltro)}
+                        />
+                        <img
+                            src={logoBusca}
+                            className="icone-busca"
+                            alt="Buscar"
+                        />
+                    </div>
+                </div>
 
-    
-</div>
-   
+                <Navbar
+                    usuarioLogado={usuarioLogado}
+                    logout={logout}
+                />
+            </div>
+
+            <div className="conteudo">
+                {isFiltrando || mostrarFiltro ? (
+                    <div className="layout-busca">
+                        {mostrarFiltro && (
+                            <div className="filtro-sidebar">
+                                <div className="filtro-header">
+                                    <img src={funil} alt="Filtro" className="icone-filtro-header" />
+                                    <span>Filtros</span>
+                                </div>
+                                <div className="filtro-ordenacao">
+                                    <label>Ordenar por:</label>
+                                    <select value={ordenacao} onChange={(e) => setOrdenacao(e.target.value)}>
+                                        <option value="Mais populares">Mais populares</option>
+                                        <option value="Menor preço">Menor preço</option>
+                                        <option value="Maior preço">Maior preço</option>
+                                    </select>
+                                </div>
+                                <div className="filtro-generos">
+                                    <label>Gêneros</label>
+                                    {categorias.map(cat => (
+                                        <div className="checkbox-item" key={cat.id}>
+                                            <input
+                                                type="checkbox"
+                                                id={`cat-${cat.id}`}
+                                                checked={categoriaSelecionada === cat.nome}
+                                                onChange={() => alternarGenero(cat.nome)}
+                                            />
+                                            <label htmlFor={`cat-${cat.id}`}>{cat.nome}</label>
+                                        </div>
+                                    ))}
+                                </div>
+                                <button className="btn-limpar" onClick={limparFiltros}>
+                                    🗑️ Limpar filtros
+                                </button>
+                            </div>
+                        )}
+                        <div className="resultado-busca">
+                            <h2>Resultados da busca</h2>
+                            <div className="games-row">
+                                {jogosParaExibir.length > 0 ? (
+                                    jogosParaExibir.map((jogo) => (
+                                        <GameCard
+                                            key={jogo.id}
+                                            jogo={jogo}
+                                        />
+                                    ))
+                                ) : (
+                                    <p>Nenhum jogo encontrado para esta categoria ou busca.</p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <>
+                        <GameSection
+                            titulo="Destaques"
+                            icone={estrela}
+                            jogos={destaques}
+                        />
+                        
+                        <GameSection
+                            titulo="Lançamentos"
+                            icone={fogete}
+                            jogos={lancamentos}
+                        />
+
+                        <GameSection
+                            titulo="Promoções"
+                            icone={promo}
+                            jogos={promocoes}
+                        />
+
+                        <GameSection
+                            titulo="Mais vendidos"
+                            icone={incendio}
+                            jogos={maisVendidos}
+                        />
+                    </>
+                )}
+            </div>
+
+            <Rodape
+                logo={logo}
+            />
+        </div>
     )
 }
 

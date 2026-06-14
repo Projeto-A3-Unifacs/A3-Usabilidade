@@ -24,6 +24,10 @@
 
 }
 
+.game-section{
+    margin-top:12px
+}
+
 
 .games-row::-webkit-scrollbar-thumb{
 
@@ -35,7 +39,7 @@
 .section-top{
     margin-left:32px;
     font-family: "Inter", sans-serif;
-    margin-top:12px;
+    margin-top:30px;
     display:flex;
     flex-direction:row;
     gap:12px;
