@@ -53,32 +53,58 @@ nav a.active { text-decoration: underline; }
 
 .meusjogos-paragrafo { margin-top: 0; margin-bottom: 20px; color: #737373; }
 
-.meusjogos-search-filters {
+.Ordena label{
+  
+ margin-right: 18px;
+  
+}
+  
+.meusjogos-search-filters{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  margin-bottom:30px;
+}
+
+.meusjogos-search-box{
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 25px;
   align-items: center;
+  width: 100%;
+  max-width: 550px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  justify-content:space-between;
 }
-.meusjogos-search-box {
-  position: relative;
+
+.meusjogos-search-box input{
   flex: 1;
-  min-width: 200px;
-}
-.meusjogos-search-box input {
-  width: 92%;
-  padding: 10px 35px 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  border: none;
+  outline: none;
+  height: 48px;
+  padding: 0 15px;
   font-size: 14px;
+  background: transparent;
 }
-.meusjogos-search-icon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
+
+.meusjogos-search-icon{
+  padding: 0 15px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.meusjogos-search-filters select{
+  height:48px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:0 15px;
+  background:#fff;
+  cursor:pointer;
+  min-width:140px;
 }
 select {
   padding: 8px 12px;
