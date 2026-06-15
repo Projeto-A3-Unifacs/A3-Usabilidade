@@ -26,8 +26,21 @@ nav a.active { text-decoration: underline; }
 .cart-section { flex: 2; }
 .sidebar { flex: 1; display: flex; flex-direction: column; gap: 20px; }
 
-.page-title { font-size: 22px; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.page-title img { width: 24px; height: 24px; }
+.page-title { 
+  font-size: 22px; 
+  display: flex; 
+  
+  gap: 10px; 
+  margin-bottom: 8px;
+
+}
+
+
+
+.page-title img { 
+  width: 24px; 
+  height: 24px; 
+}
 
 .container p { margin-top: 0; margin-bottom: 20px; color: #737373; }
 
@@ -65,7 +78,18 @@ nav a.active { text-decoration: underline; }
 .suggestion-text { flex: 1; }
 .suggestion-text p { font-size: 15px; margin: 0; font-weight: 500; }
 .suggestion-text small { font-size: 13px; color: #737373; }
-.btn-explore { background: #5B1686; color: #fff; border: none; border-radius: 8px; padding: 8px 14px; cursor: pointer; font-size: 14px; }
+
+.btn-explore { 
+  
+  background: #5B1686; 
+  color: #fff; 
+  border: none; 
+  border-radius: 8px; 
+  padding: 8px 14px; 
+  cursor: pointer; 
+  font-size: 14px;
+   width:170px;
+ }
 
 .note { font-size: 13px; color: #737373; display: flex; align-items: center; gap: 5px; margin-top: 10px; }
 .note img { height: 20px; width: 20px; }
@@ -123,12 +147,142 @@ footer {
 footer img { height: 50px; }
 footer span { flex: 1; }
 
+
+
+.container{
+  max-width: 1400px;
+  gap: 40px;
+}
+
+.cart-item{
+  border: 1px solid #f0edf3;
+  box-shadow: none;
+  padding: 18px;
+}
+
+.game-img{
+  width: 120px;
+  height: 70px;
+}
+
+.item-actions{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:10px;
+}
+
+.item-options{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.game-price{
+  font-size:14px;
+  font-weight:700;
+  margin-left:0;
+}
+
+.game-placeholder{
+  width:70px;
+  height:70px;
+  border-radius:12px;
+  background:#F3E8F8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+}
+
+.suggestion-card{
+  box-shadow:none;
+  border:1px solid #f0edf3;
+ 
+}
+
+.summary-card{
+  margin-bottom:20px;
+}
+
+.summary-line.total{
+  font-size:18px;
+}
+
+.benefit{
+  align-items:center;
+}
+
+.benefit > div:first-child{
+  width:40px;
+  height:40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#F3E8F8;
+  border-radius:10px;
+  font-size:20px;
+}
+
+.benefit-text strong{
+  display:block;
+  margin-bottom:4px;
+}
+
+.benefit-text span{
+  color:#737373;
+  font-size:14px;
+}
+
 @media(max-width: 960px) {
-  .container { flex-direction: column; }
-  .sidebar { order: 2; width: 100%; }
-  .cart-section { order: 1; }
-  .cart-item { flex-direction: column; align-items: flex-start; }
-  .btn-game { margin-left: 0; margin-top: 10px; }
-  .game-price { margin-left: 0; margin-top: 5px; }
-  .benefit img { width: 28px; height: 28px; }
+
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    order: 2;
+    width: 100%;
+  }
+
+  .cart-section {
+    order: 1;
+  }
+
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .item-actions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 15px;
+  }
+
+  .item-options {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .game-price {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .btn-game {
+    margin: 0;
+    width: 180px;
+  }
+
+  header{
+        height:auto;
+        flex-direction:column;
+        align-items:center;
+        padding:12px;
+    }
 }
