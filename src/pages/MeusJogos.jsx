@@ -10,7 +10,10 @@ import medalha from '../assets/medalha.png';
 import relogio from '../assets/relogio.png';
 import lupa from '../assets/lupa.png';
 import windowsIcon from '../assets/windows.png';
-
+import {
+  getToken,
+  isAuthenticated
+} from '../utils/auth';
 function MeusJogos() {
   const [jogos, setJogos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,12 +37,13 @@ function MeusJogos() {
     async function fetchJogos() {
       const token = localStorage.getItem('token');
 
-      if (!token) {
-        navigate('/login');
-        return;
-      }
-
-      setUsuarioLogado(true);
+      const autenticado = isAuthenticated();
+      
+                   setUsuarioLogado(autenticado);
+      
+                    if (!autenticado) {
+                      navigate('/login');
+                      }
 
       try {
         const response = await axios.get(

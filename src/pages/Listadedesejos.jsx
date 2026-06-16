@@ -17,6 +17,10 @@ import l from '../assets/games/l.png';
 import m from '../assets/games/m.png';
 import n from '../assets/games/n.png';
 import logo from '../assets/logodois.png'
+import {
+  getToken,
+  isAuthenticated
+} from '../utils/auth';
 
 const imagensJogos = [
   "a.png", "b.png", "c.png", "d.png", "e.png", "f.png",
@@ -52,15 +56,11 @@ function Listadedesejos() {
     
       const token = localStorage.getItem("token");
     try {
-     
-
-
-     
-      if (!token) {
-        window.location.href = "/login";
-        return;
-      }
-
+    const autenticado = isAuthenticated();
+         setUsuarioLogado(autenticado);
+          if (!autenticado) {
+         navigate('/login');
+        }
       const resposta = await axios.get(
         "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/lista-desejo/",
         {

@@ -7,7 +7,10 @@ import "../styles/stylecarrinho.css";
 import logo from '../assets/logodois.png';
 import padrao from '../assets/games/padrao.png';
 import controle from '../assets/controle.png';
-
+import {
+  getToken,
+  isAuthenticated
+} from '../utils/auth';
 function Carrinho() {
   const [carrinho, setCarrinho] = useState([]);
   const [total, setTotal] = useState(0);
@@ -51,12 +54,14 @@ function Carrinho() {
 
   const fetchCarrinho = async () => {
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        navigate('/login'); 
-        return;
-      }
-    setUsuarioLogado(true);
+      const autenticado = isAuthenticated();
+      
+                   setUsuarioLogado(autenticado);
+      
+                    if (!autenticado) {
+                      navigate('/login');
+                      }
+     const token = getToken();
       const response = await axios.get('https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/carrinho/ativo', {
         headers: { Authorization: `Bearer ${token}` },
       });

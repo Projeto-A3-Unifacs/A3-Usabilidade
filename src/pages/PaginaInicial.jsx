@@ -20,7 +20,7 @@ import i from '../assets/games/i.png';
 import j from '../assets/games/j.png';
 import k from '../assets/games/k.png';
 import l from '../assets/games/l.png';
-import m from '../assets/games/m.png';
+import m from '../assets/games/m.png';  
 import n from '../assets/games/n.png';
 import logoBusca from '../assets/lupa.png';
 import { FaSearch } from "react-icons/fa";
@@ -28,8 +28,17 @@ import estrela from '../assets/estrela.png';
 import fogete from '../assets/foguete.png';
 import incendio from '../assets/incendio.png';
 import promo from '../assets/promo.png';
+import {
+  getToken,
+  isAuthenticated
+} from '../utils/auth';
 
 import semImagem from '../assets/games/padrao.png';
+
+
+
+
+
 
 function PaginaInicial() {
 
@@ -51,6 +60,10 @@ function PaginaInicial() {
     const [ordenacao, setOrdenacao] = useState('Mais populares');
     const [categorias, setCategorias] = useState([]);
     const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
+
+
+
+
 
     async function carregarJogos() {
         try {
@@ -88,14 +101,16 @@ function PaginaInicial() {
     }
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            setUsuarioLogado(true);
-        }
+            const autenticado = isAuthenticated();
 
+             setUsuarioLogado(autenticado);
+
+              if (!autenticado) {
+                navigate('/login');
+                }
         async function carregarDadosIniciais() {
             try {
-                const tokenAtual = localStorage.getItem('token');
+                const tokenAtual = getToken();
                 const config = tokenAtual ? { headers: { Authorization: `Bearer ${tokenAtual}` } } : {};
                 
                 const respostaCategorias = await axios.get("https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/categorias", config);

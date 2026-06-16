@@ -7,11 +7,15 @@ import logodois from "../assets/games/padrao.png"
 import logo from "../assets/logodois.png";
 import toast from 'react-hot-toast';
 import styles from "../styles/stylepaineljogo.module.css";
+import {
+  getToken,
+  isAuthenticated
+} from '../utils/auth';
 
 function PainelJogo() {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const [usuarioLogado, setUsuarioLogado] = useState(!!token);
+  
+  const [usuarioLogado, setUsuarioLogado] = useState(false);
 
   const [jogos, setJogos] = useState([]);
   const [novoJogo, setNovoJogo] = useState({
@@ -29,6 +33,15 @@ function PainelJogo() {
 
   const loadJogos = async () => {
   try {
+
+    const autenticado = isAuthenticated();
+      
+                   setUsuarioLogado(autenticado);
+      
+                    if (!autenticado) {
+                      navigate('/login');
+                      }
+     const token = getToken();
     const [jogosRes, categoriasRes, empresasRes] =
       await Promise.all([
         axios.get(
@@ -90,10 +103,13 @@ const empresasMap = empresas.reduce((acc, empresa) => {
     navigate("/");
   }
 
+
   // Criar jogo
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
+      
+  const token = getToken();
       await axios.post("https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/jogos/", novoJogo,
         {
             headers: {
@@ -115,6 +131,8 @@ const empresasMap = empresas.reduce((acc, empresa) => {
     e.preventDefault();
     if (!editarJogo) return;
     try {
+      
+  const token = getToken();
       await axios.put(`https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/jogos/${editarJogo.id}`, editarJogo,
         {
             headers: {
@@ -132,6 +150,8 @@ const empresasMap = empresas.reduce((acc, empresa) => {
 
   // Deletar jogo
   const handleDelete = async (id) => {
+    
+  const token = getToken();
     if (!window.confirm("Deseja realmente excluir este jogo?")) return;
     try {
       await axios.delete(`https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/jogos/${id}`,

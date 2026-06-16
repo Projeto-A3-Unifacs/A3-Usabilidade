@@ -7,10 +7,32 @@ import logo from '../assets/logo.png';
 import voltar from '../assets/voltar.png';
 import jogoum from '../assets/games/jogoum.png';
 import perfil from '../assets/perfil.png';
+import {
+  getToken,
+  isAuthenticated
+} from '../utils/auth';
 
 function DetalheJogo() {
   const [comment, setComment] = useState('');
+  const [usuarioLogado, setUsuarioLogado]= useState(false)
   const maxLength = 1000;
+
+
+
+
+       
+
+  
+
+    function logout(){
+
+      localStorage.removeItem('token');
+
+      setUsuarioLogado(false);
+
+      navigate('/');
+
+   }
 
   const clearForm = () => setComment('');
 
@@ -18,7 +40,10 @@ function DetalheJogo() {
     <div>
       <header className={styles.header}>
         <img src={logo} alt="Logo Game Nest" className={styles.logo} />
-        <Navbar />
+        <Navbar 
+        usuarioLogado={usuarioLogado}
+        logout={logout}
+        />
       </header>
 
       <main className={styles.container}>
