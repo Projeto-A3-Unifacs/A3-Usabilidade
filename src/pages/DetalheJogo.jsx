@@ -23,7 +23,7 @@ function DetalheJogo() {
 
       <main className={styles.container}>
         <section className={styles.gameDetail}>
-          <a href="#" className={styles.backLink}>
+          <a href="/meusjogos" className={styles.backLink}>
             <img src={voltar} alt="Voltar" /> Voltar para o jogo
           </a>
 

@@ -242,7 +242,9 @@ function MeusJogos() {
                       Jogar
                     </button>
 
-                    <button className="meusjogos-btn-info">
+                    <button className="meusjogos-btn-info"
+                     onClick={() => navigate('/detalhejogo')}
+                    >
                       Sobre o jogo
                     </button>
 
