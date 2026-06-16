@@ -228,3 +228,112 @@
     flex-direction: column;
   }
 }
+
+
+@media (max-width: 960px) {
+
+  .header {
+    padding: 10px 15px;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .logo {
+    height: 50px;
+  }
+
+  .container {
+    margin: 20px auto;
+    padding: 0 12px;
+  }
+
+  .adminPanel h1 {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .adminPanel p {
+    text-align: center;
+  }
+
+  .cardForm {
+    padding: 15px;
+  }
+
+  .formRow {
+    flex-direction: column;
+  }
+
+  .formRow input,
+  .formRow select {
+    width: 100%;
+    min-width: unset;
+    box-sizing: border-box;
+  }
+
+  .cardForm textarea {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .formButtons {
+    flex-direction: column;
+  }
+
+  .formButtons button {
+    width: 100%;
+  }
+
+  .tableWrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+
+  .gamesTable th,
+  .gamesTable td {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .btnEdit,
+  .btnDelete {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .btnDelete {
+    margin-top: 8px;
+  }
+
+  .footer {
+    padding: 15px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer img {
+    height: 45px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .adminPanel h1 {
+    font-size: 20px;
+  }
+
+  .adminPanel h2 {
+    font-size: 18px;
+  }
+
+  .gamesTable th,
+  .gamesTable td {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .cardForm {
+    padding: 12px;
+  }
+}

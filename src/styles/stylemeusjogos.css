@@ -1,8 +1,9 @@
-body {
+.meusjogos-container {
   font-family: 'Yinmar', sans-serif;
   margin: 0;
   background-color: #FAF8FC;
   color: #000;
+  
 }
 
 .meusjogos-header {
@@ -20,6 +21,8 @@ nav a.active { text-decoration: underline; }
   max-width: 1200px;
   margin: 40px auto;
   padding: 0 20px;
+    min-height: calc(100vh - 300px);
+   
 }
 .meusjogos-games-section { display: flex; flex-direction: column; gap: 20px; }
 
@@ -32,6 +35,8 @@ nav a.active { text-decoration: underline; }
   justify-content: space-between;
   margin-bottom: 20px;
 }
+
+
 
 .meusjogos-summary-cards {
   display: flex;
@@ -106,6 +111,42 @@ nav a.active { text-decoration: underline; }
   cursor:pointer;
   min-width:140px;
 }
+
+
+  .meusjogos-pagination{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  margin-top:30px;
+}
+
+.meusjogos-page-circle{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:none;
+  background:#fff;
+  cursor:pointer;
+  font-weight:600;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+  transition:.2s;
+}
+
+.meusjogos-page-circle:hover{
+  transform:scale(1.05);
+}
+
+.meusjogos-page-circle:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.meusjogos-active{
+  background:#5B1686;
+  color:#fff;
+}
+
 select {
   padding: 8px 12px;
   border-radius: 8px;
@@ -166,8 +207,21 @@ select {
 }
 
 @media(max-width: 960px) {
-  .meusjogos-game-card { flex-direction: column; align-items: flex-start; }
-  .meusjogos-summary-cards { flex-direction: column; gap: 15px; }
-  .meusjogos-search-filters { flex-direction: column; gap: 10px; }
-  .meusjogos-header-top { flex-direction: column; gap: 10px; }
+  .meusjogos-game-card { 
+    flex-direction: column; 
+    align-items: flex-start;
+    width:90%; 
+  }
+  .meusjogos-summary-cards { 
+    flex-direction: column; 
+    gap: 15px; 
+  }
+  .meusjogos-search-filters { 
+    flex-direction: column; 
+    gap: 10px; 
+  }
+  .meusjogos-header-top { 
+    flex-direction: column; 
+    gap: 10px;
+   }
 }

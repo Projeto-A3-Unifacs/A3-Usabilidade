@@ -3,11 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Rodape from "../components/Rodape";
-
-// Importando imagens
+import logodois from "../assets/games/padrao.png"
 import logo from "../assets/logodois.png";
-
-// Importando CSS Modules
+import toast from 'react-hot-toast';
 import styles from "../styles/stylepaineljogo.module.css";
 
 function PainelJogo() {
@@ -24,22 +22,67 @@ function PainelJogo() {
     fkEmpresa: "",
     descricao: ""
   });
-
+  const [categorias, setCategorias] = useState([]);
+  const [empresas, setEmpresas] = useState([]);
   const [editarJogo, setEditarJogo] = useState(null);
 
-  // Carrega todos os jogos
+
   const loadJogos = async () => {
-    try {
-      const res = await axios.get("https://api-vendas-jogos-digitais-9fvp.onrender.com/api/jogos/");
-      setJogos(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  try {
+    const [jogosRes, categoriasRes, empresasRes] =
+      await Promise.all([
+        axios.get(
+          "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/jogos/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ),
+
+        axios.get(
+          "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/categorias",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ),
+
+        axios.get(
+          "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/empresas",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ),
+      ]);
+
+    setJogos(jogosRes.data);
+    setCategorias(categoriasRes.data);
+    setEmpresas(empresasRes.data);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   useEffect(() => {
     loadJogos();
   }, []);
+
+
+
+const categoriasMap = categorias.reduce((acc, categoria) => {
+  acc[categoria.id] = categoria.nome.trim();
+  return acc;
+}, {});
+
+const empresasMap = empresas.reduce((acc, empresa) => {
+  acc[empresa.id] = empresa.nome.trim();
+  return acc;
+}, {});
+
 
   function logout() {
     localStorage.removeItem("token");
@@ -51,11 +94,19 @@ function PainelJogo() {
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://api-vendas-jogos-digitais-9fvp.onrender.com/api/jogos/", novoJogo);
+      await axios.post("https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/jogos/", novoJogo,
+        {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+      );
+      
       setNovoJogo({ nome: "", preco: "", ano: "", fkCategoria: "", fkEmpresa: "", descricao: "" });
       loadJogos();
     } catch (err) {
-      alert(err.response?.data?.error || "Erro ao criar jogo");
+      toast.error(
+      err.response?.data?.error ||"Erro ao criar jogo");
     }
   };
 
@@ -64,11 +115,18 @@ function PainelJogo() {
     e.preventDefault();
     if (!editarJogo) return;
     try {
-      await axios.put(`https://api-vendas-jogos-digitais-9fvp.onrender.com/api/jogos/${editarJogo.id}`, editarJogo);
+      await axios.put(`https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/jogos/${editarJogo.id}`, editarJogo,
+        {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+      );
       setEditarJogo(null);
       loadJogos();
     } catch (err) {
-      alert(err.response?.data?.error || "Erro ao atualizar jogo");
+      toast.error(
+      err.response?.data?.error ||"Erro ao atualizar jogo");
     }
   };
 
@@ -76,10 +134,19 @@ function PainelJogo() {
   const handleDelete = async (id) => {
     if (!window.confirm("Deseja realmente excluir este jogo?")) return;
     try {
-      await axios.delete(`https://api-vendas-jogos-digitais-9fvp.onrender.com/api/jogos/${id}`);
+      await axios.delete(`https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/jogos/${id}`,
+        {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+      );
+      console.log(token)
       loadJogos();
     } catch (err) {
-      alert(err.response?.data?.error || "Erro ao deletar jogo");
+      toast.error(
+      err.response?.data?.error || "Erro ao deletar jogo"
+        );
     }
   };
 
@@ -98,34 +165,57 @@ function PainelJogo() {
           {/* Jogos cadastrados */}
           <div className={styles.cardForm}>
             <h2>Jogos cadastrados</h2>
+            <div className={styles.tableWrapper}>
             <table className={styles.gamesTable}>
               <thead>
                 <tr>
                   <th>Nome</th>
-                  <th>Categoria</th>
-                  <th>Preço</th>
-                  <th>Ano</th>
-                  <th>Ações</th>
+                     <th>Categoria</th>
+                        <th>Empresa</th>
+                        <th>Preço</th>
+                       <th>Ano</th>
+                       <th>Ações</th>
                 </tr>
               </thead>
               <tbody>
                 {jogos.map((jogo) => (
                   <tr key={jogo.id}>
-                    <td>
-                      <img src={jogo.img || logodois} alt={jogo.nome} className={styles.gameThumb} />
-                    </td>
-                    <td>{jogo.nome}</td>
-                    <td>{jogo.fkCategoria}</td>
-                    <td>R$ {jogo.preco}</td>
-                    <td>{jogo.ano}</td>
-                    <td>
-                      <button className={styles.btnEdit} onClick={() => setEditarJogo(jogo)}>Editar</button>
-                      <button className={styles.btnDelete} onClick={() => handleDelete(jogo.id)}>Excluir</button>
-                    </td>
-                  </tr>
+  <td>{jogo.nome}</td>
+
+  <td>
+    {categoriasMap[jogo.fkCategoria] ||
+      "Sem categoria"}
+  </td>
+
+  <td>
+    {empresasMap[jogo.fkEmpresa] ||
+      "Sem empresa"}
+  </td>
+
+  <td>R$ {jogo.preco}</td>
+
+  <td>{jogo.ano}</td>
+
+  <td>
+    <button
+      className={styles.btnEdit}
+      onClick={() => setEditarJogo(jogo)}
+    >
+      Editar
+    </button>
+
+    <button
+      className={styles.btnDelete}
+      onClick={() => handleDelete(jogo.id)}
+    >
+      Excluir
+    </button>
+  </td>
+</tr>
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
 
           {/* Criar novo jogo */}
@@ -134,12 +224,52 @@ function PainelJogo() {
             <form onSubmit={handleCreate}>
               <div className={styles.formRow}>
                 <input type="text" placeholder="Nome do jogo" value={novoJogo.nome} onChange={(e) => setNovoJogo({...novoJogo, nome: e.target.value})} required />
-                <select value={novoJogo.fkEmpresa} onChange={(e) => setNovoJogo({...novoJogo, fkEmpresa: e.target.value})} required>
-                  <option value="">Vincular a empresa</option>
-                </select>
-                <select value={novoJogo.fkCategoria} onChange={(e) => setNovoJogo({...novoJogo, fkCategoria: e.target.value})} required>
-                  <option value="">Categoria</option>
-                </select>
+                <select
+  value={novoJogo.fkEmpresa}
+  onChange={(e) =>
+    setNovoJogo({
+      ...novoJogo,
+      fkEmpresa: e.target.value
+    })
+  }
+  required
+>
+  <option value="">
+    Vincular a empresa
+  </option>
+
+  {empresas.map((empresa) => (
+    <option
+      key={empresa.id}
+      value={empresa.id}
+    >
+      {empresa.nome}
+    </option>
+  ))}
+</select>
+          <select
+  value={novoJogo.fkCategoria}
+  onChange={(e) =>
+    setNovoJogo({
+      ...novoJogo,
+      fkCategoria: e.target.value
+    })
+  }
+  required
+>
+  <option value="">
+    Categoria
+  </option>
+
+  {categorias.map((categoria) => (
+    <option
+      key={categoria.id}
+      value={categoria.id}
+    >
+      {categoria.nome}
+    </option>
+  ))}
+</select>
                 <input type="number" placeholder="Preço (R$)" value={novoJogo.preco} onChange={(e) => setNovoJogo({...novoJogo, preco: e.target.value})} required />
                 <input type="number" placeholder="Ano lançamento" value={novoJogo.ano} onChange={(e) => setNovoJogo({...novoJogo, ano: e.target.value})} required />
               </div>
@@ -158,12 +288,52 @@ function PainelJogo() {
               <form onSubmit={handleUpdate}>
                 <div className={styles.formRow}>
                   <input type="text" placeholder="Nome do jogo" value={editarJogo.nome} onChange={(e) => setEditarJogo({...editarJogo, nome: e.target.value})} required />
-                  <select value={editarJogo.fkEmpresa} onChange={(e) => setEditarJogo({...editarJogo, fkEmpresa: e.target.value})} required>
-                    <option value="">Vincular a empresa</option>
-                  </select>
-                  <select value={editarJogo.fkCategoria} onChange={(e) => setEditarJogo({...editarJogo, fkCategoria: e.target.value})} required>
-                    <option value="">Categoria</option>
-                  </select>
+                 <select
+  value={editarJogo.fkEmpresa}
+  onChange={(e) =>
+    setEditarJogo({
+      ...editarJogo,
+      fkEmpresa: e.target.value
+    })
+  }
+  required
+>
+  <option value="">
+    Vincular a empresa
+  </option>
+
+  {empresas.map((empresa) => (
+    <option
+      key={empresa.id}
+      value={empresa.id}
+    >
+      {empresa.nome}
+    </option>
+  ))}
+</select>
+                  <select
+  value={editarJogo.fkCategoria}
+  onChange={(e) =>
+    setEditarJogo({
+      ...editarJogo,
+      fkCategoria: e.target.value
+    })
+  }
+  required
+>
+  <option value="">
+    Categoria
+  </option>
+
+  {categorias.map((categoria) => (
+    <option
+      key={categoria.id}
+      value={categoria.id}
+    >
+      {categoria.nome}
+    </option>
+  ))}
+</select>
                   <input type="number" placeholder="Preço (R$)" value={editarJogo.preco} onChange={(e) => setEditarJogo({...editarJogo, preco: e.target.value})} required />
                   <input type="number" placeholder="Ano lançamento" value={editarJogo.ano} onChange={(e) => setEditarJogo({...editarJogo, ano: e.target.value})} required />
                 </div>

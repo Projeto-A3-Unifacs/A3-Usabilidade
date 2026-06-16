@@ -19,6 +19,8 @@ function MeusJogos() {
 
   const [busca, setBusca] = useState('');
   const [ordenacao, setOrdenacao] = useState('alfabetica');
+  const [paginaAtual, setPaginaAtual] = useState(1);
+  const ITENS_POR_PAGINA = 30;
 
   const navigate = useNavigate();
 
@@ -74,30 +76,46 @@ function MeusJogos() {
     fetchJogos();
   }, [navigate]);
 
-  const totalJogos = jogos.length;
+ const totalJogos = jogos.length;
 
-  const jogosFiltrados = [...jogos]
-    .filter((game) => {
-      const nome = game.jogo?.nome || '';
-      return nome
-        .toLowerCase()
-        .includes(busca.toLowerCase());
-    })
-    .sort((a, b) => {
-      const nomeA = a.jogo?.nome || '';
-      const nomeB = b.jogo?.nome || '';
+const jogosFiltrados = [...jogos]
+  .filter((game) => {
+    const nome = game.jogo?.nome || '';
 
-      if (ordenacao === 'alfabetica') {
-        return nomeA.localeCompare(nomeB);
-      }
+    return nome
+      .toLowerCase()
+      .includes(busca.toLowerCase());
+  })
+  .sort((a, b) => {
+    const nomeA = a.jogo?.nome || '';
+    const nomeB = b.jogo?.nome || '';
 
-      if (ordenacao === 'alfabetica_desc') {
-        return nomeB.localeCompare(nomeA);
-      }
+    if (ordenacao === 'alfabetica') {
+      return nomeA.localeCompare(nomeB);
+    }
 
-      return 0;
-    });
+    if (ordenacao === 'alfabetica_desc') {
+      return nomeB.localeCompare(nomeA);
+    }
 
+    return 0;
+  });
+
+const totalPaginas = Math.ceil(
+  jogosFiltrados.length / ITENS_POR_PAGINA
+);
+
+const indiceInicial =
+  (paginaAtual - 1) * ITENS_POR_PAGINA;
+
+const indiceFinal =
+  indiceInicial + ITENS_POR_PAGINA;
+
+const jogosPaginados =
+  jogosFiltrados.slice(
+    indiceInicial,
+    indiceFinal
+  );
   return (
     <div className="meusjogos-container">
       <header className="meusjogos-header">
@@ -172,35 +190,36 @@ function MeusJogos() {
 
           <div className="meusjogos-search-filters">
             <div className="meusjogos-search-box">
-              <input
-                type="text"
-                placeholder="Buscar jogos..."
-                value={busca}
-                onChange={(e) =>
-                  setBusca(e.target.value)
-                }
-              />
 
+              <input
+              type="text"
+             placeholder="Buscar jogos..."
+              value={busca}
+             onChange={(e) => {
+              setBusca(e.target.value);
+              setPaginaAtual(1);
+                  }}
+                 />
               <span className="meusjogos-search-icon">🔍</span>
             </div>
          
             <div className="Ordena"> 
               <label>Ordenar Por:</label>  
             <select
-              value={ordenacao}
-              onChange={(e) =>
-                setOrdenacao(e.target.value)
-              }
-              >
+  value={ordenacao}
+  onChange={(e) => {
+    setOrdenacao(e.target.value);
+    setPaginaAtual(1);
+  }}
+>
+  <option value="alfabetica">
+    A → Z
+  </option>
 
-              <option value="alfabetica">
-                A → Z
-              </option>
-
-              <option value="alfabetica_desc">
-                Z → A
-              </option>
-            </select>
+  <option value="alfabetica_desc">
+    Z → A
+  </option>
+</select>
             </div>
 
           </div>
@@ -213,7 +232,7 @@ function MeusJogos() {
                 Nenhum jogo encontrado.
               </p>
             ) : (
-              jogosFiltrados.map((game, index) => (
+             jogosPaginados.map((game, index) => (
                 <div
                   className="meusjogos-game-card"
                   key={index}
@@ -255,19 +274,52 @@ function MeusJogos() {
             )}
           </div>
 
-          <div className="meusjogos-pagination">
-            <button className="meusjogos-page-btn">
-              &lt;
-            </button>
+          {totalPaginas > 0 && (
+  <div className="meusjogos-pagination">
 
-            <button className="meusjogos-page-btn meusjogos-active">
-              1
-            </button>
+  {paginaAtual > 1 && (
+  <button
+    className="meusjogos-page-circle"
+    onClick={() =>
+      setPaginaAtual(paginaAtual - 1)
+    }
+  >
+    ‹
+  </button>
+)}
 
-            <button className="meusjogos-page-btn">
-              &gt;
-            </button>
-          </div>
+    {Array.from(
+      { length: totalPaginas },
+      (_, index) => (
+        <button
+          key={index}
+          className={`meusjogos-page-circle ${
+            paginaAtual === index + 1
+              ? 'meusjogos-active'
+              : ''
+          }`}
+          onClick={() =>
+            setPaginaAtual(index + 1)
+          }
+        >
+          {index + 1}
+        </button>
+      )
+    )}
+
+   {paginaAtual < totalPaginas && (
+  <button
+    className="meusjogos-page-circle"
+    onClick={() =>
+      setPaginaAtual(paginaAtual + 1)
+    }
+  >
+    ›
+  </button>
+)}
+
+  </div>
+)}
         </section>
       </main>
 
