@@ -176,26 +176,28 @@ function Jogo({ jogo }) {
 
       <div className="info">
         <h2>{jogo.nome}</h2>
+<div className="detalhes">
+  <div className="detalhe">
+    <strong>Ano</strong>
+    <span>{jogo.ano}</span>
+  </div>
 
-        <div className="detalhes">
-          <div className="detalhe">
-            <strong>Ano</strong>
-            <span>{jogo.ano}</span>
-          </div>
+  <div className="detalhe">
+    <strong>Categoria</strong>
+    <span>{jogo.categoria}</span>
+  </div>
 
-          <div className="detalhe">
-            <strong>Categoria</strong>
-            <span>{jogo.categoria}</span>
-          </div>
+  <div className="detalhe">
+    <strong>Empresa</strong>
+    <span>{jogo.empresa}</span>
+  </div>
+</div>
 
-          <div className="detalhe">
-            <strong>Empresa</strong>
-            <span>{jogo.empresa}</span>
-          </div>
-        </div>
-
-        <p className="descricao">{jogo.descricao}</p>
+<p className="descricao">
+  {jogo.descricao}
+</p>
       </div>
+
 
       <div className="preco">
         R$ {Number(jogo.preco).toFixed(2).replace(".", ",")}

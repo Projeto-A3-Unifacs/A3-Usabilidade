@@ -19,6 +19,32 @@
   
 }
 
+.info h2 {
+  font-size: 28px;
+  margin-bottom: 12px;
+  color: #222;
+}
+
+.detalhes {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 12px;
+}
+
+.detalhe {
+  display: flex;
+  flex-direction: column;
+}
+
+.detalhe strong {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.detalhe span {
+  font-size: 14px;
+}
 
 
 .lista-desejos-page .lista-vazia {
@@ -56,28 +82,113 @@
 }
 
 .lista-desejos-page .lista {
- 
-  border-radius: 6px;
-  padding: 15px 20px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
 }
 
 .lista-desejos-page .jogo {
   display: grid;
-  grid-template-columns: 275px 1fr 120px 180px;
+  grid-template-columns: 220px 1fr 120px 120px;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid #e5e5e5;
+  align-items: flex-start;
+}
+
+.jogo:last-child {
+  border-bottom: none;
+}
+
+
+.lista-desejos-page .capa {
+  width: 220px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+ .lista-desejos-page .botoes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .lista-desejos-page .btn {
-  width: 58px;
-  height: 73px;
+  width: 100%;
+  height: 50px;
+  border-radius: 6px;
+  cursor: pointer;
+  background: transparent;
 }
 
 .lista-desejos-page .comprar {
   border: 1px solid #9b76bd;
-  color: #8b4db3;
+  color: #9b76bd;
 }
 
 .lista-desejos-page .remover {
-  border: 1px solid #ff0000;
-  color: #ff0000;
+  border: 1px solid #ff4d4f;
+  color: #ff4d4f;
+}
+
+.lista-desejos-page  .preco {
+  font-size: 28px;
+  color: #9b76bd;
+  font-weight: 500;
+  text-align: right;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .lista-desejos-page .topo {
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+  }
+
+  .lista-desejos-page .acoes-topo {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .lista-desejos-page .lista {
+    padding: 10px;
+  }
+
+  .jogo {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .capa {
+    width: 100%;
+    height: 180px;
+  }
+
+  .info h2 {
+    font-size: 22px;
+  }
+
+  .detalhes {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .lista-desejos-page .preco {
+    text-align: left;
+    font-size: 24px;
+  }
+
+ .lista-desejos-page  .botoes {
+    flex-direction: row;
+  }
+
+ .lista-desejos-page  .btn {
+    flex: 1;
+  }
 }
 
