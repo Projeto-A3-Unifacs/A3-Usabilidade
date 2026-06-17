@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; 
 import "../styles/Listadedesejos.css";
 import Navbar from '../components/Navbar';
 import Rodape from '../components/Rodape';
+import logo from '../assets/logodois.png';
+import { FaCalendarAlt } from "react-icons/fa";
+import { FaTag } from "react-icons/fa";
+import { FaBuilding } from "react-icons/fa";
+import { FaShoppingCart } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
 import a from '../assets/games/a.png';
 import b from '../assets/games/b.png';
 import c from '../assets/games/c.png';
@@ -16,34 +24,25 @@ import k from '../assets/games/k.png';
 import l from '../assets/games/l.png';
 import m from '../assets/games/m.png';
 import n from '../assets/games/n.png';
-import logo from '../assets/logodois.png'
-import {
-  getToken,
-  isAuthenticated
-} from '../utils/auth';
 
-const imagensJogos = [
-  "a.png", "b.png", "c.png", "d.png", "e.png", "f.png",
-  "h.png", "i.png", "j.png", "k.png", "l.png", "m.png", "n.png"
-];
+import { getToken, isAuthenticated } from '../utils/auth';
+
+const imagensJogos = [a, b, c, d, e, f, h, i, j, k, l, m, n];
 
 function pegarImagemDoJogo(id) {
   const indice = id % imagensJogos.length;
-  return new URL(`../assets/games/${imagensJogos[indice]}`, import.meta.url).href;
+  return imagensJogos[indice];
 }
 
 function Listadedesejos() {
   const [jogos, setJogos] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [usuarioLogado, setUsuarioLogado] = useState(false);
-  
- 
+  const navigate = useNavigate();
 
   useEffect(() => {
-   
     carregarListaDesejos();
   }, []);
-
 
   function logout() {
     localStorage.removeItem("token");
@@ -51,16 +50,111 @@ function Listadedesejos() {
     navigate("/");
   }
 
+async function removerDaLista(jogoId) {
+  try {
+    const token = getToken();
+
+    await axios.delete(
+      "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/lista-desejo/",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          jogoId,
+        },
+      }
+    );
+
+    setJogos((prev) => prev.filter((jogo) => jogo.id !== jogoId));
+
+    toast.success("Jogo removido da lista de desejos!");
+  } catch (erro) {
+    console.error(erro);
+    toast.error(
+      erro.response?.data?.error ||
+      "Erro ao remover jogo da lista."
+    );
+  }
+}
+
+async function comprarJogo(jogoId) {
+  try {
+    const token = getToken();
+
+    await axios.post(
+      "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/carrinho/add",
+      {
+        jogoId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    toast.success("Jogo adicionado ao carrinho!");
+
+    navigate("/pagamento");
+
+  } catch (erro) {
+    console.error(erro);
+
+    toast.error(
+      erro.response?.data?.message ||
+      "Erro ao adicionar ao carrinho."
+    );
+  }
+}
+
+  
+   async function limparLista() {
+  if (!window.confirm("Deseja limpar toda a lista de desejos?")) {
+    return;
+  }
+
+  try {
+    const token = getToken();
+
+    await Promise.allSettled(
+      jogos.map((jogo) =>
+        axios.delete(
+          "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/lista-desejo/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            data: {
+              jogoId: jogo.id,
+            },
+          }
+        )
+      )
+    );
+
+    setJogos([]);
+
+    toast.success("Lista limpa com sucesso!");
+  } catch (erro) {
+    console.error(erro);
+    toast.error("Erro ao limpar lista.");
+  }
+}
 
   async function carregarListaDesejos() {
+    const token = localStorage.getItem("token");
     
-      const token = localStorage.getItem("token");
     try {
-    const autenticado = isAuthenticated();
-         setUsuarioLogado(autenticado);
-          if (!autenticado) {
-         navigate('/login');
-        }
+      const autenticado = isAuthenticated();
+      setUsuarioLogado(autenticado);
+      
+      
+      if (!autenticado) {
+        navigate('/login');
+        return; 
+      }
+
       const resposta = await axios.get(
         "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/lista-desejo/",
         {
@@ -74,20 +168,16 @@ function Listadedesejos() {
         resposta.data.map(async (jogo) => {
           const empresaResposta = await axios.get(
             `https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/empresas/${jogo.fk_empresa}`,
-             {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }
+            {
+              headers: { Authorization: `Bearer ${token}` }
+            }
           );
 
           const categoriaResposta = await axios.get(
             `https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/categorias/${jogo.fk_categoria}`,
-             {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }
+            {
+              headers: { Authorization: `Bearer ${token}` }
+            }
           );
 
           return {
@@ -102,32 +192,19 @@ function Listadedesejos() {
       setJogos(jogosComDados);
     } catch (erro) {
       console.log("Erro ao carregar lista de desejos:", erro);
-        console.log("Status:", erro.response?.status);
-  console.log("Data:", erro.response?.data);
-  console.log("Token:", localStorage.getItem("token"));
-   console.log("HEADERS ENVIADOS:", {
-  Authorization: `Bearer ${token}`
-});
+      console.log("Status:", erro.response?.status);
+      console.log("Data:", erro.response?.data);
     } finally {
       setCarregando(false);
     }
   }
+   console.log(jogos);
 
   return (
     <div className="lista-desejos-page">
       <header>
-        
-          <img src={logo} 
-          alt="Logo Game Nest" 
-          className="logo" />
-            
-
-         <Navbar
-         usuarioLogado={usuarioLogado}
-         logout={logout}
-         />
-
-        
+        <img src={logo} alt="Logo Game Nest" className="logo" />
+        <Navbar usuarioLogado={usuarioLogado} logout={logout} />
       </header>
 
       <main>
@@ -139,74 +216,124 @@ function Listadedesejos() {
 
           <div className="acoes-topo">
             <span>{jogos.length} jogos</span>
-            <button className="limpar">Limpar lista</button>
+            <button className="limpar"
+             onClick={limparLista}
+            >🗑️ Limpar lista</button>
           </div>
         </section>
      
         <section className="lista">
-             <div className="lista-vazia">
-          {carregando && <p>Carregando lista de desejos...</p>}
-           </div>
+          {carregando && (
+            <div className="lista-vazia">
+              <p>Carregando lista de desejos...</p>
+            </div>
+          )}
             
           {!carregando && jogos.length === 0 && (
-   <div className="lista-vazia">
-      <p>Nenhum jogo encontrado na lista de desejos.</p>
-   </div>
-)}
+            <div className="lista-vazia">
+              <p>Nenhum jogo encontrado na lista de desejos.</p>
+            </div>
+          )}
 
           {!carregando &&
             jogos.map((jogo) => (
-              <Jogo key={jogo.id} jogo={jogo} />
+             <Jogo
+  key={jogo.id}
+  jogo={jogo}
+  onRemover={removerDaLista}
+  onComprar={comprarJogo}
+/>
             ))}
         </section>
-
       </main>
 
-      <Rodape
-      logo={logo}
-      />
+      <Rodape logo={logo} />
     </div>
   );
+
+  
 }
 
-function Jogo({ jogo }) {
+function Jogo({ jogo,
+  onRemover,
+  onComprar}) {
   return (
     <article className="jogo">
-      <img src={jogo.imagem} alt={jogo.nome} className="capa" />
+
+      <img
+        src={jogo.imagem}
+        alt={jogo.nome}
+        className="capa"
+      />
 
       <div className="info">
         <h2>{jogo.nome}</h2>
-<div className="detalhes">
+
+       <div className="detalhes">
+
   <div className="detalhe">
-    <strong>Ano</strong>
-    <span>{jogo.ano}</span>
+    <FaCalendarAlt className="iconeDetalhe" />
+
+    <div>
+      <strong>Ano</strong>
+      <span>{jogo.ano}</span>
+    </div>
   </div>
 
   <div className="detalhe">
-    <strong>Categoria</strong>
-    <span>{jogo.categoria}</span>
+    <FaTag className="iconeDetalhe" />
+
+    <div>
+      <strong>Categoria</strong>
+      <span>{jogo.categoria}</span>
+    </div>
   </div>
 
   <div className="detalhe">
-    <strong>Empresa</strong>
-    <span>{jogo.empresa}</span>
+    <FaBuilding className="iconeDetalhe" />
+
+    <div>
+      <strong>Empresa</strong>
+      <span>{jogo.empresa}</span>
+    </div>
   </div>
+
 </div>
 
-<p className="descricao">
-  {jogo.descricao}
-</p>
+        <p className="descricao">
+          {jogo.descricao.split('"')}
+        </p>
       </div>
 
+      <div className="ladoDireito">
+        <div className="preco">
+          R$ {Number(jogo.preco)
+            .toFixed(2)
+            .replace(".", ",")}
+        </div>
 
-      <div className="preco">
-        R$ {Number(jogo.preco).toFixed(2).replace(".", ",")}
+        <div className="botoes">
+
+  <button className="btn comprar"
+      className="btn comprar"
+  onClick={() => onComprar(jogo.id)}
+  
+  >
+    <FaShoppingCart className="iconeBotao" />
+    <span>Comprar</span>
+  </button>
+
+  <button className="btn remover"
+      className="btn remover"
+      onClick={() => onRemover(jogo.id)}
+  >
+    <FaTrashAlt className="iconeBotao" />
+    <span>Remover</span>
+  </button>
+
+</div>
       </div>
 
-      <div className="botoes">
-        <button className="btn comprar">Comprar</button>
-        <button className="btn remover">Remover</button>
-      </div>
     </article>
   );
 }

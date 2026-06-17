@@ -3,8 +3,9 @@
   color: #111;
   font-size: 12px;
   min-height: 100vh;
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
+  background-color: #f7f7f7; /* Leve constraste com o background da lista */
 }
 
 .lista-desejos-page *,
@@ -14,9 +15,7 @@
 }
 
 .lista-desejos-page main {
-   flex: 1;
-   
-  
+  flex: 1;
 }
 
 .info h2 {
@@ -24,7 +23,6 @@
   margin-bottom: 12px;
   color: #222;
 }
-
 .detalhes {
   display: flex;
   gap: 40px;
@@ -33,7 +31,19 @@
 
 .detalhe {
   display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detalhe div {
+  display: flex;
   flex-direction: column;
+}
+
+.iconeDetalhe {
+  font-size: 28px;
+  color: #444;
+  flex-shrink: 0;
 }
 
 .detalhe strong {
@@ -45,61 +55,91 @@
 .detalhe span {
   font-size: 14px;
 }
-
-
 .lista-desejos-page .lista-vazia {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   min-height: 300px;
-   font-size:20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  font-size: 20px;
+  color: #555;
 }
-
 
 .lista-desejos-page .brand {
   display: flex;
   align-items: center;
 }
 
-
-.limpar{
-  margin-top:12px;
+.limpar {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid red;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  color:red
 }
 
-#paragrafo{
-  margin-top:12px;
-  font-size:16px;
+.limpar:hover {
+  background: purple;
+  color: white ;
 }
 
-
+#paragrafo {
+  margin-top: 12px;
+  font-size: 16px;
+}
 
 .lista-desejos-page .topo {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   padding: 20px 32px;
- 
+}
+
+.lista-desejos-page .acoes-topo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .lista-desejos-page .lista {
   background: #fff;
   border-radius: 12px;
   padding: 20px;
+  margin: 0 32px 32px 32px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05); /* Suave destaque visual */
 }
 
 .lista-desejos-page .jogo {
   display: grid;
-  grid-template-columns: 220px 1fr 120px 120px;
+  grid-template-columns: 220px 1fr 140px;
   gap: 20px;
   padding: 20px 0;
   border-bottom: 1px solid #e5e5e5;
-  align-items: flex-start;
+  align-items: center;
 }
+
+
+
+
+.ladoDireito {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 15px;
+}
+
+
+
+
+
+
 
 .jogo:last-child {
   border-bottom: none;
 }
-
 
 .lista-desejos-page .capa {
   width: 220px;
@@ -108,18 +148,18 @@
   border-radius: 6px;
 }
 
- .lista-desejos-page .botoes {
+.lista-desejos-page .botoes {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
-
-.lista-desejos-page .btn {
+.lista-desejos-page .btn {  
   width: 100%;
   height: 50px;
   border-radius: 6px;
   cursor: pointer;
   background: transparent;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out; /* Melhoria de UX */
 }
 
 .lista-desejos-page .comprar {
@@ -127,18 +167,32 @@
   color: #9b76bd;
 }
 
+.lista-desejos-page .comprar:hover {
+  background: #9b76bd;
+  color: #fff;
+}
+
 .lista-desejos-page .remover {
   border: 1px solid #ff4d4f;
   color: #ff4d4f;
 }
 
-.lista-desejos-page  .preco {
-  font-size: 28px;
+.lista-desejos-page .remover:hover {
+  background: #ff4d4f;
+  color: #fff;
+}
+
+.lista-desejos-page .preco {
+  font-size: 20px;
   color: #9b76bd;
   font-weight: 500;
-  text-align: right;
   white-space: nowrap;
 }
+
+
+
+
+
 
 @media (max-width: 768px) {
   .lista-desejos-page .topo {
@@ -150,19 +204,30 @@
   .lista-desejos-page .acoes-topo {
     width: 100%;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
   }
 
-  .lista-desejos-page .lista {
-    padding: 10px;
+
+  .limpar{
+    width:150px;
   }
 
-  .jogo {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  span{
+    font-size:18px;
   }
+
+  .lista-desejos-page .lista {
+    padding: 10px;
+    margin: 0 16px 16px 16px;
+  }
+
+  .lista-desejos-page .jogo {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
 
   .capa {
     width: 100%;
@@ -177,18 +242,23 @@
     flex-direction: column;
     gap: 10px;
   }
-
-  .lista-desejos-page .preco {
-    text-align: left;
-    font-size: 24px;
-  }
-
- .lista-desejos-page  .botoes {
-    flex-direction: row;
-  }
-
- .lista-desejos-page  .btn {
-    flex: 1;
-  }
+.ladoDireito {
+  align-items: stretch;
 }
 
+.preco {
+  text-align: center;
+}
+
+.botoes {
+  flex-direction: row;
+}
+
+  .lista-desejos-page .btn {
+    flex: 1;
+  }
+
+   .btn svg {
+  margin-right: 8px;
+}
+}

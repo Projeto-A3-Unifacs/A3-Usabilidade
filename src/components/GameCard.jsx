@@ -14,7 +14,9 @@ useNavigate();
 
     <div className="imagem-container">
 
-        <img src={jogo.imagem} />
+        <img src={jogo.imagem}
+          onClick={verJogo}
+        />
 
         <span className="preco">
             R$ {jogo.preco}
@@ -30,16 +32,23 @@ useNavigate();
 
     <p className="game-title">{jogo.nome}</p>
 
+    
+
+
 </div>
 
    )
 
+  function verJogo(){
+   navigate("/detalhejogo")
+
+  }
+
+
 
 
    async function adicionarAoCarrinho(){
-    console.log('---------------------------------')
-     console.log(jogo.id);
-     console.log('---------------------------------')
+   
     try{
 
       const token =
