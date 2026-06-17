@@ -65,9 +65,9 @@ function App() {
         />
 
         <Route
-           path="/detalhejogo"
-           element={<DetalheJogo />}
-           />
+  path="/detalhejogo/:id"
+  element={<DetalheJogo />}
+/>
 
       </Routes>
 

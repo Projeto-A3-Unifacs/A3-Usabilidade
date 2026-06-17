@@ -1,7 +1,23 @@
 import { jwtDecode } from 'jwt-decode';
 
-export const isAuthenticated = () => {
-  const token = localStorage.getItem('token');
+export function getToken() {
+  const tokenSalvo = localStorage.getItem('token');
+
+  if (!tokenSalvo) {
+    return null;
+  }
+
+  /*
+    Remove aspas caso o token tenha sido salvo
+    usando JSON.stringify().
+  */
+  return tokenSalvo
+    .replace(/^"|"$/g, '')
+    .trim();
+}
+
+export function isAuthenticated() {
+  const token = getToken();
 
   if (!token) {
     return false;
@@ -10,17 +26,27 @@ export const isAuthenticated = () => {
   try {
     const decoded = jwtDecode(token);
 
-    return decoded.exp > Date.now() / 1000;
-  } catch {
+    if (!decoded.exp) {
+      return false;
+    }
+
+    const tokenValido =
+      decoded.exp > Date.now() / 1000;
+
+    if (!tokenValido) {
+      localStorage.removeItem('token');
+    }
+
+    return tokenValido;
+  } catch (error) {
+    console.error('Token inválido:', error);
+
+    localStorage.removeItem('token');
+
     return false;
   }
-};
-
-
-export function getToken() {
-  return localStorage.getItem('token');
 }
 
-export const logoutUser = () => {
+export function logoutUser() {
   localStorage.removeItem('token');
-};
+}

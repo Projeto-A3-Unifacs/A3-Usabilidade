@@ -1,183 +1,1621 @@
-import { useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
+
+import axios from 'axios';
+
+import {
+  Link,
+  useNavigate,
+  useParams
+} from 'react-router-dom';
+
 import Navbar from '../components/Navbar';
 import Rodape from '../components/Rodape';
+
 import styles from '../styles/styledetalhe.module.css';
 
 import logo from '../assets/logo.png';
 import voltar from '../assets/voltar.png';
 import jogoum from '../assets/games/jogoum.png';
 import perfil from '../assets/perfil.png';
+
 import {
   getToken,
   isAuthenticated
 } from '../utils/auth';
 
+const API_BASE_URL =
+  'https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1';
+
+const API_ORIGIN =
+  'https://api-vendas-jogos-digitais-9fvp.onrender.com';
+
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 30000
+});
+
+api.interceptors.request.use(
+  (config) => {
+    const token = getToken();
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+/*
+  Procura o ID do usuário em diferentes
+  formatos possíveis retornados pela API.
+*/
+function obterIdUsuarioDaAvaliacao(avaliacao) {
+  return (
+    avaliacao?.usuarioId ??
+    avaliacao?.usuario_id ??
+    avaliacao?.fkUsuario ??
+    avaliacao?.fk_usuario ??
+    avaliacao?.idUsuario ??
+    avaliacao?.id_usuario ??
+    avaliacao?.usuario?.id ??
+    null
+  );
+}
+
+/*
+  Algumas APIs retornam o usuário diretamente,
+  enquanto outras retornam dentro de "usuario",
+  "data" ou "dados".
+*/
+function extrairUsuarioDaResposta(resposta) {
+  const dados = resposta?.data ?? resposta;
+
+  return (
+    dados?.usuario ??
+    dados?.dados?.usuario ??
+    dados?.dados ??
+    dados
+  );
+}
+
+function extrairNomeUsuario(usuario) {
+  return (
+    usuario?.nome ??
+    usuario?.name ??
+    usuario?.nomeCompleto ??
+    usuario?.nome_completo ??
+    usuario?.username ??
+    usuario?.apelido ??
+    null
+  );
+}
+
+function extrairFotoUsuario(usuario) {
+  return (
+    usuario?.foto ??
+    usuario?.fotoPerfil ??
+    usuario?.foto_perfil ??
+    usuario?.imagem ??
+    usuario?.avatar ??
+    null
+  );
+}
+
 function DetalheJogo() {
-  const [comment, setComment] = useState('');
-  const [usuarioLogado, setUsuarioLogado]= useState(false)
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  /*
+    Guarda os usuários já consultados para evitar
+    várias chamadas repetidas ao mesmo endpoint.
+  */
+  const usuariosCacheRef = useRef(new Map());
+
+  const [jogo, setJogo] = useState(null);
+
+  const [avaliacoes, setAvaliacoes] =
+    useState([]);
+
+  const [
+    minhaAvaliacao,
+    setMinhaAvaliacao
+  ] = useState(null);
+
+  const [comment, setComment] =
+    useState('');
+
+  const [nota, setNota] =
+    useState(0);
+
+  const [media, setMedia] =
+    useState(0);
+
+  const [
+    totalAvaliacoes,
+    setTotalAvaliacoes
+  ] = useState(0);
+
+  const [
+    usuarioLogado,
+    setUsuarioLogado
+  ] = useState(isAuthenticated());
+
+  const [carregando, setCarregando] =
+    useState(true);
+
+  const [enviando, setEnviando] =
+    useState(false);
+
+  const [erro, setErro] =
+    useState('');
+
+  const [mensagem, setMensagem] =
+    useState('');
+
+  const [
+    paginaAtual,
+    setPaginaAtual
+  ] = useState(1);
+
   const maxLength = 1000;
+  const avaliacoesPorPagina = 5;
 
+  const dataAtual = useMemo(() => {
+    const data = new Date();
 
+    const ano = data.getFullYear();
 
+    const mes = String(
+      data.getMonth() + 1
+    ).padStart(2, '0');
 
-       
+    const dia = String(
+      data.getDate()
+    ).padStart(2, '0');
 
-  
+    return `${ano}-${mes}-${dia}`;
+  }, []);
 
-    function logout(){
+  function logout() {
+    localStorage.removeItem('token');
 
-      localStorage.removeItem('token');
+    setUsuarioLogado(false);
 
-      setUsuarioLogado(false);
+    navigate('/');
+  }
 
-      navigate('/');
+  const tratarErro = useCallback(
+    (error) => {
+      console.error(
+        'Erro na página de detalhes:',
+        error.response?.data ||
+          error.message
+      );
 
-   }
+      const status =
+        error.response?.status;
 
-  const clearForm = () => setComment('');
+      const mensagemErro =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        'Erro ao realizar a operação.';
+
+      if (
+        status === 401 ||
+        status === 403
+      ) {
+        localStorage.removeItem('token');
+
+        setUsuarioLogado(false);
+
+        navigate('/login', {
+          replace: true
+        });
+
+        return;
+      }
+
+      if (
+        error.code === 'ECONNABORTED'
+      ) {
+        setErro(
+          'A API demorou para responder. Tente novamente.'
+        );
+
+        return;
+      }
+
+      setErro(mensagemErro);
+    },
+    [navigate]
+  );
+
+  /*
+    Consulta os dados dos usuários das avaliações.
+
+    Para uma avaliação com usuarioId = 4,
+    será feita a requisição:
+
+    GET /usuarios/4
+  */
+  const carregarUsuariosDasAvaliacoes =
+    useCallback(async (listaAvaliacoes) => {
+      if (
+        !Array.isArray(listaAvaliacoes) ||
+        listaAvaliacoes.length === 0
+      ) {
+        return [];
+      }
+
+      const idsUsuarios = [
+        ...new Set(
+          listaAvaliacoes
+            .map(
+              obterIdUsuarioDaAvaliacao
+            )
+            .filter(
+              (usuarioId) =>
+                usuarioId !== null &&
+                usuarioId !== undefined
+            )
+            .map(String)
+        )
+      ];
+
+      const idsNaoConsultados =
+        idsUsuarios.filter(
+          (usuarioId) =>
+            !usuariosCacheRef.current.has(
+              usuarioId
+            )
+        );
+
+      await Promise.all(
+        idsNaoConsultados.map(
+          async (usuarioId) => {
+            try {
+              const resposta =
+                await api.get(
+                  `/usuarios/${encodeURIComponent(
+                    usuarioId
+                  )}`
+                );
+
+              const usuario =
+                extrairUsuarioDaResposta(
+                  resposta
+                );
+
+              const nome =
+                extrairNomeUsuario(
+                  usuario
+                );
+
+              const foto =
+                extrairFotoUsuario(
+                  usuario
+                );
+
+              usuariosCacheRef.current.set(
+                usuarioId,
+                {
+                  id: usuarioId,
+                  nome:
+                    nome ||
+                    `Usuário ${usuarioId}`,
+                  foto: foto || null
+                }
+              );
+            } catch (error) {
+              console.error(
+                `Erro ao buscar o usuário ${usuarioId}:`,
+                error.response?.data ||
+                  error.message
+              );
+
+              /*
+                Um erro ao buscar o nome não impede
+                as avaliações de aparecerem.
+              */
+              usuariosCacheRef.current.set(
+                usuarioId,
+                {
+                  id: usuarioId,
+                  nome:
+                    `Usuário ${usuarioId}`,
+                  foto: null
+                }
+              );
+            }
+          }
+        )
+      );
+
+      return listaAvaliacoes.map(
+        (avaliacao) => {
+          const usuarioId =
+            obterIdUsuarioDaAvaliacao(
+              avaliacao
+            );
+
+          const usuarioEncontrado =
+            usuarioId !== null &&
+            usuarioId !== undefined
+              ? usuariosCacheRef.current.get(
+                  String(usuarioId)
+                )
+              : null;
+
+          return {
+            ...avaliacao,
+
+            nomeUsuario:
+              avaliacao.nomeUsuario ||
+              avaliacao.nome_usuario ||
+              avaliacao.usuarioNome ||
+              avaliacao.usuario?.nome ||
+              usuarioEncontrado?.nome ||
+              (
+                usuarioId
+                  ? `Usuário ${usuarioId}`
+                  : 'Usuário'
+              ),
+
+            fotoUsuario:
+              avaliacao.fotoUsuario ||
+              avaliacao.foto_usuario ||
+              avaliacao.usuario?.foto ||
+              usuarioEncontrado?.foto ||
+              null
+          };
+        }
+      );
+    }, []);
+
+  const carregarAvaliacoes =
+    useCallback(async () => {
+      if (!id) {
+        return;
+      }
+
+      const [
+        mediaResponse,
+        minhaAvaliacaoResponse
+      ] = await Promise.all([
+        api.get(
+          `/avaliacoes/media/${encodeURIComponent(
+            id
+          )}`
+        ),
+
+        api.get('/avaliacoes', {
+          params: {
+            jogoId: id
+          }
+        })
+      ]);
+
+      const resumo =
+        mediaResponse.data &&
+        typeof mediaResponse.data ===
+          'object'
+          ? mediaResponse.data
+          : {};
+
+      const listaRecebida =
+        Array.isArray(
+          resumo.avaliacoes
+        )
+          ? resumo.avaliacoes
+          : [];
+
+      /*
+        Acrescenta nomeUsuario e fotoUsuario
+        em cada avaliação.
+      */
+      const listaComUsuarios =
+        await carregarUsuariosDasAvaliacoes(
+          listaRecebida
+        );
+
+      let avaliacaoUsuario =
+        minhaAvaliacaoResponse.data ||
+        null;
+
+      if (
+        Array.isArray(
+          avaliacaoUsuario
+        )
+      ) {
+        avaliacaoUsuario =
+          avaliacaoUsuario[0] ||
+          null;
+      }
+
+      if (
+        !avaliacaoUsuario ||
+        typeof avaliacaoUsuario !==
+          'object'
+      ) {
+        avaliacaoUsuario = null;
+      }
+
+      setAvaliacoes(
+        listaComUsuarios
+      );
+
+      setMedia(
+        Number(
+          resumo.media || 0
+        )
+      );
+
+      setTotalAvaliacoes(
+        Number(
+          resumo.totalAvaliacoes ||
+            listaComUsuarios.length ||
+            0
+        )
+      );
+
+      setMinhaAvaliacao(
+        avaliacaoUsuario
+      );
+
+      setPaginaAtual(1);
+
+      if (avaliacaoUsuario) {
+        setNota(
+          Number(
+            avaliacaoUsuario.nota ||
+              0
+          )
+        );
+
+        setComment(
+          avaliacaoUsuario.comentario ||
+            ''
+        );
+      } else {
+        setNota(0);
+        setComment('');
+      }
+    }, [
+      id,
+      carregarUsuariosDasAvaliacoes
+    ]);
+
+  const carregarPagina =
+    useCallback(async () => {
+      if (!id) {
+        setErro(
+          'ID do jogo não informado.'
+        );
+
+        setCarregando(false);
+
+        return;
+      }
+
+      setCarregando(true);
+      setErro('');
+
+      try {
+        const jogoResponse =
+          await api.get(
+            `/jogos/${encodeURIComponent(
+              id
+            )}`
+          );
+
+        if (!jogoResponse.data) {
+          setJogo(null);
+
+          setErro(
+            'Jogo não encontrado.'
+          );
+
+          return;
+        }
+
+        setJogo(
+          jogoResponse.data
+        );
+
+        await carregarAvaliacoes();
+      } catch (error) {
+        tratarErro(error);
+      } finally {
+        setCarregando(false);
+      }
+    }, [
+      id,
+      carregarAvaliacoes,
+      tratarErro
+    ]);
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      navigate('/login', {
+        replace: true
+      });
+
+      return;
+    }
+
+    setUsuarioLogado(true);
+
+    carregarPagina();
+  }, [
+    carregarPagina,
+    navigate
+  ]);
+
+  function clearForm() {
+    setComment('');
+    setNota(0);
+    setErro('');
+    setMensagem('');
+  }
+
+  async function enviarAvaliacao() {
+    setErro('');
+    setMensagem('');
+
+    if (
+      nota < 1 ||
+      nota > 5
+    ) {
+      setErro(
+        'Selecione uma nota entre 1 e 5 estrelas.'
+      );
+
+      return;
+    }
+
+    if (!id) {
+      setErro(
+        'ID do jogo não encontrado.'
+      );
+
+      return;
+    }
+
+    setEnviando(true);
+
+    const dadosAvaliacao = {
+      jogoId: Number(id),
+      nota: Number(nota),
+      comentario: comment.trim()
+    };
+
+    try {
+      let response;
+
+      if (minhaAvaliacao) {
+        response = await api.put(
+          '/avaliacoes',
+          dadosAvaliacao
+        );
+      } else {
+        response = await api.post(
+          '/avaliacoes',
+          dadosAvaliacao
+        );
+      }
+
+      setMensagem(
+        response.data?.message ||
+          (
+            minhaAvaliacao
+              ? 'Avaliação atualizada com sucesso!'
+              : 'Avaliação criada com sucesso!'
+          )
+      );
+
+      await carregarAvaliacoes();
+    } catch (error) {
+      tratarErro(error);
+    } finally {
+      setEnviando(false);
+    }
+  }
+
+  const distribuicaoAvaliacoes =
+    useMemo(() => {
+      const quantidades = {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0
+      };
+
+      avaliacoes.forEach(
+        (avaliacao) => {
+          const valorNota = Number(
+            avaliacao.nota
+          );
+
+          if (
+            valorNota >= 1 &&
+            valorNota <= 5
+          ) {
+            quantidades[
+              valorNota
+            ] += 1;
+          }
+        }
+      );
+
+      return [5, 4, 3, 2, 1].map(
+        (valorNota) => {
+          const quantidade =
+            quantidades[
+              valorNota
+            ];
+
+          const percentual =
+            totalAvaliacoes > 0
+              ? Math.round(
+                  (
+                    quantidade /
+                    totalAvaliacoes
+                  ) * 100
+                )
+              : 0;
+
+          return {
+            nota: valorNota,
+            quantidade,
+            percentual
+          };
+        }
+      );
+    }, [
+      avaliacoes,
+      totalAvaliacoes
+    ]);
+
+  const totalPaginas =
+    Math.max(
+      1,
+      Math.ceil(
+        avaliacoes.length /
+          avaliacoesPorPagina
+      )
+    );
+
+  const indiceInicial =
+    (paginaAtual - 1) *
+    avaliacoesPorPagina;
+
+  const avaliacoesPaginadas =
+    avaliacoes.slice(
+      indiceInicial,
+      indiceInicial +
+        avaliacoesPorPagina
+    );
+
+  function mudarPagina(pagina) {
+    if (
+      pagina >= 1 &&
+      pagina <= totalPaginas
+    ) {
+      setPaginaAtual(pagina);
+    }
+  }
+
+  function renderizarEstrelas(
+    valor
+  ) {
+    const quantidade = Math.max(
+      0,
+      Math.min(
+        5,
+        Math.round(
+          Number(valor) || 0
+        )
+      )
+    );
+
+    return (
+      '★'.repeat(quantidade) +
+      '☆'.repeat(
+        5 - quantidade
+      )
+    );
+  }
+
+  function obterNomeUsuario(
+    avaliacao
+  ) {
+    const usuarioId =
+      obterIdUsuarioDaAvaliacao(
+        avaliacao
+      );
+
+    return (
+      avaliacao.nomeUsuario ||
+      avaliacao.nome_usuario ||
+      avaliacao.usuarioNome ||
+      avaliacao.usuario?.nome ||
+      (
+        usuarioId
+          ? `Usuário ${usuarioId}`
+          : 'Usuário'
+      )
+    );
+  }
+
+  function formatarData(
+    avaliacao
+  ) {
+    const valorData =
+      avaliacao.dataAvaliacao ||
+      avaliacao.data_avaliacao ||
+      avaliacao.dataCriacao ||
+      avaliacao.data_criacao ||
+      avaliacao.createdAt ||
+      avaliacao.created_at ||
+      avaliacao.data;
+
+    if (!valorData) {
+      return 'Data não informada';
+    }
+
+    const valorNormalizado =
+      typeof valorData === 'string'
+        ? valorData.replace(
+            ' ',
+            'T'
+          )
+        : valorData;
+
+    const data = new Date(
+      valorNormalizado
+    );
+
+    if (
+      Number.isNaN(
+        data.getTime()
+      )
+    ) {
+      return String(valorData);
+    }
+
+    return data.toLocaleString(
+      'pt-BR'
+    );
+  }
+
+  function obterCategoria() {
+    if (
+      typeof jogo?.categoria ===
+      'string'
+    ) {
+      return jogo.categoria;
+    }
+
+    return (
+      jogo?.nomeCategoria ||
+      jogo?.categoriaNome ||
+      jogo?.nome_categoria ||
+      jogo?.categoria?.nome ||
+      (
+        jogo?.fkCategoria
+          ? `Categoria ${jogo.fkCategoria}`
+          : 'Categoria não informada'
+      )
+    );
+  }
+
+  function obterImagemJogo() {
+    const imagem =
+      jogo?.imagem ||
+      jogo?.imagemUrl ||
+      jogo?.imagem_url ||
+      jogo?.capa ||
+      jogo?.urlImagem;
+
+    if (!imagem) {
+      return jogoum;
+    }
+
+    if (
+      imagem.startsWith(
+        'http://'
+      ) ||
+      imagem.startsWith(
+        'https://'
+      ) ||
+      imagem.startsWith(
+        'data:'
+      )
+    ) {
+      return imagem;
+    }
+
+    return `${API_ORIGIN}${
+      imagem.startsWith('/')
+        ? imagem
+        : `/${imagem}`
+    }`;
+  }
+
+  function obterFotoDaAvaliacao(
+    avaliacao
+  ) {
+    const foto =
+      avaliacao.fotoUsuario ||
+      avaliacao.foto_usuario ||
+      avaliacao.usuario?.foto;
+
+    if (!foto) {
+      return perfil;
+    }
+
+    if (
+      foto.startsWith('http://') ||
+      foto.startsWith('https://') ||
+      foto.startsWith('data:')
+    ) {
+      return foto;
+    }
+
+    return `${API_ORIGIN}${
+      foto.startsWith('/')
+        ? foto
+        : `/${foto}`
+    }`;
+  }
+
+  if (carregando) {
+    return (
+      <div>
+        <header
+          className={styles.header}
+        >
+          <img
+            src={logo}
+            alt="Logo Game Nest"
+            className={styles.logo}
+          />
+
+          <Navbar
+            usuarioLogado={
+              usuarioLogado
+            }
+            logout={logout}
+          />
+        </header>
+
+        <main
+          className={
+            styles.container
+          }
+        >
+          <p>
+            Carregando informações do jogo...
+          </p>
+        </main>
+
+        <Rodape logo={logo} />
+      </div>
+    );
+  }
+
+  if (!jogo) {
+    return (
+      <div>
+        <header
+          className={styles.header}
+        >
+          <img
+            src={logo}
+            alt="Logo Game Nest"
+            className={styles.logo}
+          />
+
+          <Navbar
+            usuarioLogado={
+              usuarioLogado
+            }
+            logout={logout}
+          />
+        </header>
+
+        <main
+          className={
+            styles.container
+          }
+        >
+          <p
+            className={
+              styles.errorMessage
+            }
+          >
+            {erro ||
+              'Jogo não encontrado.'}
+          </p>
+
+          <button
+            type="button"
+            className={
+              styles.btnSubmit
+            }
+            onClick={() =>
+              navigate(
+                '/meusjogos'
+              )
+            }
+          >
+            Voltar
+          </button>
+        </main>
+
+        <Rodape logo={logo} />
+      </div>
+    );
+  }
 
   return (
     <div>
-      <header className={styles.header}>
-        <img src={logo} alt="Logo Game Nest" className={styles.logo} />
-        <Navbar 
-        usuarioLogado={usuarioLogado}
-        logout={logout}
+      <header
+        className={styles.header}
+      >
+        <img
+          src={logo}
+          alt="Logo Game Nest"
+          className={styles.logo}
+        />
+
+        <Navbar
+          usuarioLogado={
+            usuarioLogado
+          }
+          logout={logout}
         />
       </header>
 
-      <main className={styles.container}>
-        <section className={styles.gameDetail}>
-          <a href="/meusjogos" className={styles.backLink}>
-            <img src={voltar} alt="Voltar" /> Voltar para o jogo
-          </a>
+      <main
+        className={
+          styles.container
+        }
+      >
+        <section
+          className={
+            styles.gameDetail
+          }
+        >
+          <Link
+            to="/meusjogos"
+            className={
+              styles.backLink
+            }
+          >
+            <img
+              src={voltar}
+              alt=""
+            />
 
-          <div className={styles.gameTop}>
-            <img src={jogoum} alt="Hollow Knight" className={styles.gameImg} />
-            <div className={styles.gameInfo}>
-              <h1>Hollow Knight</h1>
-              <p className={styles.genre}>Ação e aventura</p>
-              <p className={styles.description}>
-                Hollow Knight é um aclamado jogo indie de ação-aventura estilo Metroidvania desenvolvido pela Team Cherry.
-                Jogadores exploram o vasto e interconectado reino subterrâneo de Hallownest, habitado por insetos, enfrentando desafios intensos,
-                desvendando mistérios e adquirindo novas habilidades em um mundo artístico desenhado à mão.
+            Voltar para os jogos
+          </Link>
+
+          <div
+            className={
+              styles.gameTop
+            }
+          >
+            <img
+              src={obterImagemJogo()}
+              alt={jogo.nome}
+              className={
+                styles.gameImg
+              }
+              onError={(event) => {
+                event.currentTarget.src =
+                  jogoum;
+              }}
+            />
+
+            <div
+              className={
+                styles.gameInfo
+              }
+            >
+              <h1>
+                {jogo.nome}
+              </h1>
+
+              <p
+                className={
+                  styles.genre
+                }
+              >
+                {obterCategoria()}
               </p>
-              <p className={styles.exploration}>Exploração: Mundo vasto e interconectado para descobrir.</p>
+
+              <p
+                className={
+                  styles.description
+                }
+              >
+                {jogo.descricao ||
+                  'Descrição não informada para este jogo.'}
+              </p>
+
+              {jogo.ano && (
+                <p
+                  className={
+                    styles.exploration
+                  }
+                >
+                  Ano de lançamento:{' '}
+                  {jogo.ano}
+                </p>
+              )}
+
+              {jogo.preco !==
+                undefined &&
+                jogo.preco !==
+                  null && (
+                  <p
+                    className={
+                      styles.exploration
+                    }
+                  >
+                    Preço:{' '}
+                    {Number(
+                      jogo.preco
+                    ).toLocaleString(
+                      'pt-BR',
+                      {
+                        style:
+                          'currency',
+                        currency:
+                          'BRL'
+                      }
+                    )}
+                  </p>
+                )}
             </div>
           </div>
 
-          <div className={styles.reviewsSection}>
-            {/* Avaliação */}
-            <div className={styles.submitReview}>
-              <h2>Avaliar o jogo</h2>
-              <p>Compartilhe sua experiência com outros jogadores.</p>
-              <label>Sua avaliação</label>
-              <div className={styles.stars}>★★★★★ 5 de 5</div>
-              <div className={styles.commentWrapper}>
+          <div
+            className={
+              styles.reviewsSection
+            }
+          >
+            <div
+              className={
+                styles.submitReview
+              }
+            >
+              <h2>
+                {minhaAvaliacao
+                  ? 'Editar avaliação'
+                  : 'Avaliar o jogo'}
+              </h2>
+
+              <p>
+                Compartilhe sua experiência
+                com outros jogadores.
+              </p>
+
+              <label>
+                Sua avaliação
+              </label>
+
+              <div
+                className={
+                  styles.ratingInput
+                }
+              >
+                <div
+                  className={
+                    styles.ratingStars
+                  }
+                >
+                  {[1, 2, 3, 4, 5].map(
+                    (estrela) => (
+                      <button
+                        key={estrela}
+                        type="button"
+                        className={`${
+                          styles.starButton
+                        } ${
+                          estrela <= nota
+                            ? styles.starSelected
+                            : ''
+                        }`}
+                        onClick={() =>
+                          setNota(
+                            estrela
+                          )
+                        }
+                        aria-label={`${estrela} ${
+                          estrela === 1
+                            ? 'estrela'
+                            : 'estrelas'
+                        }`}
+                        aria-pressed={
+                          estrela <= nota
+                        }
+                      >
+                        ★
+                      </button>
+                    )
+                  )}
+                </div>
+
+                <span
+                  className={
+                    styles.ratingText
+                  }
+                >
+                  {nota > 0
+                    ? `${nota} de 5`
+                    : 'Selecione a nota'}
+                </span>
+              </div>
+
+              <div
+                className={
+                  styles.commentWrapper
+                }
+              >
                 <textarea
-                  className={styles.textarea}
+                  className={
+                    styles.textarea
+                  }
                   value={comment}
-                  onChange={(e) => setComment(e.target.value)}
+                  onChange={(
+                    event
+                  ) =>
+                    setComment(
+                      event.target
+                        .value
+                    )
+                  }
                   placeholder="Comentário"
-                  maxLength={maxLength}
+                  maxLength={
+                    maxLength
+                  }
                 />
-                <span className={styles.charCount}>{comment.length}/{maxLength}</span>
+
+                <span
+                  className={
+                    styles.charCount
+                  }
+                >
+                  {comment.length}/
+                  {maxLength}
+                </span>
               </div>
-              <p className={styles.guidelines}>Seja respeitoso e siga nossas diretrizes da comunidade.</p>
-              <div className={styles.centeredSection}>
-                <label>Data da avaliação</label>
-                <input type="date" value="2025-05-20" className={styles.reviewDate} readOnly />
-                <div className={styles.buttons}>
-                  <button className={styles.btnClear} onClick={clearForm}>Limpar</button>
-                  <button className={styles.btnSubmit}>Avaliar</button>
+
+              <p
+                className={
+                  styles.guidelines
+                }
+              >
+                Seja respeitoso e siga
+                nossas diretrizes da
+                comunidade.
+              </p>
+
+              {erro && (
+                <p
+                  className={
+                    styles.errorMessage
+                  }
+                >
+                  {erro}
+                </p>
+              )}
+
+              {mensagem && (
+                <p
+                  className={
+                    styles.successMessage
+                  }
+                >
+                  {mensagem}
+                </p>
+              )}
+
+              <div
+                className={
+                  styles.centeredSection
+                }
+              >
+                <label>
+                  Data da avaliação
+                </label>
+
+                <input
+                  type="date"
+                  value={dataAtual}
+                  className={
+                    styles.reviewDate
+                  }
+                  readOnly
+                />
+
+                <div
+                  className={
+                    styles.buttons
+                  }
+                >
+                  <button
+                    type="button"
+                    className={
+                      styles.btnClear
+                    }
+                    onClick={
+                      clearForm
+                    }
+                    disabled={
+                      enviando
+                    }
+                  >
+                    Limpar
+                  </button>
+
+                  <button
+                    type="button"
+                    className={
+                      styles.btnSubmit
+                    }
+                    onClick={
+                      enviarAvaliacao
+                    }
+                    disabled={
+                      enviando
+                    }
+                  >
+                    {enviando
+                      ? 'Salvando...'
+                      : minhaAvaliacao
+                        ? 'Atualizar'
+                        : 'Avaliar'}
+                  </button>
                 </div>
               </div>
             </div>
 
-            {/* Resumo Avaliações */}
-            <div className={styles.summaryReview}>
-              <h2>Resumo das avaliações</h2>
-              <div className={styles.reviewSummaryGrid}>
-                <div className={styles.avgSection}>
-                  <p className={styles.average}>4,0</p>
-                  <div className={styles.starsSummary}>★★★★☆</div>
-                  <p className={styles.label}>média das avaliações</p>
+            <div
+              className={
+                styles.summaryReview
+              }
+            >
+              <h2>
+                Resumo das avaliações
+              </h2>
+
+              <div
+                className={
+                  styles.reviewSummaryGrid
+                }
+              >
+                <div
+                  className={
+                    styles.avgSection
+                  }
+                >
+                  <p
+                    className={
+                      styles.average
+                    }
+                  >
+                    {media.toLocaleString(
+                      'pt-BR',
+                      {
+                        minimumFractionDigits:
+                          1,
+                        maximumFractionDigits:
+                          2
+                      }
+                    )}
+                  </p>
+
+                  <div
+                    className={
+                      styles.starsSummary
+                    }
+                  >
+                    {renderizarEstrelas(
+                      media
+                    )}
+                  </div>
+
+                  <p
+                    className={
+                      styles.label
+                    }
+                  >
+                    média das avaliações
+                  </p>
                 </div>
-                <div className={styles.verticalSeparator}></div>
-                <div className={styles.totalSection}>
-                  <p className={styles.total}>128</p>
-                  <p className={styles.label}>Total de avaliações</p>
+
+                <div
+                  className={
+                    styles.verticalSeparator
+                  }
+                />
+
+                <div
+                  className={
+                    styles.totalSection
+                  }
+                >
+                  <p
+                    className={
+                      styles.total
+                    }
+                  >
+                    {totalAvaliacoes}
+                  </p>
+
+                  <p
+                    className={
+                      styles.label
+                    }
+                  >
+                    Total de avaliações
+                  </p>
                 </div>
               </div>
 
-              <div className={styles.ratingBar}>
-                <div className={styles.ratingLine}>
-                  <span className={styles.labelLeft}>5 estrelas</span>
-                  <div className={styles.bar}><div className={styles.fill} style={{width:'68%'}}></div></div>
-                  <span className={styles.labelRight}>87 (68%)</span>
-                </div>
-                <div className={styles.ratingLine}>
-                  <span className={styles.labelLeft}>4 estrelas</span>
-                  <div className={styles.bar}><div className={styles.fill} style={{width:'22%'}}></div></div>
-                  <span className={styles.labelRight}>28 (22%)</span>
-                </div>
-                <div className={styles.ratingLine}>
-                  <span className={styles.labelLeft}>3 estrelas</span>
-                  <div className={styles.bar}><div className={styles.fill} style={{width:'6%'}}></div></div>
-                  <span className={styles.labelRight}>8 (6%)</span>
-                </div>
-                <div className={styles.ratingLine}>
-                  <span className={styles.labelLeft}>2 estrelas</span>
-                  <div className={styles.bar}><div className={styles.fill} style={{width:'2%'}}></div></div>
-                  <span className={styles.labelRight}>3 (2%)</span>
-                </div>
-                <div className={styles.ratingLine}>
-                  <span className={styles.labelLeft}>1 estrela</span>
-                  <div className={styles.bar}><div className={styles.fill} style={{width:'2%'}}></div></div>
-                  <span className={styles.labelRight}>2 (2%)</span>
-                </div>
+              <div
+                className={
+                  styles.ratingBar
+                }
+              >
+                {distribuicaoAvaliacoes.map(
+                  (item) => (
+                    <div
+                      className={
+                        styles.ratingLine
+                      }
+                      key={
+                        item.nota
+                      }
+                    >
+                      <span
+                        className={
+                          styles.labelLeft
+                        }
+                      >
+                        {item.nota}{' '}
+                        {item.nota ===
+                        1
+                          ? 'estrela'
+                          : 'estrelas'}
+                      </span>
+
+                      <div
+                        className={
+                          styles.bar
+                        }
+                      >
+                        <div
+                          className={
+                            styles.fill
+                          }
+                          style={{
+                            width: `${item.percentual}%`
+                          }}
+                        />
+                      </div>
+
+                      <span
+                        className={
+                          styles.labelRight
+                        }
+                      >
+                        {
+                          item.quantidade
+                        }{' '}
+                        (
+                        {
+                          item.percentual
+                        }
+                        %)
+                      </span>
+                    </div>
+                  )
+                )}
               </div>
             </div>
           </div>
 
-          {/* Avaliações jogadores */}
-          <div className={styles.gameReviews}>
-            <h2>Avaliações do jogo</h2>
+          <div
+            className={
+              styles.gameReviews
+            }
+          >
+            <h2>
+              Avaliações do jogo
+            </h2>
 
-            <div className={styles.review}>
-              <img src={perfil} alt="Adailton Cerqueira" />
-              <div className={styles.reviewInfo}>
-                <h3>Adailton Cerqueira</h3>
-                <div className={styles.stars}>★★★★★</div>
-                <p>Simplesmente um dos melhores jogos.</p>
-              </div>
-              <div className={styles.reviewMeta}>
-                <span className={styles.reviewDatec}>20/05/2025 às 14:32</span>
-                <span className={styles.reviewMenu}>⋮</span>
-              </div>
-            </div>
+            {avaliacoesPaginadas.length ===
+            0 ? (
+              <p>
+                Este jogo ainda não possui
+                avaliações.
+              </p>
+            ) : (
+              avaliacoesPaginadas.map(
+                (
+                  avaliacao,
+                  index
+                ) => (
+                  <div
+                    className={
+                      styles.review
+                    }
+                    key={
+                      avaliacao.id ||
+                      `${
+                        obterIdUsuarioDaAvaliacao(
+                          avaliacao
+                        ) ||
+                        'avaliacao'
+                      }-${index}`
+                    }
+                  >
+                    <img
+                      src={obterFotoDaAvaliacao(
+                        avaliacao
+                      )}
+                      alt={obterNomeUsuario(
+                        avaliacao
+                      )}
+                      onError={(
+                        event
+                      ) => {
+                        event.currentTarget.src =
+                          perfil;
+                      }}
+                    />
 
-            <div className={styles.review}>
-              <img src={perfil} alt="Bala Mansa" />
-              <div className={styles.reviewInfo}>
-                <h3>Bala Mansa</h3>
-                <div className={styles.stars}>★★★★☆</div>
-                <p>Joguei bem pouco, mas me diverti.</p>
-              </div>
-              <div className={styles.reviewMeta}>
-                <span className={styles.reviewDatec}>15/05/2025 às 13:15</span>
-                <span className={styles.reviewMenu}>⋮</span>
-              </div>
-            </div>
+                    <div
+                      className={
+                        styles.reviewInfo
+                      }
+                    >
+                      <h3>
+                        {obterNomeUsuario(
+                          avaliacao
+                        )}
+                      </h3>
 
+                      <div
+                        className={
+                          styles.stars
+                        }
+                      >
+                        {renderizarEstrelas(
+                          avaliacao.nota
+                        )}
+                      </div>
+
+                      <p>
+                        {avaliacao.comentario ||
+                          'O usuário não deixou comentário.'}
+                      </p>
+                    </div>
+
+                    <div
+                      className={
+                        styles.reviewMeta
+                      }
+                    >
+                      <span
+                        className={
+                          styles.reviewDatec
+                        }
+                      >
+                        {formatarData(
+                          avaliacao
+                        )}
+                      </span>
+
+                      <span
+                        className={
+                          styles.reviewMenu
+                        }
+                      >
+                        ⋮
+                      </span>
+                    </div>
+                  </div>
+                )
+              )
+            )}
           </div>
 
-          <div className={styles.pagination}>
-            <button className={styles.pageBtn}>&lt;</button>
-            <button className={`${styles.pageBtn} ${styles.active}`}>1</button>
-            <button className={styles.pageBtn}>2</button>
-            <button className={styles.pageBtn}>&gt;</button>
-          </div>
+          {totalPaginas > 1 && (
+            <div
+              className={
+                styles.pagination
+              }
+            >
+              <button
+                type="button"
+                className={
+                  styles.pageBtn
+                }
+                onClick={() =>
+                  mudarPagina(
+                    paginaAtual - 1
+                  )
+                }
+                disabled={
+                  paginaAtual === 1
+                }
+              >
+                &lt;
+              </button>
+
+              {Array.from(
+                {
+                  length:
+                    totalPaginas
+                },
+                (_, index) =>
+                  index + 1
+              ).map((pagina) => (
+                <button
+                  type="button"
+                  key={pagina}
+                  className={`${
+                    styles.pageBtn
+                  } ${
+                    paginaAtual ===
+                    pagina
+                      ? styles.active
+                      : ''
+                  }`}
+                  onClick={() =>
+                    mudarPagina(
+                      pagina
+                    )
+                  }
+                >
+                  {pagina}
+                </button>
+              ))}
+
+              <button
+                type="button"
+                className={
+                  styles.pageBtn
+                }
+                onClick={() =>
+                  mudarPagina(
+                    paginaAtual + 1
+                  )
+                }
+                disabled={
+                  paginaAtual ===
+                  totalPaginas
+                }
+              >
+                &gt;
+              </button>
+            </div>
+          )}
         </section>
       </main>
 

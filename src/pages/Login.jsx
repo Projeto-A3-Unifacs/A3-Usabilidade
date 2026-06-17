@@ -1,113 +1,155 @@
 import { useState } from 'react';
 import '../styles/stylelogin.css';
-import axios from 'axios';
+
 import logo from '../assets/logodois.png';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 
+import {
+  Link,
+  useNavigate
+} from 'react-router-dom';
 
+import api from '../services/api';
 
-function Login(){
-    const[email,setEmail]=useState('');
-    const[senha, setSenha]=useState('')
-    const navigate = useNavigate();
-    const [mensagemErro, setMensagemErro]
-   = useState('');
+function Login() {
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [mensagemErro, setMensagemErro] =
+    useState('');
 
-     
-     async function fazerLogin(event){
-      
-         event.preventDefault();
+  const [carregando, setCarregando] =
+    useState(false);
 
-          try {
-         const resultado= await axios.post(
-            'https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/auth/login',
-            {email,
-             senha
-            }
-         );
+  const navigate = useNavigate();
 
-           localStorage.setItem(
-         "token",
-         resultado.data.token
-      );
-          navigate('/');
-         
+  async function fazerLogin(event) {
+    event.preventDefault();
 
-        }catch(erro){
-          setMensagemErro(
+    setMensagemErro('');
+    setCarregando(true);
 
-         erro.response?.data?.message ||
-
-         'Erro ao fazer login.'
-
-      );
-        }
-
-}
-
-
-  return(
-      <div id="body-login">
-    <div className="card-login">
-      <div className="logo-card">
-       <img src={logo}
-       onClick={() => navigate('/')}
-       />
-      </div>
-      <h3>Login</h3>
-      <form onSubmit={fazerLogin} id="login-form">
-
-        
+    try {
+      const resultado = await api.post(
+        '/auth/login',
         {
-   mensagemErro && (
+          email: email.trim(),
+          senha
+        }
+      );
 
-      <p className="erro-login">
+      console.log(
+        'Resposta da API:',
+        resultado.data
+      );
 
-         {mensagemErro}
+      const token = resultado.data?.token;
 
-      </p>
+      if (
+        !token ||
+        typeof token !== 'string'
+      ) {
+        throw new Error(
+          'A API não retornou um token válido.'
+        );
+      }
 
-   )
-}
-     <input
-        type="email"
-        id="email"
-        placeholder="email" 
-        value={email}
-        onChange={(event) =>setEmail(event.target.value) }
-     />
-       <input
-        type= "password"
-        id="password"
-         placeholder="senha" 
-         value={senha}
-         onChange={(event) => setSenha(event.target.value)}
-       />
-       <button
-        type="submit"
-        id="login-button">
-        Login
-       </button>
+      localStorage.setItem(
+        'token',
+        token.trim()
+      );
 
-        <div className="create-account">
-          <Link to="/cadastro">
-        Criar conta
-     </Link>
-          
+      navigate('/', {
+        replace: true
+      });
+    } catch (erro) {
+      console.error(
+        'Erro no login:',
+        erro.response?.data ||
+          erro.message
+      );
+
+      localStorage.removeItem('token');
+
+      setMensagemErro(
+        erro.response?.data?.message ||
+        erro.response?.data?.error ||
+        erro.message ||
+        'Erro ao fazer login.'
+      );
+    } finally {
+      setCarregando(false);
+    }
+  }
+
+  return (
+    <div id="body-login">
+      <div className="card-login">
+        <div className="logo-card">
+          <img
+            src={logo}
+            alt="Logo"
+            onClick={() =>
+              navigate('/')
+            }
+          />
         </div>
-      </form>
+
+        <h3>Login</h3>
+
+        <form
+          onSubmit={fazerLogin}
+          id="login-form"
+        >
+          {mensagemErro && (
+            <p className="erro-login">
+              {mensagemErro}
+            </p>
+          )}
+
+          <input
+            type="email"
+            id="email"
+            placeholder="E-mail"
+            value={email}
+            onChange={(event) =>
+              setEmail(
+                event.target.value
+              )
+            }
+            required
+          />
+
+          <input
+            type="password"
+            id="password"
+            placeholder="Senha"
+            value={senha}
+            onChange={(event) =>
+              setSenha(
+                event.target.value
+              )
+            }
+            required
+          />
+
+          <button
+            type="submit"
+            id="login-button"
+            disabled={carregando}
+          >
+            {carregando
+              ? 'Entrando...'
+              : 'Login'}
+          </button>
+
+          <div className="create-account">
+            <Link to="/cadastro">
+              Criar conta
+            </Link>
+          </div>
+        </form>
       </div>
-      </div>
-  )
-
- 
-   function voltarInicio(){
-
-   navigate('/');
-
-}
-
+    </div>
+  );
 }
 
 export default Login;

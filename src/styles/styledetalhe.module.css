@@ -1,12 +1,30 @@
-/* Container principal do componente */
-.container {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 20px;
+/* Cabeçalho */
+.header {
+  width: 100%;
+  min-height: 72px;
+  padding: 8px 40px;
+  background: linear-gradient(200deg, #c67097 5%, #583470 400%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
 }
 
 .logo {
   height: 60px;
+  object-fit: contain;
+}
+
+/* Container principal */
+.container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.gameDetail {
+  width: 100%;
 }
 
 .navLink {
@@ -21,42 +39,56 @@
   text-decoration: underline;
 }
 
-/* Voltar para o jogo */
+/* Link para voltar */
 .backLink {
   display: flex;
   align-items: center;
-  color: #5B1686;
+  width: fit-content;
+  color: #5b1686;
   text-decoration: none;
   font-weight: bold;
   margin-bottom: 20px;
 }
 
-.backLink img {
-  width: 24px;
-  margin-right: 8px;
+.backLink:hover {
+  text-decoration: underline;
 }
 
-/* Topo do jogo */
+.backLink img {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  object-fit: contain;
+}
+
+/* Informações do jogo */
 .gameTop {
   display: flex;
+  align-items: flex-start;
   gap: 20px;
   background: #fff;
   padding: 20px;
   border-radius: 16px;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
   margin-bottom: 20px;
 }
 
 .gameImg {
   width: 200px;
   height: 120px;
+  flex-shrink: 0;
   object-fit: cover;
   border-radius: 12px;
 }
 
+.gameInfo {
+  flex: 1;
+  min-width: 0;
+}
+
 .gameInfo h1 {
-  color: #5B1686;
-  margin-top: 0;
+  color: #5b1686;
+  margin: 0 0 5px;
 }
 
 .genre {
@@ -64,54 +96,160 @@
   margin: 5px 0;
 }
 
-.description, .exploration {
+.description,
+.exploration {
   color: #737373;
   margin: 5px 0;
+  line-height: 1.5;
 }
 
-/* Seção de avaliação */
+/* Área de avaliação */
 .reviewsSection {
   display: flex;
+  align-items: stretch;
   gap: 20px;
   flex-wrap: wrap;
   margin-bottom: 30px;
 }
 
-.submitReview, .summaryReview {
+.submitReview,
+.summaryReview {
   background: #fff;
   padding: 20px;
   border-radius: 16px;
   flex: 1;
   min-width: 280px;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+.submitReview h2,
+.summaryReview h2 {
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
+.submitReview > p {
+  margin-top: 0;
+}
+
+/* Estrelas clicáveis */
+.ratingInput {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+  margin: 8px 0 14px;
+}
+
+.ratingStars {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 4px;
+  width: auto;
+}
+
+.starButton {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 36px;
+
+  width: 36px !important;
+  min-width: 36px !important;
+  max-width: 36px !important;
+  height: 36px;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  border: none !important;
+  border-radius: 50%;
+  background: transparent !important;
+
+  color: #b0b0b0;
+  font-size: 30px;
+  line-height: 1;
+
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.starButton:hover {
+  color: #f5b301;
+  background-color: rgba(245, 179, 1, 0.1) !important;
+  transform: scale(1.12);
+}
+
+.starButton:focus-visible {
+  outline: 2px solid #5b1686;
+  outline-offset: 2px;
+}
+
+.starSelected {
+  color: #f5b301 !important;
+}
+
+.ratingText {
+  color: #5b1686;
+  font-size: 14px;
+  white-space: nowrap;
 }
 
 /* Comentário */
 .commentWrapper {
   width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
+  gap: 10px;
 }
 
 .textarea {
-  width: 90%;
+  width: 100%;
+  min-height: 80px;
   padding: 10px;
   border-radius: 8px;
-  border: 1px solid #C9B8F0;
-  resize: none;
+  border: 1px solid #c9b8f0;
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.textarea:focus {
+  outline: 2px solid rgba(91, 22, 134, 0.2);
+  border-color: #5b1686;
 }
 
 .charCount {
+  min-width: 52px;
   font-size: 12px;
   color: #737373;
-  margin-left: 10px;
+  text-align: right;
+  margin-bottom: 3px;
 }
 
 .guidelines {
   font-size: 12px;
   color: #737373;
-  margin: 4px 0 15px 0;
+  margin: 4px 0 15px;
+}
+
+.errorMessage {
+  color: #b00020;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.successMessage {
+  color: #137333;
+  font-size: 14px;
+  margin: 10px 0;
 }
 
 .centeredSection {
@@ -122,11 +260,16 @@
 }
 
 .centeredSection label {
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
-.centeredSection input {
+.reviewDate {
+  width: 80%;
+  padding: 9px;
   margin-bottom: 12px;
+  border: 1px solid #737373;
+  border-radius: 6px;
+  box-sizing: border-box;
 }
 
 .buttons {
@@ -136,23 +279,40 @@
   width: 100%;
 }
 
-.btnClear, .btnSubmit {
+.btnClear,
+.btnSubmit {
+  flex: 1;
   padding: 10px 20px;
   border-radius: 8px;
-  border: none;
   cursor: pointer;
   font-weight: bold;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .btnClear {
   background: #fff;
   border: 1px solid #ccc;
-  color: #5B1686;
+  color: #5b1686;
 }
 
 .btnSubmit {
-  background: #5B1686;
+  background: #5b1686;
+  border: 1px solid #5b1686;
   color: #fff;
+}
+
+.btnClear:hover,
+.btnSubmit:hover {
+  transform: translateY(-1px);
+}
+
+.btnClear:disabled,
+.btnSubmit:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
 }
 
 /* Resumo das avaliações */
@@ -164,22 +324,38 @@
   margin-bottom: 12px;
 }
 
-.avgSection, .totalSection {
+.avgSection,
+.totalSection {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+}
+
+.average,
+.total {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.label {
+  margin: 2px 0 0;
+  font-size: 14px;
 }
 
 .starsSummary {
   font-size: 20px;
-  color: #5B1686;
+  color: #5b1686;
   margin-top: 4px;
+  letter-spacing: 2px;
+  white-space: nowrap;
 }
 
 .verticalSeparator {
   width: 1px;
-  background: #C9B8F0;
   height: 80px;
+  background: #c9b8f0;
 }
 
 .ratingBar {
@@ -194,35 +370,37 @@
   width: 100%;
 }
 
-.ratingLine .labelLeft {
+.labelLeft {
   width: 80px;
+  flex-shrink: 0;
   text-align: left;
   font-size: 14px;
 }
 
-.ratingLine .bar {
+.bar {
   flex-grow: 1;
   height: 12px;
   background-color: #d3d3d3;
   border-radius: 6px;
   margin: 0 6px;
-  position: relative;
+  overflow: hidden;
 }
 
-.ratingLine .fill {
-  height: 12px;
-  background-color: #5B1686;
+.fill {
+  height: 100%;
+  background-color: #5b1686;
   border-radius: 6px;
-  width: 100%;
+  transition: width 0.3s ease;
 }
 
-.ratingLine .labelRight {
-  width: 60px;
+.labelRight {
+  width: 68px;
+  flex-shrink: 0;
   text-align: right;
   font-size: 14px;
 }
 
-/* Avaliações dos jogadores */
+/* Avaliações publicadas */
 .gameReviews {
   display: flex;
   flex-direction: column;
@@ -230,33 +408,55 @@
   margin-top: 20px;
 }
 
+.gameReviews h2 {
+  margin-bottom: 4px;
+}
+
 .review {
   display: flex;
+  align-items: flex-start;
   gap: 12px;
   background: #fff;
-  padding: 5px;
+  padding: 12px;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   font-size: 14px;
 }
 
-.review img {
-  width: 35px;
-  height: 35px;
+.review > img {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .reviewInfo {
   flex: 1;
+  min-width: 0;
+}
+
+.reviewInfo h3 {
+  margin: 0 0 4px;
+}
+
+.reviewInfo p {
+  margin: 5px 0 0;
+  overflow-wrap: anywhere;
 }
 
 .reviewMeta {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  flex-shrink: 0;
   font-size: 12px;
   color: #737373;
   gap: 2px;
+}
+
+.reviewDatec {
+  white-space: nowrap;
 }
 
 .reviewMenu {
@@ -265,9 +465,11 @@
 }
 
 .stars {
-  color: #5B1686;
+  color: #5b1686;
   font-size: 16px;
   margin: 5px 0;
+  letter-spacing: 2px;
+  white-space: nowrap;
 }
 
 /* Paginação */
@@ -279,6 +481,7 @@
 }
 
 .pageBtn {
+  min-width: 40px;
   padding: 8px 14px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -286,15 +489,25 @@
   background: #fff;
 }
 
-.pageBtn.active {
-  background: #5B1686;
-  color: #fff;
-  border-color: #5B1686;
+.pageBtn:hover:not(:disabled) {
+  border-color: #5b1686;
+  color: #5b1686;
 }
 
-/* Footer */
+.active {
+  background: #5b1686;
+  color: #fff;
+  border-color: #5b1686;
+}
+
+.pageBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Rodapé */
 footer {
-  background: linear-gradient(200deg, #C67097 5%, #583470 400%);
+  background: linear-gradient(200deg, #c67097 5%, #583470 400%);
   padding: 8px 40px;
   color: #fff;
   display: flex;
@@ -309,4 +522,82 @@ footer img {
 
 footer span {
   flex: 1;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .header {
+    padding: 8px 16px;
+  }
+
+  .container {
+    margin: 20px auto;
+    padding: 0 12px;
+  }
+
+  .gameTop {
+    flex-direction: column;
+  }
+
+  .gameImg {
+    width: 100%;
+    height: 190px;
+  }
+
+  .reviewsSection {
+    flex-direction: column;
+  }
+
+  .submitReview,
+  .summaryReview {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .ratingInput {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .commentWrapper {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .charCount {
+    margin: 0;
+  }
+
+  .reviewDate {
+    width: 100%;
+  }
+
+  .review {
+    flex-wrap: wrap;
+  }
+
+  .reviewMeta {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .reviewSummaryGrid {
+    gap: 12px;
+  }
+
+  .labelLeft {
+    width: 70px;
+    font-size: 12px;
+  }
+
+  .labelRight {
+    width: 60px;
+    font-size: 12px;
+  }
+
+  footer {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+  }
 }
