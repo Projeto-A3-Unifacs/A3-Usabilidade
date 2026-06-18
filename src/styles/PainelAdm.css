@@ -1,0 +1,373 @@
+.paineladm-page,
+.paineladm-page * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.paineladm-page {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #faf7fb;
+  color: #111;
+  font-size: 12px;
+  min-height: 100vh;
+}
+
+.paineladm-page header {
+  height: 64px;
+  background: #c56c9d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+}
+
+.paineladm-page .painel {
+  color: #fff;
+  font-size: 11px;
+}
+
+.paineladm-page nav {
+  display: flex;
+  gap: 48px;
+}
+
+.paineladm-page nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 10px;
+  transition: 0.3s;
+}
+
+.paineladm-page nav a:hover {
+  opacity: 0.8;
+}
+
+.paineladm-page nav a.active {
+  text-decoration: underline;
+}
+
+.paineladm-page main {
+  max-width: 1130px;
+  margin: 0 auto;
+  padding: 34px 44px 24px;
+  min-height: calc(100vh - 112px);
+}
+
+.paineladm-page h1 {
+  font-size: 17px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.paineladm-page .subtitulo {
+  font-size: 11px;
+  margin-bottom: 28px;
+}
+
+.paineladm-page .card {
+  background: white;
+  border-radius: 7px;
+  padding: 21px 22px;
+  margin-bottom: 23px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  text-align: left;
+}
+
+.paineladm-page .card.empresas {
+  padding-bottom: 18px;
+}
+
+.paineladm-page .card-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 21px;
+}
+
+.paineladm-page h2 {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.paineladm-page .espaco-titulo {
+  margin-bottom: 22px;
+}
+
+.paineladm-page .card h2,
+.paineladm-page label,
+.paineladm-page .ajuda {
+  text-align: left;
+}
+
+.paineladm-page .btn-roxo {
+  background: #8d4a94;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 158px;
+  height: 28px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.paineladm-page .btn-roxo:hover {
+  background: #74397b;
+}
+
+.paineladm-page .tabela {
+  width: 100%;
+}
+
+.paineladm-page table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.paineladm-page th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 10px;
+  padding: 11px 0;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+.paineladm-page td {
+  font-size: 10px;
+  padding: 21px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.paineladm-page .col-acoes {
+  width: 140px;
+}
+
+.paineladm-page .acoes {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.paineladm-page .btn-icon {
+  width: 42px;
+  height: 31px;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paineladm-page .editar {
+  border: 1px solid #8d4a94;
+  color: #000;
+}
+
+.paineladm-page .editar:hover {
+  background: #f5edf6;
+}
+
+.paineladm-page .excluir {
+  border: 1px solid #f05b5b;
+  color: #f05b5b;
+}
+
+.paineladm-page .excluir:hover {
+  background: #fff1f1;
+}
+
+.paineladm-page .paginacao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  padding-top: 20px;
+  font-size: 11px;
+}
+
+.paineladm-page .paginacao button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.paineladm-page .paginacao .ativo {
+  background: #8d4a94;
+  color: white;
+  width: 25px;
+  height: 25px;
+  border-radius: 6px;
+}
+
+.paineladm-page form {
+  width: 100%;
+}
+
+.paineladm-page label {
+  display: block;
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+
+.paineladm-page input,
+.paineladm-page select {
+  width: 100%;
+  height: 31px;
+  border: 1px solid #555;
+  font-size: 10px;
+  padding: 0 9px;
+  background: white;
+  margin-bottom: 8px;
+  border-radius: 2px;
+}
+
+.paineladm-page input:focus,
+.paineladm-page select:focus {
+  outline: none;
+  border-color: #8d4a94;
+}
+
+.paineladm-page .ajuda {
+  color: #777;
+  font-size: 9px;
+}
+
+.paineladm-page .form-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 18px;
+  margin-top: 15px;
+}
+
+.paineladm-page .btn-salvar {
+  width: 151px;
+  height: 28px;
+  border: none;
+  background: #8d4a94;
+  color: white;
+  border-radius: 4px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.paineladm-page .btn-salvar:hover {
+  background: #74397b;
+}
+
+.paineladm-page .btn-cancelar {
+  width: 142px;
+  height: 28px;
+  border: 1px solid #c56c9d;
+  background: white;
+  border-radius: 4px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.paineladm-page .btn-cancelar:hover {
+  background: #faf1f6;
+}
+
+.paineladm-page .excluir-area {
+  display: grid;
+  grid-template-columns: 1fr 170px;
+  gap: 44px;
+  align-items: end;
+}
+
+.paineladm-page .btn-excluir-empresa {
+  height: 31px;
+  border: 1px solid #f05b5b;
+  color: #111;
+  background: white;
+  border-radius: 4px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.paineladm-page .btn-excluir-empresa:hover {
+  background: #fff1f1;
+}
+
+.paineladm-page .btn-excluir-empresa i {
+  color: #f05b5b;
+  margin-right: 5px;
+}
+
+.paineladm-page footer {
+  min-height: 43px;
+  background: linear-gradient(180deg, #c56c9d, #47246c);
+  padding: 7px 38px;
+  color: white;
+}
+
+.paineladm-page footer img {
+  height: 23px;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.paineladm-page footer p {
+  font-size: 9px;
+}
+
+@media (max-width: 800px) {
+  .paineladm-page header {
+    height: auto;
+    padding: 18px;
+    flex-direction: colleumn;
+    gap: 15px;
+  }
+
+  .paineladm-page nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 22px;
+  }
+
+  .paineladm-page main {
+    padding: 28px 18px;
+  }
+
+  .paineladm-page .card-topo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .paineladm-page .tabela {
+    overflow-x: auto;
+  }
+
+  .paineladm-page table {
+    min-width: 500px;
+  }
+
+  .paineladm-page .excluir-area {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .paineladm-page .form-acoes {
+    flex-direction: column;
+  }
+
+  .paineladm-page .btn-salvar,
+  .paineladm-page .btn-cancelar,
+  .paineladm-page .btn-excluir-empresa,
+  .paineladm-page .btn-roxo {
+    width: 100%;
+  }
+}

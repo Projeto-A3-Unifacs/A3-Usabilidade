@@ -11,6 +11,7 @@ import PainelJogo from './pages/PainelJogo';
 import Listadedesejos from './pages/Listadedesejos';
 import Finalizarpagamento from './pages/Finalizarpagamento';
 import DetalheJogo from './pages/DetalheJogo';
+import PainelAdm from './pages/PainelAdm';
 
 function App() {
    return (
@@ -68,6 +69,12 @@ function App() {
   path="/detalhejogo/:id"
   element={<DetalheJogo />}
 />
+
+<Route
+          path="/paineladm"
+          element={<PainelAdm />}
+        />
+
 
       </Routes>
 
