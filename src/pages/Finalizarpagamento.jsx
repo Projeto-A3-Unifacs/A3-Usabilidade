@@ -18,15 +18,18 @@ function Pagamento() {
 
   const [metodoPagamento, setMetodoPagamento] = useState("cartao");
   const [usuarioLogado, setUsuarioLogado] = useState(false);
+  const [modalAberto, setModalAberto] = useState(false);
+  const [mensagemModal, setMensagemModal] = useState("");
 
   const [nomeCartao, setNomeCartao] = useState("");
   const [numeroCartao, setNumeroCartao] = useState("");
   const [cvv, setCvv] = useState("");
   const [validadeMes, setValidadeMes] = useState("");
   const [validadeAno, setValidadeAno] = useState("");
-const [jogosCarrinho, setJogosCarrinho] = useState([]);
-const [valorTotal, setValorTotal] = useState(0);
-  const token = localStorage.getItem("token");
+  const [parcelas, setParcelas] = useState(1); 
+  const [jogosCarrinho, setJogosCarrinho] = useState([]);
+  const [valorTotal, setValorTotal] = useState(0);
+   const token = localStorage.getItem("token");
 
   useEffect(() => {
   if (token) {
@@ -82,38 +85,39 @@ setValorTotal(total);
 
   async function finalizarCompra() {
     try {
-    await axios.post(
-  "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/vendas/pay",
+      
+      await axios.post(
+        "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/vendas/pay",
         {
-          metodo: metodoPagamento,
-          dados: {
-            nomeCartao,
-            numeroCartao,
-            cvv,
-            validadeMes,
-            validadeAno,
-          },
+          metodo: metodoPagamento
         },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
+      const checkoutResponse = await axios.post(
+        "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/vendas/checkout",
+        {}, // O corpo vai vazio, pois o seu back-end já sabe quem é o usuário pelo Token
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+     
       localStorage.setItem(
         "ultimaVenda",
-        JSON.stringify(response.data)
+        JSON.stringify(checkoutResponse.data.venda)
       );
 
       navigate("/compraaprovada");
+
     } catch (error) {
       console.error(error);
-
-      alert(
-        error.response?.data?.message ||
-          "Erro ao processar pagamento."
+     setMensagemModal(
+        error.response?.data?.message || "Erro ao processar pagamento ou finalizar compra."
       );
+      setModalAberto(true);
     }
   }
 
@@ -230,11 +234,24 @@ setValorTotal(total);
                 </select>
               </div>
 
-              <div className="form-group">
+             <div className="form-group">
                 <label>Parcelamento</label>
-
-                <select>
-                  <option>1x sem juros</option>
+                <select 
+                  value={parcelas} 
+                  onChange={(e) => setParcelas(Number(e.target.value))}
+                >
+                  {valorTotal > 0 ? (
+                    Array.from({ length: 12 }, (_, i) => i + 1).map((num) => {
+                      const valorParcela = valorTotal / num;
+                      return (
+                        <option key={num} value={num}>
+                          {num}x de R$ {valorParcela.toFixed(2).replace('.', ',')} sem juros
+                        </option>
+                      );
+                    })
+                  ) : (
+                    <option value="1">1x sem juros</option>
+                  )}
                 </select>
               </div>
             </div>
@@ -300,40 +317,41 @@ setValorTotal(total);
             </div>
           </div>
         </section>
-
-        <aside className="payment-right">
-          <div className="card">
-            <div className="card-title">
+<aside className="payment-right">
+          <div className="card custom-summary-card">
+            <div className="summary-header">
               Resumo do pedido
             </div>
 
             {jogosCarrinho.length === 0 ? (
-    <p>Nenhum jogo no carrinho.</p>
-  ) : (
-    <>
-      {jogosCarrinho.map((jogo) => (
-        <div key={jogo.id} className="summary-game">
-          <div>
-            <h3>{jogo.nome}</h3>
-            <p>{jogo.empresa || "Empresa não informada"}</p>
-          </div>
+              <p className="empty-cart">Nenhum jogo no carrinho.</p>
+            ) : (
+              <>
+                <div className="summary-items-container">
+                  {jogosCarrinho.map((jogo) => (
+                    <div key={jogo.id} className="summary-game-item">
+                      <div className="game-item-details">
+                        <h3 className="game-item-title">{jogo.nome}</h3>
+                        <p className="game-item-company">{jogo.empresa || "Empresa não informada"}</p>
+                      </div>
 
-          <strong>
-            R$ {Number(jogo.preco).toFixed(2)}
-          </strong>
-        </div>
-      ))}
+                      <strong className="game-item-price">
+                        R$<br/>{Number(jogo.preco).toFixed(2).replace('.', ',')}
+                      </strong>
+                    </div>
+                  ))}
+                </div>
 
-      <hr className="divider" />
+                <hr className="summary-divider" />
 
-      <div className="summary-line total">
-        <span>Total</span>
-        <span>
-          R$ {valorTotal.toFixed(2)}
-        </span>
-      </div>
-    </>
-  )}
+                <div className="summary-total-line">
+                  <span className="total-label">Total</span>
+                  <span className="total-value">
+                    R$ {valorTotal.toFixed(2).replace('.', ',')}
+                  </span>
+                </div>
+              </>
+            )}
           </div>
 
           {metodoPagamento === "pix" && (
@@ -370,6 +388,23 @@ setValorTotal(total);
           </div>
         </aside>
       </main>
+    {/* --- CÓDIGO DO MODAL DE ERRO --- */}
+      {modalAberto && (
+        <div className="modal-overlay">
+          <div className="modal-custom-content">
+            <div className="modal-icon">⚠️</div>
+            <h3>Atenção</h3>
+            <p>{mensagemModal}</p>
+            <button 
+              className="btn-close-modal" 
+              onClick={() => setModalAberto(false)}
+            >
+              Entendi
+            </button>
+          </div>
+        </div>
+      )}
+
     </>
   );
 }

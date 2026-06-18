@@ -192,7 +192,10 @@ const jogosDetalhes = await Promise.all(
               </button>
             </div>
 
-            <button className="btn-game">
+            <button 
+              className="btn-game"
+              onClick={() => navigate(`/detalhejogo/${item.id}`)}
+            >
               Sobre o jogo
             </button>
           </div>

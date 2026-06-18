@@ -20,10 +20,16 @@ function CompraAprovada() {
 
   const token = localStorage.getItem("token");
 
-  const venda = JSON.parse(
-    localStorage.getItem("ultimaVenda")
-  );
+const ultimaVendaStorage = localStorage.getItem("ultimaVenda");
+  let venda = null;
 
+  if (ultimaVendaStorage && ultimaVendaStorage !== "undefined") {
+    venda = JSON.parse(ultimaVendaStorage);
+
+    if (venda && venda.venda) {
+      venda = venda.venda;
+    }
+  }
   useEffect(() => {
     if (token) {
       setUsuarioLogado(true);
@@ -62,12 +68,12 @@ function CompraAprovada() {
         </section>
 
         <section className="purchase-card">
-          <div className="purchase-info">
+         <div className="purchase-info">
             <div className="info-box">
               <span>Valor</span>
               <strong>
-                {venda
-                  ? venda.valorTotal.toLocaleString("pt-BR", {
+                {venda && venda.valorTotal != null
+                  ? Number(venda.valorTotal).toLocaleString("pt-BR", {
                       style: "currency",
                       currency: "BRL",
                     })
@@ -78,14 +84,14 @@ function CompraAprovada() {
             <div className="info-box">
               <span>Quantidade</span>
               <strong>
-                {venda ? venda.quantidade : 0}
+                {venda && venda.quantidade != null ? venda.quantidade : 0}
               </strong>
             </div>
 
             <div className="info-box">
               <span>Data e hora</span>
               <strong>
-                {venda
+                {venda && venda.data
                   ? new Date(venda.data).toLocaleString("pt-BR")
                   : "-"}
               </strong>
