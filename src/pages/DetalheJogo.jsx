@@ -23,7 +23,7 @@ import logo from '../assets/logo.png';
 import voltar from '../assets/voltar.png';
 import jogoum from '../assets/games/jogoum.png';
 import perfil from '../assets/perfil.png';
-
+import {FaHeart, FaRegHeart } from 'react-icons/fa';
 import {
   getToken,
   isAuthenticated
@@ -70,11 +70,7 @@ function obterIdUsuarioDaAvaliacao(avaliacao) {
   );
 }
 
-/*
-  Algumas APIs retornam o usuário diretamente,
-  enquanto outras retornam dentro de "usuario",
-  "data" ou "dados".
-*/
+
 function extrairUsuarioDaResposta(resposta) {
   const dados = resposta?.data ?? resposta;
 
@@ -113,10 +109,7 @@ function DetalheJogo() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  /*
-    Guarda os usuários já consultados para evitar
-    várias chamadas repetidas ao mesmo endpoint.
-  */
+ 
   const usuariosCacheRef = useRef(new Map());
 
   const [jogo, setJogo] = useState(null);
@@ -164,6 +157,15 @@ function DetalheJogo() {
     paginaAtual,
     setPaginaAtual
   ] = useState(1);
+
+  const [nomeCategoria, setNomeCategoria] =
+    useState('');
+
+  const [estaNoWishlist, setEstaNoWishlist] =
+    useState(false);
+
+  const [adicionandoWishlist, setAdicionandoWishlist] =
+    useState(false);
 
   const maxLength = 1000;
   const avaliacoesPorPagina = 5;
@@ -239,14 +241,7 @@ function DetalheJogo() {
     [navigate]
   );
 
-  /*
-    Consulta os dados dos usuários das avaliações.
-
-    Para uma avaliação com usuarioId = 4,
-    será feita a requisição:
-
-    GET /usuarios/4
-  */
+  
   const carregarUsuariosDasAvaliacoes =
     useCallback(async (listaAvaliacoes) => {
       if (
@@ -322,10 +317,7 @@ function DetalheJogo() {
                   error.message
               );
 
-              /*
-                Um erro ao buscar o nome não impede
-                as avaliações de aparecerem.
-              */
+             
               usuariosCacheRef.current.set(
                 usuarioId,
                 {
@@ -418,10 +410,7 @@ function DetalheJogo() {
           ? resumo.avaliacoes
           : [];
 
-      /*
-        Acrescenta nomeUsuario e fotoUsuario
-        em cada avaliação.
-      */
+      
       const listaComUsuarios =
         await carregarUsuariosDasAvaliacoes(
           listaRecebida
@@ -494,6 +483,157 @@ function DetalheJogo() {
       carregarUsuariosDasAvaliacoes
     ]);
 
+  const carregarCategoria =
+    useCallback(async (fkCategoria) => {
+      if (!fkCategoria) {
+        setNomeCategoria(
+          'Categoria não informada'
+        );
+        return;
+      }
+
+      try {
+        const response =
+          await api.get(
+            `/categorias/${encodeURIComponent(
+              fkCategoria
+            )}`
+          );
+
+        const categoria =
+          response.data;
+
+        const nome =
+          categoria?.nome ||
+          categoria?.nomeCategoria ||
+          categoria?.nome_categoria ||
+          null;
+
+        if (nome) {
+          setNomeCategoria(nome);
+        } else {
+          setNomeCategoria(
+            `Categoria ${fkCategoria}`
+          );
+        }
+      } catch (error) {
+        console.error(
+          `Erro ao buscar a categoria ${fkCategoria}:`,
+          error.response?.data ||
+            error.message
+        );
+
+        setNomeCategoria(
+          `Categoria ${fkCategoria}`
+        );
+      }
+    }, []);
+
+  const carregarStatusWishlist =
+    useCallback(async () => {
+      if (!id || !usuarioLogado) {
+        setEstaNoWishlist(false);
+        return;
+      }
+
+      try {
+        const response =
+          await api.get(
+            '/lista-desejo/'
+          );
+
+        const listaDesejos =
+          Array.isArray(
+            response.data
+          )
+            ? response.data
+            : Array.isArray(
+                response.data?.dados
+              )
+              ? response.data.dados
+              : [];
+
+        const jogoNaLista =
+          listaDesejos.some(
+            (item) => {
+              const jogoId =
+                item?.jogoId ||
+                item?.jogo_id ||
+                item?.idJogo ||
+                item?.id_jogo ||
+                item?.jogo?.id ||
+                item?.id;
+
+              return (
+                String(jogoId) ===
+                String(id)
+              );
+            }
+          );
+
+        setEstaNoWishlist(
+          jogoNaLista
+        );
+      } catch (error) {
+        console.error(
+          'Erro ao carregar lista de desejos:',
+          error.response?.data ||
+            error.message
+        );
+        setEstaNoWishlist(false);
+      }
+    }, [id, usuarioLogado]);
+
+  const toggleWishlist =
+    useCallback(async () => {
+      if (!id || !usuarioLogado) {
+        navigate('/login', {
+          replace: true
+        });
+        return;
+      }
+
+      setAdicionandoWishlist(true);
+
+      try {
+        if (estaNoWishlist) {
+          await api.delete(
+            '/lista-desejo/',
+            {
+              data: {
+                jogoId: Number(id)
+              }
+            }
+          );
+          setEstaNoWishlist(false);
+        } else {
+          await api.post(
+            '/lista-desejo/',
+            {
+              jogoId: Number(id)
+            }
+          );
+          setEstaNoWishlist(true);
+        }
+      } catch (error) {
+        console.error(
+          'Erro ao atualizar lista de desejos:',
+          error.response?.data ||
+            error.message
+        );
+
+        tratarErro(error);
+      } finally {
+        setAdicionandoWishlist(false);
+      }
+    }, [
+      id,
+      usuarioLogado,
+      estaNoWishlist,
+      navigate,
+      tratarErro
+    ]);
+
   const carregarPagina =
     useCallback(async () => {
       if (!id) {
@@ -527,11 +667,31 @@ function DetalheJogo() {
           return;
         }
 
-        setJogo(
-          jogoResponse.data
-        );
+        const jogoData = jogoResponse.data;
+        setJogo(jogoData);
 
-        await carregarAvaliacoes();
+        if (jogoData.fkCategoria) {
+          await carregarCategoria(
+            jogoData.fkCategoria
+          );
+        } else if (
+          jogoData.categoria ||
+          jogoData.nomeCategoria ||
+          jogoData.categoriaNome ||
+          jogoData.nome_categoria
+        ) {
+          setNomeCategoria(
+            jogoData.categoria ||
+            jogoData.nomeCategoria ||
+            jogoData.categoriaNome ||
+            jogoData.nome_categoria
+          );
+        }
+
+        await Promise.all([
+          carregarAvaliacoes(),
+          carregarStatusWishlist()
+        ]);
       } catch (error) {
         tratarErro(error);
       } finally {
@@ -540,6 +700,8 @@ function DetalheJogo() {
     }, [
       id,
       carregarAvaliacoes,
+      carregarStatusWishlist,
+      carregarCategoria,
       tratarErro
     ]);
 
@@ -799,6 +961,10 @@ function DetalheJogo() {
   }
 
   function obterCategoria() {
+    if (nomeCategoria) {
+      return nomeCategoria;
+    }
+
     if (
       typeof jogo?.categoria ===
       'string'
@@ -811,11 +977,7 @@ function DetalheJogo() {
       jogo?.categoriaNome ||
       jogo?.nome_categoria ||
       jogo?.categoria?.nome ||
-      (
-        jogo?.fkCategoria
-          ? `Categoria ${jogo.fkCategoria}`
-          : 'Categoria não informada'
-      )
+      'Categoria não informada'
     );
   }
 
@@ -1088,6 +1250,33 @@ function DetalheJogo() {
                     )}
                   </p>
                 )}
+
+              <button
+                type="button"
+                className={
+                  styles.wishlistBtn
+                }
+                onClick={toggleWishlist}
+                disabled={adicionandoWishlist}
+                title={
+                  estaNoWishlist
+                    ? 'Remover da lista de desejos'
+                    : 'Adicionar à lista de desejos'
+                }
+              >
+                {estaNoWishlist ? (
+                  <FaHeart />
+                ) : (
+                  <FaRegHeart />
+                )}
+                <span>
+                  {
+                    estaNoWishlist
+                      ? 'Remover da lista'
+                      : 'Adicionar à lista'
+                  }
+                </span>
+              </button>
             </div>
           </div>
 
