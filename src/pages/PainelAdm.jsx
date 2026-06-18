@@ -8,14 +8,13 @@ import React, {
 import api from "../services/api";
 import { logoutUser } from "../utils/auth";
 import "../styles/PainelAdm.css";
-
+import logo from '../assets/logo.png'
+import Rodape from '../components/Rodape'
 const EMPRESAS_ENDPOINT = "/empresas";
 const EMPRESAS_POR_PAGINA = 4;
 
-/*
-  Procura o identificador da empresa, independentemente
-  do nome utilizado no retorno da API.
-*/
+
+
 function obterIdEmpresa(empresa) {
   return (
     empresa?.id_empresa ??
@@ -24,18 +23,7 @@ function obterIdEmpresa(empresa) {
   );
 }
 
-/*
-  Aceita diferentes formatos de resposta:
-  [
-    { id_empresa: 1, nome: "Empresa" }
-  ]
 
-  ou:
-
-  {
-    empresas: [...]
-  }
-*/
 function normalizarEmpresas(dados) {
   if (Array.isArray(dados)) {
     return dados;
@@ -421,7 +409,7 @@ function PainelAdm() {
             Dashboard
           </a>
 
-          <a href="/gerenciar-jogos">
+          <a href="/paineljogo">
             Gerenciar jogos
           </a>
 
@@ -602,60 +590,58 @@ function PainelAdm() {
               </tbody>
             </table>
           </div>
+{empresas.length > EMPRESAS_POR_PAGINA && (
+  <div className="paginacao">
+    <button
+      type="button"
+      disabled={paginaAtual === 1}
+      onClick={() =>
+        setPaginaAtual((pagina) =>
+          Math.max(1, pagina - 1)
+        )
+      }
+    >
+      ←
+    </button>
 
-          {empresas.length >
-            EMPRESAS_POR_PAGINA && (
-            <div className="paginacao">
-              <button
-                type="button"
-                disabled={paginaAtual === 1}
-                onClick={() =>
-                  setPaginaAtual((pagina) =>
-                    Math.max(1, pagina - 1)
-                  )
-                }
-              >
-                Anterior
-              </button>
+    {Array.from(
+      { length: totalPaginas },
+      (_, index) => index + 1
+    ).map((pagina) => (
+      <button
+        type="button"
+        key={pagina}
+        className={
+          paginaAtual === pagina
+            ? "ativo"
+            : ""
+        }
+        onClick={() =>
+          setPaginaAtual(pagina)
+        }
+      >
+        {pagina}
+      </button>
+    ))}
 
-              {Array.from(
-                { length: totalPaginas },
-                (_, index) => index + 1
-              ).map((pagina) => (
-                <button
-                  type="button"
-                  key={pagina}
-                  className={
-                    paginaAtual === pagina
-                      ? "ativo"
-                      : ""
-                  }
-                  onClick={() =>
-                    setPaginaAtual(pagina)
-                  }
-                >
-                  {pagina}
-                </button>
-              ))}
-
-              <button
-                type="button"
-                disabled={
-                  paginaAtual === totalPaginas
-                }
-                onClick={() =>
-                  setPaginaAtual((pagina) =>
-                    Math.min(
-                      totalPaginas,
-                      pagina + 1
-                    )
-                  )
-                }
-              >
-                Próxima
-              </button>
-            </div>
-          )}
+    <button
+      type="button"
+      disabled={
+        paginaAtual === totalPaginas
+      }
+      onClick={() =>
+        setPaginaAtual((pagina) =>
+          Math.min(
+            totalPaginas,
+            pagina + 1
+          )
+        )
+      }
+    >
+      →
+    </button>
+  </div>
+)}
         </section>
 
         <section
@@ -876,17 +862,7 @@ function PainelAdm() {
         </section>
       </main>
 
-      <footer>
-        <img
-          src="/imagens/logo.png"
-          alt="Logo Game Nest"
-        />
-
-        <p>
-          © 2026 Game Nest. Todos os direitos
-          reservados.
-        </p>
-      </footer>
+      <Rodape logo={logo}  />
     </div>
   );
 }

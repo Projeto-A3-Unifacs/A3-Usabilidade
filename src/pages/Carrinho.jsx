@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "../styles/stylecarrinho.css";
-import logo from '../assets/logodois.png';
+import logo from '../assets/logo.png';
 import padrao from '../assets/games/padrao.png';
 import controle from '../assets/controle.png';
 import {
@@ -141,7 +141,7 @@ const jogosDetalhes = await Promise.all(
   };
 
   return (
-    <div>
+    <div className="carrinho">
       <header>
         <img src={logo} alt="Logo Game Nest" className="logo"  
          onClick={() => navigate("/")}

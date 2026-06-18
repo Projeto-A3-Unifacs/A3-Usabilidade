@@ -17,13 +17,13 @@
     border-radius: 10px;
 }
 
-h4 {
+#corpo h4 {
     margin-top: 52px;
     font-family: "Inter", sans-serif;
     text-align: center;
 }
 
-form {
+#corpo form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -46,7 +46,7 @@ input {
     border-radius: 6px;
 }
 
-form button {
+#corpo form button {
     align-self: center;
     padding: 10px 20px;
     width: 90%;
@@ -312,8 +312,10 @@ footer {
     padding: 20px;
 }
 
-.footer-links{
-    margin-top:12px;
+.footer-links {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
 }
 
 footer a{
@@ -329,6 +331,11 @@ footer a{
 @media (max-width: 600px) {
     h4 {
         text-align: center;
+    }
+
+    footer p{
+        font-size: 12px;
+       
     }
 
     a {

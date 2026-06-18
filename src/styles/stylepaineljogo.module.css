@@ -1,83 +1,104 @@
 .body {
-  font-family: 'Yinmar', sans-serif;
+  font-family: "Yinmar", sans-serif;
   margin: 0;
-  background-color: #FAF8FC;
-  color: #000;
+  background-color: #faf8fc;
+  color: white;
 }
 
-.header {
-  background: linear-gradient(200deg, #C67097 5%, #583470 400%);
-  padding: 5px 40px;
+header {
+  height: 64px;
+  background: #c56c9d;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 48px;
 }
 
-.logo {
-  height: 60px;
+.painel {
+  color: white;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
 }
 
-.navLink {
-  color: #fff;
+.body nav {
+  display: flex;
+  gap: 48px;
+}
+
+.body nav a {
+  color: white;
   text-decoration: none;
-  margin-left: 40px;
-  font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
+  transition: 0.3s;
+  font-family: "Inter", sans-serif;
 }
 
-.navLinkActive {
+.body nav a:hover {
+  opacity: 0.8;
+}
+
+.body nav a.active {
   text-decoration: underline;
 }
 
 .container {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 20px;
+  max-width: 1130px;
+  margin: 34px auto;
+  padding: 0 24px;
 }
 
-.adminPanel h1,
-.adminPanel h2 {
-  color: #5B1686;
-  margin-bottom: 10px;
+.adminPanel h1 {
+  color: #111;
+  font-size: 17px;
+  font-weight: 400;
+  margin-bottom: 8px;
 }
 
 .adminPanel p {
-  margin-bottom: 20px;
-  color: #737373;
+  color: #666;
+  font-size: 11px;
+  margin-bottom: 28px;
 }
 
 .cardForm {
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  padding: 20px;
-  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 22px;
+  margin-bottom: 24px;
 }
 
 .cardForm h2 {
-  color: black;
-  margin-bottom: 15px;
+  color: #111;
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 22px;
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
 }
 
 .gamesTable {
   width: 100%;
   border-collapse: collapse;
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.gamesTable th,
-.gamesTable td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #E0E0E0;
 }
 
 .gamesTable th {
-  background-color: #f5f0fa;
-  color: #5B1686;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 400;
+  color: #555;
+  padding: 12px 0;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+.gamesTable td {
+  font-size: 14px;
+  color: #111;
+  padding: 18px 0;
+  border-bottom: 1px solid #ddd;
 }
 
 .gamesTable td img.gameThumb {
@@ -87,114 +108,157 @@
   border-radius: 8px;
 }
 
+.acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
 .btnEdit,
 .btnDelete {
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: none;
-  font-weight: bold;
+  width: 95px;
+  height: 32px;
+  border-radius: 4px;
+  font-size: 10px;
   cursor: pointer;
-  margin-right: 4px;
+  margin: 0;
 }
 
 .btnEdit {
-  background-color: #5B1686;
-  color: #fff;
-  margin-bottom: 10px; /* aumenta o espaço entre Editar e Excluir */
+  background: white;
+  border: 1px solid #8d4a94;
+  color: #111;
 }
 
 .btnDelete {
-  background-color: #E74C3C;
-  color: #fff;
+  background: white;
+  border: 1px solid #f05b5b;
+  color: #f05b5b;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.colunaEsquerda,
+.colunaDireita {
+  display: flex;
+  flex-direction: column;
+}
+
+.colunaEsquerda label,
+.colunaDireita label {
+  color: #111;
+  font-size: 11px;
+  margin-bottom: 12px;
+  margin-top: 8px;
+  
+  
+}
+
+.colunaEsquerda input,
+.colunaDireita input,
+.colunaDireita select {
+  width: 100%;
+  height: 32px;
+  border: 1px solid #555;
+  border-radius: 2px;
+  padding: 0 10px;
+  font-size: 10px;
+  background: white;
+  color: #111;
+  box-sizing: border-box;
+}
+
+.colunaEsquerda textarea {
+  width: 100%;
+  height: 120px;
+  border: 1px solid #555;
+  border-radius: 2px;
+  padding: 10px;
+  font-size: 10px;
+  resize: none;
+  color: #111;
+  box-sizing: border-box;
 }
 
 .formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.formRow > div {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 12px;
+  flex-direction: column;
 }
 
-.formRow input,
-.formRow select {
-  flex: 1;
-  min-width: 150px;
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid #C9B8F0;
-  font-size: 14px;
-  color: #000; /* garante texto visível */
-}
-
-/* Placeholder visível */
 .formRow input::placeholder,
 .formRow select::placeholder,
-.cardForm textarea::placeholder {
-  color: #737373;
-  opacity: 1;
-}
-
-.cardForm textarea {
-  width: 100%;
-  min-height: 80px;
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid #C9B8F0;
-  font-size: 14px;
-  margin-bottom: 12px;
-  color: #000; /* garante que o texto digitado apareça */
+.colunaEsquerda textarea::placeholder {
+  color: #777;
 }
 
 .formButtons {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 18px;
+  margin-top: 20px;
 }
 
 .formButtons button {
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
-  font-weight: bold;
+  height: 30px;
+  border-radius: 4px;
+  font-size: 10px;
   cursor: pointer;
 }
 
 .formButtonsReset {
-  background: #fff;
-  border: 1px solid #ccc;
-  color: #5B1686;
+  width: 140px;
+  border: 1px solid #c56c9d;
+  background: white;
+  color: #111;
 }
 
 .formButtonsSubmit {
-  background: #5B1686;
-  color: #fff;
+  width: 150px;
+  border: none;
+  background: #8d4a94;
+  color: white;
 }
 
 .pagination {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin-top: 15px;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
 }
 
 .pageBtn {
-  padding: 8px 14px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background: white;
   cursor: pointer;
-  background: #fff;
 }
 
 .pageBtnActive {
-  background: #5B1686;
-  color: #fff;
-  border-color: #5B1686;
+  background: #8d4a94;
+  color: white;
+  border-color: #8d4a94;
 }
 
 .footer {
-  background: linear-gradient(200deg, #C67097 5%, #583470 400%);
+  background: linear-gradient(200deg, #c67097 5%, #583470 400%);
   padding: 8px 40px;
-  color: #fff;
+  color: white;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -210,106 +274,50 @@
 }
 
 @media (max-width: 960px) {
-  nav a {
-    margin-left: 20px;
-    font-size: 14px;
-  }
-
-  .formRow {
-    flex-direction: column;
-  }
-
-  .cardForm textarea {
-    width: 100%;
-  }
-
-  .formButtons {
-    justify-content: stretch;
-    flex-direction: column;
-  }
-}
-
-
-@media (max-width: 960px) {
-
-  .header {
-    padding: 10px 15px;
+  header {
+    height: auto;
+    padding: 15px;
     flex-direction: column;
     gap: 15px;
   }
 
-  .logo {
-    height: 50px;
+  .body nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
   }
 
   .container {
-    margin: 20px auto;
     padding: 0 12px;
+    margin: 20px auto;
   }
 
-  .adminPanel h1 {
-    font-size: 24px;
-    text-align: center;
-  }
-
+  .adminPanel h1,
   .adminPanel p {
     text-align: center;
   }
 
-  .cardForm {
-    padding: 15px;
+  .formGrid {
+    grid-template-columns: 1fr;
   }
 
   .formRow {
-    flex-direction: column;
-  }
-
-  .formRow input,
-  .formRow select {
-    width: 100%;
-    min-width: unset;
-    box-sizing: border-box;
-  }
-
-  .cardForm textarea {
-    width: 100%;
-    box-sizing: border-box;
+    grid-template-columns: 1fr;
   }
 
   .formButtons {
     flex-direction: column;
   }
 
-  .formButtons button {
+  .formButtonsReset,
+  .formButtonsSubmit {
     width: 100%;
-  }
-
-  .tableWrapper {
-  overflow-x: auto;
-  width: 100%;
-}
-
-
-  .gamesTable th,
-  .gamesTable td {
-    padding: 10px;
-    font-size: 14px;
-  }
-
-  .btnEdit,
-  .btnDelete {
-    width: 100%;
-    margin-right: 0;
-  }
-
-  .btnDelete {
-    margin-top: 8px;
   }
 
   .footer {
-    padding: 15px;
     flex-direction: column;
     text-align: center;
+    padding: 15px;
   }
 
   .footer img {
@@ -318,22 +326,16 @@
 }
 
 @media (max-width: 480px) {
-
   .adminPanel h1 {
     font-size: 20px;
   }
 
-  .adminPanel h2 {
-    font-size: 18px;
-  }
-
   .gamesTable th,
   .gamesTable td {
-    font-size: 13px;
-    padding: 8px;
+    font-size: 9px;
   }
 
   .cardForm {
-    padding: 12px;
+    padding: 14px;
   }
 }

@@ -5,7 +5,7 @@ body {
   color: #000;
 }
 
-header {
+.carrinho header {
   background: linear-gradient(200deg, #C67097 5%, #583470 400%);
   padding: 5px 40px;
   display: flex;

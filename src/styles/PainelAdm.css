@@ -24,7 +24,8 @@
 
 .paineladm-page .painel {
   color: #fff;
-  font-size: 11px;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
 }
 
 .paineladm-page nav {
@@ -35,8 +36,9 @@
 .paineladm-page nav a {
   color: white;
   text-decoration: none;
-  font-size: 10px;
+  font-size: 14px;
   transition: 0.3s;
+  font-family: "Inter", sans-serif;
 }
 
 .paineladm-page nav a:hover {
@@ -86,7 +88,7 @@
 }
 
 .paineladm-page h2 {
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 400;
 }
 
@@ -132,14 +134,14 @@
 .paineladm-page th {
   text-align: left;
   font-weight: 400;
-  font-size: 10px;
+  font-size: 14px;
   padding: 11px 0;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
 }
 
 .paineladm-page td {
-  font-size: 10px;
+  font-size: 14px;
   padding: 21px 0;
   border-bottom: 1px solid #ddd;
 }
@@ -184,30 +186,40 @@
   background: #fff1f1;
 }
 
+
+
+
 .paineladm-page .paginacao {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 28px;
+  gap: 10px;
   padding-top: 20px;
-  font-size: 11px;
 }
 
 .paineladm-page .paginacao button {
+  width: 36px;
+  height: 36px;
   border: none;
-  background: transparent;
+  border-radius: 50%;
+  background: #8d4a94;
+  color: white;
   cursor: pointer;
-  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.paineladm-page .paginacao button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .paineladm-page .paginacao .ativo {
-  background: #8d4a94;
-  color: white;
-  width: 25px;
-  height: 25px;
-  border-radius: 6px;
+  background: #6f3476;
+  font-weight: bold;
 }
-
 .paineladm-page form {
   width: 100%;
 }
@@ -273,6 +285,7 @@
   font-size: 10px;
   cursor: pointer;
   transition: 0.3s;
+  color:black;
 }
 
 .paineladm-page .btn-cancelar:hover {
@@ -295,6 +308,7 @@
   font-size: 10px;
   cursor: pointer;
   transition: 0.3s;
+  margin-bottom:8px;
 }
 
 .paineladm-page .btn-excluir-empresa:hover {
@@ -306,22 +320,10 @@
   margin-right: 5px;
 }
 
-.paineladm-page footer {
-  min-height: 43px;
-  background: linear-gradient(180deg, #c56c9d, #47246c);
-  padding: 7px 38px;
-  color: white;
-}
 
-.paineladm-page footer img {
-  height: 23px;
-  display: block;
-  margin-bottom: 3px;
-}
 
-.paineladm-page footer p {
-  font-size: 9px;
-}
+
+
 
 @media (max-width: 800px) {
   .paineladm-page header {

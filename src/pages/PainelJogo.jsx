@@ -171,10 +171,39 @@ const empresasMap = empresas.reduce((acc, empresa) => {
   };
 
   return (
-    <div>
-      <header className={styles.header}>
-        <img src={logo} alt="Logo Game Nest" className={styles.logo} />
-        <Navbar usuarioLogado={usuarioLogado} logout={logout} />
+    <div className="body">
+      <header>
+        <h3 className="painel">
+          Painel administrativo
+        </h3>
+
+        <nav>
+          <a href="/dashboard">
+            Dashboard
+          </a>
+
+          <a href="/paineljogo">
+            Gerenciar jogos
+          </a>
+
+          <a
+            href="/paineladm"
+            className="active"
+          >
+            Gerenciar empresas
+          </a>
+
+          <a href="/perfil">
+            Perfil
+          </a>
+
+          <a
+            href="/login"
+            onClick={logout}
+          >
+            Sair
+          </a>
+        </nav>
       </header>
 
       <main className={styles.container}>
@@ -216,7 +245,8 @@ const empresasMap = empresas.reduce((acc, empresa) => {
 
   <td>{jogo.ano}</td>
 
-  <td>
+ <td>
+  <div className={styles.acoes}>
     <button
       className={styles.btnEdit}
       onClick={() => setEditarJogo(jogo)}
@@ -230,7 +260,8 @@ const empresasMap = empresas.reduce((acc, empresa) => {
     >
       Excluir
     </button>
-  </td>
+  </div>
+</td>
 </tr>
                 ))}
               </tbody>
@@ -242,63 +273,157 @@ const empresasMap = empresas.reduce((acc, empresa) => {
           <div className={styles.cardForm}>
             <h2>Criar novo jogo</h2>
             <form onSubmit={handleCreate}>
-              <div className={styles.formRow}>
-                <input type="text" placeholder="Nome do jogo" value={novoJogo.nome} onChange={(e) => setNovoJogo({...novoJogo, nome: e.target.value})} required />
-                <select
-  value={novoJogo.fkEmpresa}
-  onChange={(e) =>
-    setNovoJogo({
-      ...novoJogo,
-      fkEmpresa: e.target.value
-    })
-  }
-  required
->
-  <option value="">
-    Vincular a empresa
-  </option>
+  <div className={styles.formGrid}>
+    
+    <div className={styles.colunaEsquerda}>
+      <label>Nome do jogo</label>
+      <input
+        type="text"
+        placeholder="Ex.: Resident Evil 4"
+        value={novoJogo.nome}
+        onChange={(e) =>
+          setNovoJogo({
+            ...novoJogo,
+            nome: e.target.value
+          })
+        }
+        required
+      />
 
-  {empresas.map((empresa) => (
-    <option
-      key={empresa.id}
-      value={empresa.id}
-    >
-      {empresa.nome}
-    </option>
-  ))}
-</select>
+      <label>Descrição</label>
+      <textarea
+        className="descricao"
+        placeholder="Digite a descrição do jogo..."
+        value={novoJogo.descricao}
+        onChange={(e) =>
+          setNovoJogo({
+            ...novoJogo,
+            descricao: e.target.value
+          })
+        }
+      />
+    </div>
+
+    <div className={styles.colunaDireita}>
+      <div className={styles.formRow}>
+        <div>
+          <label>Vincular a empresa</label>
           <select
-  value={novoJogo.fkCategoria}
-  onChange={(e) =>
-    setNovoJogo({
-      ...novoJogo,
-      fkCategoria: e.target.value
-    })
-  }
-  required
->
-  <option value="">
-    Categoria
-  </option>
+            value={novoJogo.fkEmpresa}
+            onChange={(e) =>
+              setNovoJogo({
+                ...novoJogo,
+                fkEmpresa: e.target.value
+              })
+            }
+            required
+          >
+            <option value="">
+              Selecione uma empresa
+            </option>
 
-  {categorias.map((categoria) => (
-    <option
-      key={categoria.id}
-      value={categoria.id}
+            {empresas.map((empresa) => (
+              <option
+                key={empresa.id}
+                value={empresa.id}
+              >
+                {empresa.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label>Categoria</label>
+          <select
+            value={novoJogo.fkCategoria}
+            onChange={(e) =>
+              setNovoJogo({
+                ...novoJogo,
+                fkCategoria: e.target.value
+              })
+            }
+            required
+          >
+            <option value="">
+              Selecione uma categoria
+            </option>
+
+            {categorias.map((categoria) => (
+              <option
+                key={categoria.id}
+                value={categoria.id}
+              >
+                {categoria.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className={styles.formRow}>
+        <div>
+          <label>Preço (R$)</label>
+          <input
+            type="number"
+            placeholder="Ex.: 149,90"
+            value={novoJogo.preco}
+            onChange={(e) =>
+              setNovoJogo({
+                ...novoJogo,
+                preco: e.target.value
+              })
+            }
+            required
+          />
+        </div>
+
+        <div>
+          <label>Ano lançamento</label>
+          <input
+            type="number"
+            placeholder="Ex.: 2022"
+            value={novoJogo.ano}
+            onChange={(e) =>
+              setNovoJogo({
+                ...novoJogo,
+                ano: e.target.value
+              })
+            }
+            required
+          />
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div className={styles.formButtons}>
+    <button
+      type="reset"
+      className={styles.formButtonsReset}
+      onClick={() =>
+        setNovoJogo({
+          nome: "",
+          preco: "",
+          ano: "",
+          fkCategoria: "",
+          fkEmpresa: "",
+          descricao: ""
+        })
+      }
     >
-      {categoria.nome}
-    </option>
-  ))}
-</select>
-                <input type="number" placeholder="Preço (R$)" value={novoJogo.preco} onChange={(e) => setNovoJogo({...novoJogo, preco: e.target.value})} required />
-                <input type="number" placeholder="Ano lançamento" value={novoJogo.ano} onChange={(e) => setNovoJogo({...novoJogo, ano: e.target.value})} required />
-              </div>
-              <textarea placeholder="Descrição do jogo" value={novoJogo.descricao} onChange={(e) => setNovoJogo({...novoJogo, descricao: e.target.value})}></textarea>
-              <div className={styles.formButtons}>
-                <button type="reset" className={styles.formButtonsReset} onClick={() => setNovoJogo({ nome: "", preco: "", ano: "", fkCategoria: "", fkEmpresa: "", descricao: "" })}>Limpar</button>
-                <button type="submit" className={styles.formButtonsSubmit}>Salvar jogo</button>
-              </div>
-            </form>
+      Limpar
+    </button>
+
+    <button
+      type="submit"
+      className={styles.formButtonsSubmit}
+    >
+      Salvar jogo
+    </button>
+  </div>
+</form>
           </div>
 
           {/* Editar jogo */}
