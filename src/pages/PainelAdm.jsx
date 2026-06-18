@@ -400,9 +400,9 @@ function PainelAdm() {
   return (
     <div className="paineladm-page">
       <header>
-        <div className="painel">
+         <h3 className="painel">
           Painel administrativo
-        </div>
+        </h3>
 
         <nav>
           <a href="/dashboard">

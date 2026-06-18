@@ -1043,7 +1043,7 @@ function DetalheJogo() {
 
   if (carregando) {
     return (
-      <div>
+      <div className="jogo-detalhe">
         <header
           className={styles.header}
         >

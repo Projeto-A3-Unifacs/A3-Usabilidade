@@ -89,12 +89,12 @@ input::placeholder {
 }
 
 button {
-    width: 100%;
+    width: 60%;
     padding: 5px;
     background-color: #834D87;
     color: #ffffff;
     border: none;
-    border-radius: none;
+    border-radius: 5px;
     font-size: 15px;
     cursor: pointer;
 }
@@ -104,15 +104,17 @@ button:hover {
 }
 
 .create-account {
-    
+       margin-top:18px;
     font-size: 15px;
-    margin-bottom: 20px;
+    
 }
 
 .create-account a {
     color: #5C3672;
     text-decoration: none;
      font-size: 15px;
+  
+     
 }
 
 .create-account a:hover {

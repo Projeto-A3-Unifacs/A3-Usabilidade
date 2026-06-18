@@ -1,4 +1,11 @@
-/* Cabeçalho */
+.jogo-detalhe{
+  min-height: 100vh;
+
+
+}
+
+
+
 .header {
   width: 100%;
   min-height: 72px;
@@ -21,6 +28,7 @@
   margin: 40px auto;
   padding: 0 20px;
   box-sizing: border-box;
+  min-height: calc(100vh - 220px);
 }
 
 .gameDetail {

@@ -329,7 +329,7 @@
   .paineladm-page header {
     height: auto;
     padding: 18px;
-    flex-direction: colleumn;
+    flex-direction: column;
     gap: 15px;
   }
 

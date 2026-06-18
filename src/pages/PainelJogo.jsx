@@ -183,7 +183,7 @@ const empresasMap = empresas.reduce((acc, empresa) => {
           </a>
 
           <a href="/paineljogo">
-            Gerenciar jogos
+          Gerenciar jogos
           </a>
 
           <a
