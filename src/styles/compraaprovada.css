@@ -1,0 +1,242 @@
+.compra-aprovada {
+  font-family: 'Yinmar', sans-serif;
+  background-color: #FAF8FC;
+  color: #000000;
+  min-height: 100vh;
+}
+
+
+/* CONTAINER */
+
+.compra-aprovada .purchase-container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* SUCCESS */
+
+.compra-aprovada .success-area {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.compra-aprovada .success-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 7px solid #D5F0D1;
+  background-color: #F6FFF5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 25px auto;
+  color: #53B653;
+  font-size: 60px;
+  font-weight: bold;
+}
+
+.compra-aprovada .success-area h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
+  color: #111111;
+}
+
+.compra-aprovada .success-area p {
+  color: #737373;
+  font-size: 18px;
+  margin: 0;
+}
+
+/* CARD */
+
+.compra-aprovada .purchase-card {
+  background-color: #FFFFFF;
+  border: 1px solid #F3F1F6;
+  border-radius: 18px;
+  padding: 45px;
+  margin-bottom: 40px;
+}
+
+/* GAME */
+
+.compra-aprovada .game-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.compra-aprovada .game-image {
+  width: 320px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.compra-aprovada .game-info {
+  flex: 1;
+}
+
+.compra-aprovada .game-info h2 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.compra-aprovada .game-info p {
+  color: #737373;
+  font-size: 18px;
+}
+
+.compra-aprovada .game-price {
+  font-size: 34px;
+  font-weight: bold;
+  color: #111111;
+}
+
+.compra-aprovada .divider {
+  border: none;
+  border-bottom: 1px solid #E6E6E6;
+  margin: 35px 0;
+}
+
+/* PURCHASE INFO */
+
+.compra-aprovada .purchase-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.compra-aprovada .info-box {
+  flex: 1;
+}
+
+.compra-aprovada .info-box span {
+  display: block;
+  color: #8A2CB5;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.compra-aprovada .info-box strong {
+  font-size: 18px;
+  color: #111111;
+}
+
+/* SUCCESS ALERT */
+
+.compra-aprovada .success-alert {
+  margin-top: 40px;
+  background-color: #F3FFF1;
+  border: 1px solid #CDE8C9;
+  border-radius: 14px;
+  padding: 25px;
+}
+
+.compra-aprovada .success-alert p {
+  margin: 0 0 8px 0;
+  color: #2E7D32;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.compra-aprovada .success-alert span {
+  color: #666666;
+  font-size: 15px;
+}
+
+/* BUTTONS */
+
+.compra-aprovada .buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.compra-aprovada .btn {
+  padding: 14px 30px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  min-width: 250px;
+}
+
+.compra-aprovada .btn-library {
+  background-color: #5B1686;
+  border: none;
+  color: #FFFFFF;
+}
+
+.compra-aprovada .btn-library:hover {
+  background-color: #49116B;
+}
+
+.compra-aprovada .btn-store {
+  background-color: #FFFFFF;
+  border: 1px solid #5B1686;
+  color: #5B1686;
+}
+
+.compra-aprovada .btn-store:hover {
+  background-color: #F8F3FC;
+}
+
+/* BENEFITS */
+
+.compra-aprovada .benefits {
+  display: flex;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.compra-aprovada .benefit-card {
+  flex: 1;
+  background-color: #FFFFFF;
+  border: 1px solid #F3F1F6;
+  border-radius: 18px;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.compra-aprovada .benefit-icon {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.compra-aprovada .benefit-card h3 {
+  margin: 0 0 8px;
+}
+
+.compra-aprovada .benefit-card p {
+  margin: 0;
+  color: #737373;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 960px) {
+  .compra-aprovada .game-top,
+  .compra-aprovada .purchase-info,
+  .compra-aprovada .benefits,
+  .compra-aprovada .buttons {
+    flex-direction: column;
+  }
+
+  .compra-aprovada .game-top {
+    text-align: center;
+  }
+
+  .compra-aprovada .btn,
+  .compra-aprovada .game-image {
+    width: 100%;
+  }
+}

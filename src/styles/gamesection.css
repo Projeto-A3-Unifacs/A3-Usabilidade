@@ -1,0 +1,54 @@
+.games-row{
+
+    display:flex;
+
+    gap:20px;
+
+    overflow-x:auto;
+
+    padding:10px 20px;
+
+    scroll-behavior:smooth;
+
+     flex-wrap:wrap;
+     
+    
+}
+
+
+.games-row::-webkit-scrollbar{
+
+   height:8px;
+
+    display:none;
+
+}
+
+.game-section{
+    margin-top:12px
+}
+
+
+.games-row::-webkit-scrollbar-thumb{
+
+   background:#8d4fa8;
+   border-radius:10px;
+
+}
+
+.section-top{
+    margin-left:32px;
+    font-family: "Inter", sans-serif;
+    margin-top:30px;
+    display:flex;
+    flex-direction:row;
+    gap:12px;
+    font-size:12px;
+    align-items:center;
+}
+.section-top img{
+   width:18px;
+    height:18px;
+
+}
+

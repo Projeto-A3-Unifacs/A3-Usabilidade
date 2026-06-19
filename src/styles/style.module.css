@@ -1,0 +1,470 @@
+.corpo {
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../imagens/fundo.png');
+    background-size: cover;
+}
+
+.card-cadastro {
+    width: 90%;
+    max-width: 579px;
+    height: auto;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.corpo h4 {
+    margin-top: 52px;
+    font-family: "Inter", sans-serif;
+    text-align: center;
+}
+
+.corpo form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.label {
+    width: 90%;
+    max-width: 436px;
+    margin-top: 12px;
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+}
+
+input {
+    width: 90%;
+    max-width: 436px;
+    height: 35px;
+    margin-top: 6px;
+    border-radius: 6px;
+}
+
+.corpo form button {
+    align-self: center;
+    padding: 10px 20px;
+    width: 90%;
+    max-width: 253px;
+    margin-top: 25px;
+    margin-bottom:35px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    color: white;
+}
+
+.btn {
+     background-color: #834D87;
+}
+
+form a {
+    align-self: center;
+    margin-top: 25px;
+}
+
+.checkbox-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    width: 90%;
+    max-width: 436px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.checkbox-container label {
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.label-termos {
+    margin-right: 15px;
+    font-family: "Inter", sans-serif;
+}
+
+.inicial .topo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background: linear-gradient(200deg, #C67097 5%, #583470 400%);
+    width: 100%;
+    height: 60px;
+    padding: 5px 40px;
+    box-sizing: border-box;
+    color: white;
+    font-family: "Inter", sans-serif;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.icone-funil-toggle {
+  width: 20px; 
+  height: 20px;
+  cursor: pointer;
+  margin-left: 12px; 
+  transition: 0.2s;
+}
+
+.icone-funil-toggle:hover {
+  opacity: 0.7; 
+}
+
+ 
+.links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px; 
+}
+
+
+.links a {
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+}
+
+.busca-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.busca-container{
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    flex-shrink:0;
+    background:white;
+    width:360px;
+    height:42px;
+    border-radius:25px;
+    padding:0 15px;
+    gap:10px;
+}
+
+.icone-busca{
+    width:18px;
+    height:18px;
+    object-fit:contain;
+    flex-shrink:0;
+}
+
+.funil{
+    width:18px;
+    height:18px;
+    object-fit:contain;
+}
+
+.busca{
+    border:none;
+    outline:none;
+    background:transparent;
+    width:100%;
+    height:100%;
+    font-size:15px;
+    color:black;
+}
+
+.busca::placeholder{
+    color: grey;
+}
+
+.layout-busca {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 30px;
+    padding: 20px 40px;
+}
+
+.filtro-sidebar {
+    width: 260px;
+    background-color: #FAFAFB;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    font-family: "Inter", sans-serif;
+    flex-shrink: 0; 
+}
+
+.layout-busca .resultado-busca {
+    flex: 1;
+}
+
+.layout-busca .resultado-busca h2 {
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 25px;
+    font-size: 20px;
+}
+
+.filtro-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 500;
+    color: #000;
+}
+
+.icone-filtro-header {
+    width: 24px;
+    height: 24px;
+    filter: invert(30%) sepia(85%) saturate(3000%) hue-rotate(280deg) brightness(80%) contrast(90%);
+}
+
+.filtro-ordenacao {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filtro-ordenacao label {
+    font-size: 14px;
+    color: #333;
+}
+
+.filtro-ordenacao select {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #666;
+    background-color: white;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    color: #333;
+}
+
+.filtro-generos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filtro-generos > label {
+    font-size: 14px;
+    margin-bottom: 2px;
+    color: #333;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #834D87;
+    margin: 0;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.checkbox-item label {
+    font-size: 14px;
+    cursor: pointer;
+    color: #000;
+}
+
+.btn-limpar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    background-color: white;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #000;
+    margin-top: 10px;
+}
+
+.btn-limpar:hover {
+    background-color: #f0f0f0;
+}
+
+@media(max-width:768px){
+    .layout-busca {
+        flex-direction: column;
+        padding: 15px;
+    }
+    .filtro-sidebar {
+        width: 100%;
+    }
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to right, #C67097, #583470);
+    color: white;
+    width:100%;
+    height: auto;
+    font-family: "Inter", sans-serif;
+    margin-top: 38px;
+    padding: 20px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+footer a{
+    text-decoration:none;
+}
+
+.footer img {
+    width: 100%;
+    max-width: 168px;
+    height: auto;
+}
+
+@media (max-width: 600px) {
+    h4 {
+        text-align: center;
+    }
+    footer p{
+        font-size: 12px;
+    }
+   #corpo a {
+        margin-left: 0;
+    }
+    .btn, .btn-voltar {
+        padding: 10px 15px;
+        font-size: 14px;
+        width: 100%; 
+    }
+    .button-container {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media(max-width:768px){
+   .inicial .topo{
+        height:auto;
+        flex-direction:column;
+        align-items:center;
+        padding:12px;
+    }
+}
+
+@media(max-width:768px){
+    .links{
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:15px;
+    }
+}
+
+@media(max-width:768px){
+    .busca-container{
+        width:100%;
+        max-width:350px;
+    }
+}
+
+@media(max-width:768px){
+    .footer-links{
+        display:flex;
+        justify-content:center;
+        gap:15px;
+    }
+}
+
+.nome {
+    margin-top: 8px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.btn-voltar {
+    align-self: center;
+    padding: 10px 20px;
+    width: 96%;
+    max-width: 253px;
+    margin-top: 25px;
+    margin-bottom:35px;
+    border-radius: 10px;
+    background-color:#C67097;
+    cursor: pointer;
+    font-size: 15px;
+    color: white;
+}
+
+.btn-voltar:hover {
+    background-color: #FD5AA4; 
+}
+
+.button-container{
+    display:flex;
+    flex-direction:row;
+    gap:28px;
+}
+
+.resultado-busca h2{
+    font-size:16px;
+    margin-top: 12px;
+    margin-left:32px;
+    font-family: "Inter", sans-serif;
+    align-items:center;
+}
+
+.inicial{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+.conteudo{
+    flex:1;
+}
+
+.logo-card{
+    cursor:pointer;
+}
+
+.erro-cadastro{
+    color: red;
+    font-size:18px;
+    text-align:center;
+    margin-top:20px;
+    font-family: "Inter", sans-serif;
+}
+
+.erro-validacao{
+    color: red;
+    font-size:18px;
+    text-align:center;
+    margin-top:20px;
+    font-family: "Inter", sans-serif;
+}

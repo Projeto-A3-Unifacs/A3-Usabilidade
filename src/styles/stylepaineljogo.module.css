@@ -1,0 +1,383 @@
+.body {
+  font-family: "Yinmar", sans-serif;
+  margin: 0;
+  background-color: #faf8fc;
+  color: white;
+}
+
+
+
+header {
+  height: 64px;
+  background: #c56c9d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  color: white;
+  
+}
+
+
+
+.navContainer {
+  display: flex;
+  gap: 48px;
+}
+
+.painel {
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+  color: white; /* Adicionado para sobrescrever o azul do navegador */
+  text-decoration: none; /* Remove o sublinhado */
+}
+
+
+.navContainer a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s;
+  font-family: "Inter", sans-serif;
+}
+
+.body nav a:hover {
+  opacity: 0.8;
+}
+
+
+
+.container {
+  max-width: 1130px;
+  margin: 34px auto;
+  padding: 0 24px;
+}
+
+.adminPanel h1 {
+  color: #111;
+  font-size: 17px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.adminPanel p {
+  color: #666;
+  font-size: 11px;
+  margin-bottom: 28px;
+}
+
+.cardForm {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 22px;
+  margin-bottom: 24px;
+}
+
+.cardForm h2 {
+  color: #111;
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 22px;
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.gamesTable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px; /* ADICIONADO: Força a barra de rolagem horizontal em telas pequenas */
+}
+
+.gamesTable th {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 400;
+  color: #555;
+  padding: 12px 0;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+.gamesTable td {
+  font-size: 14px;
+  color: #111;
+  padding: 18px 0;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle; /* ADICIONADO: Garante que os botões e textos fiquem centralizados verticalmente */
+  white-space: nowrap; /* ADICIONADO: Evita que os nomes grandes quebrem em várias linhas */
+}
+
+.gamesTable td img.gameThumb {
+  width: 80px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.btnEdit,
+.btnDelete {
+  width: 95px;
+  height: 32px;
+  border-radius: 4px;
+  font-size: 10px;
+  cursor: pointer;
+  margin: 0;
+}
+
+.btnEdit {
+  background: white;
+  border: 1px solid #8d4a94;
+  color: #111;
+}
+
+.btnDelete {
+  background: white;
+  border: 1px solid #f05b5b;
+  color: #f05b5b;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.colunaEsquerda,
+.colunaDireita {
+  display: flex;
+  flex-direction: column;
+}
+
+.colunaEsquerda label,
+.colunaDireita label {
+  color: #111;
+  font-size: 11px;
+  margin-bottom: 12px;
+  margin-top: 8px;
+}
+
+.colunaEsquerda input,
+.colunaDireita input,
+.colunaDireita select {
+  width: 100%;
+  height: 32px;
+  border: 1px solid #555;
+  border-radius: 2px;
+  padding: 0 10px;
+  font-size: 10px;
+  background: white;
+  color: #111;
+  box-sizing: border-box;
+}
+
+.colunaEsquerda textarea {
+  width: 100%;
+  height: 120px;
+  border: 1px solid #555;
+  border-radius: 2px;
+  padding: 10px;
+  font-size: 10px;
+  resize: none;
+  color: #111;
+  box-sizing: border-box;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.formRow > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.formRow input::placeholder,
+.formRow select::placeholder,
+.colunaEsquerda textarea::placeholder {
+  color: #777;
+}
+
+.formButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.formButtons button {
+  height: 30px;
+  border-radius: 4px;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.formButtonsReset {
+  width: 140px;
+  border: 1px solid #c56c9d;
+  background: white;
+  color: #111;
+}
+
+.formButtonsSubmit {
+  width: 150px;
+  border: none;
+  background: #8d4a94;
+  color: white;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.pageBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+}
+
+.pageBtnActive {
+  background: #8d4a94;
+  color: white;
+  border-color: #8d4a94;
+}
+
+.footer {
+  background: linear-gradient(200deg, #c67097 5%, #583470 400%);
+  padding: 8px 40px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 14px;
+}
+
+.footer img {
+  height: 50px;
+}
+
+.footer span {
+  flex: 1;
+}
+
+
+
+@media (max-width: 800px) {
+  header {
+    height: auto;
+    padding: 18px;
+    flex-direction: column; 
+    gap: 15px;
+  }
+   
+  .body nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap:22px;
+    line-height: 1.8; 
+   
+  }
+
+  .body nav a {
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .container {
+    padding: 0 12px;
+    margin: 20px auto;
+  }
+
+  .adminPanel h1,
+  .adminPanel p {
+    text-align: center;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .formButtons {
+    flex-direction: column;
+  }
+
+  .formButtonsReset,
+  .formButtonsSubmit {
+    width: 100%;
+  }
+
+  .footer {
+    flex-direction: column;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .footer img {
+    height: 45px;
+  }
+}
+
+@media (max-width: 480px) {
+  .adminPanel h1 {
+    font-size: 20px;
+  }
+
+  .cardForm {
+    padding: 14px;
+  }
+}
+
+
+.gamesTable th {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 400;
+  color: #555;
+  padding: 12px 16px; 
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+.gamesTable td {
+  font-size: 14px;
+  color: #111;
+  padding: 18px 16px; 
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle; 
+  white-space: nowrap; 
+}
+
+.gamesTable th:first-child, 
+.gamesTable td:first-child {
+  padding-left: 0;
+}
+
+.gamesTable th:last-child, 
+.gamesTable td:last-child {
+  padding-right: 0;
+}
