@@ -26,6 +26,7 @@
   color: #fff;
   font-size: 14px;
   font-family: "Inter", sans-serif;
+  text-decoration:none;
 }
 
 .paineladm-page nav {
@@ -45,9 +46,7 @@
   opacity: 0.8;
 }
 
-.paineladm-page nav a.active {
-  text-decoration: underline;
-}
+
 
 .paineladm-page main {
   max-width: 1130px;

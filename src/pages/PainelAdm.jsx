@@ -15,6 +15,7 @@ const EMPRESAS_POR_PAGINA = 4;
 
 
 
+
 function obterIdEmpresa(empresa) {
   return (
     empresa?.id_empresa ??
@@ -400,9 +401,11 @@ function PainelAdm() {
   return (
     <div className="paineladm-page">
       <header>
-         <h3 className="painel">
+         <a className="painel"
+         href="/"
+         >
           Painel administrativo
-        </h3>
+        </a>
 
         <nav>
           <a href="/dashboard">

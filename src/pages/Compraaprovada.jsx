@@ -1,5 +1,5 @@
 import "../styles/compraaprovada.css";
-import "../styles/style.css";
+import styles from '../styles/style.module.css';
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";

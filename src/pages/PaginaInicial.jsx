@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import logo from '../assets/logodois.png';
-import '../styles/style.css';
+import styles from '../styles/style.module.css'; // <-- Importação do CSS Modules
 
 import GameSection from '../components/GameSection';
 import GameCard from '../components/GameCard';
@@ -67,19 +67,7 @@ api.interceptors.request.use(
 
 function PaginaInicial() {
   const imagens = [
-    a,
-    b,
-    c,
-    d,
-    e,
-    f,
-    h,
-    i,
-    j,
-    k,
-    l,
-    m,
-    n
+    a, b, c, d, e, f, h, i, j, k, l, m, n
   ];
 
   const navigate = useNavigate();
@@ -87,35 +75,18 @@ function PaginaInicial() {
   const [jogos, setJogos] = useState([]);
   const [categorias, setCategorias] = useState([]);
 
-  const [usuarioLogado, setUsuarioLogado] =
-    useState(false);
-
+  const [usuarioLogado, setUsuarioLogado] = useState(false);
   const [busca, setBusca] = useState('');
-
-  const [mostrarFiltro, setMostrarFiltro] =
-    useState(false);
-
-  const [ordenacao, setOrdenacao] =
-    useState('Mais populares');
-
-  const [
-    categoriaSelecionada,
-    setCategoriaSelecionada
-  ] = useState(null);
-
-  const [carregando, setCarregando] =
-    useState(true);
-
+  const [mostrarFiltro, setMostrarFiltro] = useState(false);
+  const [ordenacao, setOrdenacao] = useState('Mais populares');
+  const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
+  const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
 
   function logout() {
     logoutUser();
-
     setUsuarioLogado(false);
-
-    navigate('/login', {
-      replace: true
-    });
+    navigate('/login', { replace: true });
   }
 
   useEffect(() => {
@@ -126,30 +97,18 @@ function PaginaInicial() {
       setErro('');
 
       const autenticado = isAuthenticated();
-
       setUsuarioLogado(autenticado);
 
-      /*
-        O return impede que /categorias seja chamado
-        sem autenticação.
-      */
       if (!autenticado) {
-        navigate('/login', {
-          replace: true
-        });
-
+        navigate('/login', { replace: true });
         if (componenteAtivo) {
           setCarregando(false);
         }
-
         return;
       }
 
       try {
-        const [
-          respostaJogos,
-          respostaCategorias
-        ] = await Promise.all([
+        const [respostaJogos, respostaCategorias] = await Promise.all([
           api.get('/public/jogos'),
           api.get('/categorias')
         ]);
@@ -158,27 +117,19 @@ function PaginaInicial() {
           return;
         }
 
-        const jogosRecebidos =
-          Array.isArray(respostaJogos.data)
+        const jogosRecebidos = Array.isArray(respostaJogos.data)
             ? respostaJogos.data
             : [];
 
-        const jogosComImagem =
-          jogosRecebidos.map(
-            (jogo, index) => ({
+        const jogosComImagem = jogosRecebidos.map((jogo, index) => ({
               ...jogo,
-              imagem:
-                imagens[index] ||
-                semImagem
-            })
-          );
+              imagem: imagens[index] || semImagem
+        }));
 
         setJogos(jogosComImagem);
 
         setCategorias(
-          Array.isArray(
-            respostaCategorias.data
-          )
+          Array.isArray(respostaCategorias.data)
             ? respostaCategorias.data
             : []
         );
@@ -189,35 +140,19 @@ function PaginaInicial() {
 
         console.error(
           'Erro ao carregar a página inicial:',
-          error.response?.data ||
-            error.message
+          error.response?.data || error.message
         );
 
-        if (
-          error.response?.status === 401
-        ) {
+        if (error.response?.status === 401) {
           logoutUser();
-
           setUsuarioLogado(false);
-
-          setErro(
-            'Sua sessão expirou ou o token é inválido. Faça login novamente.'
-          );
-
-          navigate('/login', {
-            replace: true
-          });
-
+          setErro('Sua sessão expirou ou o token é inválido. Faça login novamente.');
+          navigate('/login', { replace: true });
           return;
         }
 
-        if (
-          error.code === 'ECONNABORTED'
-        ) {
-          setErro(
-            'A API demorou para responder. Tente novamente.'
-          );
-
+        if (error.code === 'ECONNABORTED') {
+          setErro('A API demorou para responder. Tente novamente.');
           return;
         }
 
@@ -240,18 +175,11 @@ function PaginaInicial() {
     };
   }, [navigate]);
 
-  function alternarGenero(
-    nomeCategoria
-  ) {
-    if (
-      categoriaSelecionada ===
-      nomeCategoria
-    ) {
+  function alternarGenero(nomeCategoria) {
+    if (categoriaSelecionada === nomeCategoria) {
       setCategoriaSelecionada(null);
     } else {
-      setCategoriaSelecionada(
-        nomeCategoria
-      );
+      setCategoriaSelecionada(nomeCategoria);
     }
   }
 
@@ -264,65 +192,39 @@ function PaginaInicial() {
   let jogosParaExibir = [...jogos];
 
   if (busca.trim() !== '') {
-    jogosParaExibir =
-      jogosParaExibir.filter(
-        (jogo) =>
-          jogo.nome
-            ?.toLowerCase()
-            .includes(
-              busca
-                .trim()
-                .toLowerCase()
-            )
-      );
-  }
-
-  if (
-    categoriaSelecionada !== null
-  ) {
-    jogosParaExibir =
-      jogosParaExibir.filter(
-        (jogo) => {
-          const categoriaJogo =
-            typeof jogo.categoria ===
-            'string'
-              ? jogo.categoria
-              : jogo.categoria?.nome ||
-                jogo.nomeCategoria ||
-                jogo.categoriaNome ||
-                jogo.nome_categoria;
-
-          if (!categoriaJogo) {
-            return false;
-          }
-
-          return (
-            categoriaJogo
-              .trim()
-              .toLowerCase() ===
-            categoriaSelecionada
-              .trim()
-              .toLowerCase()
-          );
-        }
-      );
-  }
-
-  if (
-    ordenacao === 'Menor preço'
-  ) {
-    jogosParaExibir.sort(
-      (jogoA, jogoB) =>
-        Number(jogoA.preco || 0) -
-        Number(jogoB.preco || 0)
+    jogosParaExibir = jogosParaExibir.filter((jogo) =>
+      jogo.nome?.toLowerCase().includes(busca.trim().toLowerCase())
     );
-  } else if (
-    ordenacao === 'Maior preço'
-  ) {
+  }
+
+  if (categoriaSelecionada !== null) {
+    jogosParaExibir = jogosParaExibir.filter((jogo) => {
+      const categoriaJogo =
+        typeof jogo.categoria === 'string'
+          ? jogo.categoria
+          : jogo.categoria?.nome ||
+            jogo.nomeCategoria ||
+            jogo.categoriaNome ||
+            jogo.nome_categoria;
+
+      if (!categoriaJogo) {
+        return false;
+      }
+
+      return (
+        categoriaJogo.trim().toLowerCase() ===
+        categoriaSelecionada.trim().toLowerCase()
+      );
+    });
+  }
+
+  if (ordenacao === 'Menor preço') {
     jogosParaExibir.sort(
-      (jogoA, jogoB) =>
-        Number(jogoB.preco || 0) -
-        Number(jogoA.preco || 0)
+      (jogoA, jogoB) => Number(jogoA.preco || 0) - Number(jogoB.preco || 0)
+    );
+  } else if (ordenacao === 'Maior preço') {
+    jogosParaExibir.sort(
+      (jogoA, jogoB) => Number(jogoB.preco || 0) - Number(jogoA.preco || 0)
     );
   }
 
@@ -331,39 +233,20 @@ function PaginaInicial() {
     categoriaSelecionada !== null ||
     ordenacao !== 'Mais populares';
 
-  const destaques =
-    jogos.slice(0, 10);
-
-  const lancamentos =
-    jogos.slice(5, 15);
-
-  const promocoes = jogos
-    .filter(
-      (jogo) =>
-        Number(jogo.preco) < 40
-    )
-    .slice(0, 10);
-
-  const maisVendidos =
-    jogos.slice(10, 20);
+  const destaques = jogos.slice(0, 10);
+  const lancamentos = jogos.slice(5, 15);
+  const promocoes = jogos.filter((jogo) => Number(jogo.preco) < 40).slice(0, 10);
+  const maisVendidos = jogos.slice(10, 20);
 
   if (carregando) {
     return (
-      <div className="inicial">
-        <div className="topo">
-          <Navbar
-            usuarioLogado={
-              usuarioLogado
-            }
-            logout={logout}
-          />
+      <div className={styles.inicial}>
+        <div className={styles.topo}>
+          <Navbar usuarioLogado={usuarioLogado} logout={logout} />
         </div>
 
-        <div className="conteudo">
-          <p>
-            Carregando jogos e
-            categorias...
-          </p>
+        <div className={styles.conteudo}>
+          <p>Carregando jogos e categorias...</p>
         </div>
 
         <Rodape logo={logo} />
@@ -372,48 +255,37 @@ function PaginaInicial() {
   }
 
   return (
-    <div className="inicial">
-      <div className="topo">
-        <div className="busca-wrapper">
-          <div className="busca-container">
+    <div className={styles.inicial}>
+      <div className={styles.topo}>
+        <div className={styles['busca-wrapper']}>
+         <div className={styles['busca-container']}>
             <input
-              className="busca"
+              className={styles.busca}
               placeholder="Buscar"
               type="text"
               value={busca}
-              onChange={(event) =>
-                setBusca(
-                  event.target.value
-                )
-              }
-              onFocus={() =>
-                setMostrarFiltro(true)
-              }
+              onChange={(event) => setBusca(event.target.value)}
             />
 
             <img
               src={logoBusca}
-              className="icone-busca"
+              className={styles['icone-busca']}
               alt="Buscar"
-              onClick={() =>
-                setMostrarFiltro(
-                  (valorAtual) =>
-                    !valorAtual
-                )
-              }
+            />
+
+            <img
+              src={funil}
+              className={styles['icone-funil-toggle']}
+              alt="Mostrar Filtros"
+              onClick={() => setMostrarFiltro((valorAtual) => !valorAtual)}
             />
           </div>
         </div>
 
-        <Navbar
-          usuarioLogado={
-            usuarioLogado
-          }
-          logout={logout}
-        />
+        <Navbar usuarioLogado={usuarioLogado} logout={logout} />
       </div>
 
-      <div className="conteudo">
+      <div className={styles.conteudo}>
         {erro && (
           <p
             style={{
@@ -426,92 +298,56 @@ function PaginaInicial() {
           </p>
         )}
 
-        {isFiltrando ||
-        mostrarFiltro ? (
-          <div className="layout-busca">
+        {isFiltrando || mostrarFiltro ? (
+          <div className={styles['layout-busca']}>
             {mostrarFiltro && (
-              <div className="filtro-sidebar">
-                <div className="filtro-header">
+              <div className={styles['filtro-sidebar']}>
+                <div className={styles['filtro-header']}>
                   <img
                     src={funil}
                     alt="Filtro"
-                    className="icone-filtro-header"
+                    className={styles['icone-filtro-header']}
                   />
-
                   <span>Filtros</span>
                 </div>
 
-                <div className="filtro-ordenacao">
-                  <label>
-                    Ordenar por:
-                  </label>
-
+                <div className={styles['filtro-ordenacao']}>
+                  <label>Ordenar por:</label>
                   <select
                     value={ordenacao}
-                    onChange={(event) =>
-                      setOrdenacao(
-                        event.target.value
-                      )
-                    }
+                    onChange={(event) => setOrdenacao(event.target.value)}
                   >
-                    <option value="Mais populares">
-                      Mais populares
-                    </option>
-
-                    <option value="Menor preço">
-                      Menor preço
-                    </option>
-
-                    <option value="Maior preço">
-                      Maior preço
-                    </option>
+                    <option value="Mais populares">Mais populares</option>
+                    <option value="Menor preço">Menor preço</option>
+                    <option value="Maior preço">Maior preço</option>
                   </select>
                 </div>
 
-                <div className="filtro-generos">
+                <div className={styles['filtro-generos']}>
                   <label>Gêneros</label>
-
-                  {categorias.length >
-                  0 ? (
-                    categorias.map(
-                      (categoria) => (
-                        <div
-                          className="checkbox-item"
-                          key={categoria.id}
-                        >
+                  {categorias.length > 0 ? (
+                    categorias.map((categoria) => (
+                        <div className={styles['checkbox-item']} key={categoria.id}>
                           <input
                             type="checkbox"
                             id={`cat-${categoria.id}`}
-                            checked={
-                              categoriaSelecionada ===
-                              categoria.nome
-                            }
-                            onChange={() =>
-                              alternarGenero(
-                                categoria.nome
-                              )
-                            }
+                            checked={categoriaSelecionada === categoria.nome}
+                            onChange={() => alternarGenero(categoria.nome)}
                           />
-
-                          <label
-                            htmlFor={`cat-${categoria.id}`}
-                          >
+                          <label htmlFor={`cat-${categoria.id}`}>
                             {categoria.nome}
                           </label>
                         </div>
                       )
                     )
                   ) : (
-                    <p>
-                      Nenhuma categoria
-                      encontrada.
-                    </p>
+                    <p>Nenhuma categoria encontrada.</p>
                   )}
                 </div>
 
                 <button
                   type="button"
-                  className="btn-limpar"
+                  className={styles['btn-limpar']}
                   onClick={limparFiltros}
                 >
                   🗑️ Limpar filtros
@@ -519,57 +355,25 @@ function PaginaInicial() {
               </div>
             )}
 
-            <div className="resultado-busca">
-              <h2>
-                Resultados da busca
-              </h2>
-
-              <div className="games-row">
-                {jogosParaExibir.length >
-                0 ? (
-                  jogosParaExibir.map(
-                    (jogo) => (
-                      <GameCard
-                        key={jogo.id}
-                        jogo={jogo}
-                      />
-                    )
-                  )
+            <div className={styles['resultado-busca']}>
+              <h2>Resultados da busca</h2>
+              <div className={styles['games-row']}>
+                {jogosParaExibir.length > 0 ? (
+                  jogosParaExibir.map((jogo) => (
+                      <GameCard key={jogo.id} jogo={jogo} />
+                  ))
                 ) : (
-                  <p>
-                    Nenhum jogo
-                    encontrado para esta
-                    categoria ou busca.
-                  </p>
+                  <p>Nenhum jogo encontrado para esta categoria ou busca.</p>
                 )}
               </div>
             </div>
           </div>
         ) : (
           <>
-            <GameSection
-              titulo="Destaques"
-              icone={estrela}
-              jogos={destaques}
-            />
-
-            <GameSection
-              titulo="Lançamentos"
-              icone={fogete}
-              jogos={lancamentos}
-            />
-
-            <GameSection
-              titulo="Promoções"
-              icone={promo}
-              jogos={promocoes}
-            />
-
-            <GameSection
-              titulo="Mais vendidos"
-              icone={incendio}
-              jogos={maisVendidos}
-            />
+            <GameSection titulo="Destaques" icone={estrela} jogos={destaques} />
+            <GameSection titulo="Lançamentos" icone={fogete} jogos={lancamentos} />
+            <GameSection titulo="Promoções" icone={promo} jogos={promocoes} />
+            <GameSection titulo="Mais vendidos" icone={incendio} jogos={maisVendidos} />
           </>
         )}
       </div>

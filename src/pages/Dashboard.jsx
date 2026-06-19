@@ -105,7 +105,11 @@ function Dashboard() {
   return (
     <div className="dashboard-page">
       <header className="dash-header">
-        <h3 className="painel">Painel administrativo</h3>
+          <a className="painel"
+         href="/"
+         >
+          Painel administrativo
+        </a>
         <nav>
           <a href="/dashboard" className="active">Dashboard</a>
           <a href="/paineljogo">Gerenciar jogos</a>

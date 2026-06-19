@@ -1,220 +1,148 @@
 import { useState } from 'react';
-import '../styles/style.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function Cadastro() {
+import styles from '../styles/style.module.css'; // <-- Importação do CSS Modules
 
+function Cadastro() {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [repetirSenha, setRepetirSenha] = useState('');
   const [dataNascimento, setDataNascimento] = useState('');
-  const [validacaoErro, setValidacaoErro]
-   = useState('');
+  const [validacaoErro, setValidacaoErro] = useState('');
   const [termos, setTermos] = useState(false);
-  const [mensagemErro, setMensagemErro]
-   = useState('');
- const navigate = useNavigate();
+  const [mensagemErro, setMensagemErro] = useState('');
+  const navigate = useNavigate();
 
   async function cadastrar(event) {
+    event.preventDefault();
 
-  event.preventDefault();
+    if (!termos) {
+      setValidacaoErro('Aceite os termos.');
+      return;
+    }
 
-  if (!termos) {
+    if (senha !== repetirSenha) {
+      setValidacaoErro('As senhas não coincidem.');
+      return;
+    }
 
-    setValidacaoErro(
-      'Aceite os termos.'
-   );
+    const [ano, mes, dia] = dataNascimento.split('-');
+    const dataFormatada = `${dia}/${mes}/${ano}`;
 
-   return;
-
-
-  }
-
-  if (senha !== repetirSenha) {
-
-      setValidacaoErro(
-      'As senhas não coincidem.'
-   );
-
-   return;
-
-  }
-
-     const [ano, mes, dia] =
-      dataNascimento.split('-');
-
-    const dataFormatada =
-      `${dia}/${mes}/${ano}`;
-
-  try {
-
-    const resposta = await axios.post(
-      'https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/auth/register',
-      {
-        nome,
-        email,
-        senha,
-        dataNascimento:dataFormatada
-      }
-    );
-
-    
-        navigate('/login');
-
-  } catch (erro) {
-     setMensagemErro(
-
-      erro.response.data.message
-     )
-      
-
-   
-
-  }
-
-}
-
-return (
-
-    <div id="corpo">
-
-      <div className="card-cadastro">
-
-        <h4>Cadastre-se agora</h4>
+    try {
+      const resposta = await axios.post(
+        'https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/auth/register',
         {
-          mensagemErro
-          && (
-
-      <p className="erro-cadastro">
-
-         {mensagemErro}
-
-      </p>
-          )
+          nome,
+          email,
+          senha,
+          dataNascimento: dataFormatada
         }
+      );
+
+      navigate('/login');
+    } catch (erro) {
+       setMensagemErro(erro.response.data.message);
+    }
+  }
+
+  return (
+    <div className={styles.corpo}>
+      <div className={styles['card-cadastro']}>
+        <h4>Cadastre-se agora</h4>
+        
+        {mensagemErro && (
+          <p className={styles['erro-cadastro']}>
+             {mensagemErro}
+          </p>
+        )}
       
         <form onSubmit={cadastrar}>
-
-          <div className="label">
+          <div className={styles.label}>
             <label>Nome Completo</label>
           </div>
-
           <input
             type="text"
             value={nome}
             onChange={(event) => setNome(event.target.value)}
           />
 
-          <div className="label">
+          <div className={styles.label}>
             <label>Email</label>
           </div>
-
           <input
             type="text"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
 
-          <div className="label">
+          <div className={styles.label}>
             <label>Senha</label>
           </div>
-
           <input
-            className="inputs"
+            className={styles.inputs}
             type="password"
             value={senha}
             onChange={(event) => setSenha(event.target.value)}
           />
-          
 
-          <div className="label">
+          <div className={styles.label}>
             <label>Repetir Senha</label>
           </div>
-
           <input
             type="password"
             value={repetirSenha}
             onChange={(event) => setRepetirSenha(event.target.value)}
           />
 
-          <div className="label">
+          <div className={styles.label}>
             <label>Data de Nascimento</label>
           </div>
-
           <input
             type="date"
             value={dataNascimento}
             onChange={(event) => setDataNascimento(event.target.value)}
           />
-  
-          
 
-           {
-   validacaoErro && (
+          {validacaoErro && (
+             <p className={styles['erro-validacao']}>
+                {validacaoErro}
+             </p>
+          )}
 
-      <p className="erro-validacao">
-
-         {validacaoErro}
-
-      </p>
-
-   )
-}
-
-
-
-          <div className="checkbox-container">
-
+          <div className={styles['checkbox-container']}>
             <input
               type="checkbox"
               checked={termos}
               onChange={(event) => setTermos(event.target.checked)}
             />
-
-            <div className="label-termos">
+            <div className={styles['label-termos']}>
               <label>
                 Li e concordo com os Termos de Uso e a Política de Privacidade.
               </label>
             </div>
-
           </div>
 
-
-          <div className="button-container">
-
+          <div className={styles['button-container']}>
             <button
               type="button"
-              className="btn-voltar"
+              className={styles['btn-voltar']}
               onClick={() => window.history.back()}
             >
               Voltar
             </button>
 
-            <button type="submit" id="btn">
+            {/* Note que substituímos id="btn" pela class */}
+            <button type="submit" className={styles.btn}>
               Cadastrar
             </button>
-
           </div>
-
         </form>
-
       </div>
-
     </div>
-
   );
-
 }
 
 export default Cadastro;
-
-
-
-
-
-
-
-
-

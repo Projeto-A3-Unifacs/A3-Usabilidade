@@ -13,10 +13,11 @@
   color: white;
 }
 
-.dash-header h3.painel {
+.dash-header a.painel {
   margin: 0;
   font-weight: 400;
   font-size: 18px;
+  text-decoration:none;
 }
 
 .dash-header nav {

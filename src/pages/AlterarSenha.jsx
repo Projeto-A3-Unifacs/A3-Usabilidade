@@ -12,6 +12,7 @@ import escudo from "../assets/escudo.png";
 import documento from "../assets/documento.png";
 import aleatorio from "../assets/aleatorio.png";
 import tempo from "../assets/tempo.png";
+import Navbar from '../components/Navbar';
 
 import "../styles/stylealterarsenha.css";
 
@@ -416,38 +417,8 @@ function AlterarSenha() {
           />
         </Link>
 
-        <nav>
-          <Link to="/">
-            Página Inicial
-          </Link>
-
-          <Link to="/explorar">
-            Explorar
-          </Link>
-
-          <Link to="/carrinho">
-            Carrinho
-          </Link>
-
-          <Link to="/biblioteca">
-            Biblioteca
-          </Link>
-
-          <Link
-            to="/perfil"
-            className="perfil-link"
-          >
-            Perfil
-          </Link>
-
-          <button
-            type="button"
-            className="nav-sair"
-            onClick={sair}
-          >
-            Sair
-          </button>
-        </nav>
+        {/* Navbar inserida no lugar do elemento nav */}
+        <Navbar usuarioLogado={true} logout={sair} />
       </header>
 
       <div className="container">

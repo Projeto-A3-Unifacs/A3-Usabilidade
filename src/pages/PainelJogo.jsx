@@ -173,11 +173,14 @@ const empresasMap = empresas.reduce((acc, empresa) => {
   return (
     <div className="body">
       <header>
-        <h3 className="painel">
+         <a className={styles.painel}
+         href="/"
+         
+         >
           Painel administrativo
-        </h3>
+        </a>
 
-        <nav>
+        <nav className={styles.navContainer}>
           <a href="/dashboard">
             Dashboard
           </a>

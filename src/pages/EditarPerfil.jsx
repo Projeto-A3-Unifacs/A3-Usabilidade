@@ -6,7 +6,7 @@ import { getToken } from "../utils/auth";
 
 import logo from "../assets/logodois.png";
 import perfil from "../assets/perfil.png";
-
+import Navbar from '../components/Navbar';
 import "../styles/styleeditarperfil.css";
 
 const USUARIOS_PATH = "/usuarios";
@@ -460,35 +460,8 @@ function EditarPerfil() {
           />
         </Link>
 
-        <nav>
-          <Link to="/">
-            Página Inicial
-          </Link>
-
-          <Link to="/explorar">
-            Explorar
-          </Link>
-
-          <Link to="/carrinho">
-            Carrinho
-          </Link>
-
-          <Link to="/biblioteca">
-            Biblioteca
-          </Link>
-
-          <Link to="/perfil">
-            Perfil
-          </Link>
-
-          <button
-            type="button"
-            className="nav-sair"
-            onClick={sair}
-          >
-            Sair
-          </button>
-        </nav>
+        {/* Substituição da <nav> manual pelo componente Navbar */}
+        <Navbar usuarioLogado={true} logout={sair} />
       </header>
 
       <div className="container">

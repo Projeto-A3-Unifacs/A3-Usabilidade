@@ -1,4 +1,4 @@
-#corpo {
+.corpo {
     min-height: 100vh;
     margin: 0;
     padding: 20px;
@@ -17,13 +17,13 @@
     border-radius: 10px;
 }
 
-#corpo h4 {
+.corpo h4 {
     margin-top: 52px;
     font-family: "Inter", sans-serif;
     text-align: center;
 }
 
-#corpo form {
+.corpo form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -46,7 +46,7 @@ input {
     border-radius: 6px;
 }
 
-#corpo form button {
+.corpo form button {
     align-self: center;
     padding: 10px 20px;
     width: 90%;
@@ -54,16 +54,18 @@ input {
     margin-top: 25px;
     margin-bottom:35px;
     border-radius: 10px;
-    background-color: #834D87;
     cursor: pointer;
     font-size: 15px;
     color: white;
 }
 
+.btn {
+     background-color: #834D87;
+}
+
 form a {
     align-self: center;
     margin-top: 25px;
-    
 }
 
 .checkbox-container {
@@ -109,16 +111,33 @@ form a {
     gap: 10px;
 }
 
-.links a{
-    margin-top:18px;
-    gap:62%;
-    text-decoration: none;
+.icone-funil-toggle {
+  width: 20px; 
+  height: 20px;
+  cursor: pointer;
+  margin-left: 12px; 
+  transition: 0.2s;
 }
 
-a {
-    font-size: 18px;
-    color:white;
-    margin-left:18px;
+.icone-funil-toggle:hover {
+  opacity: 0.7; 
+}
+
+ 
+.links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px; 
+}
+
+
+.links a {
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
 }
 
 .busca-wrapper {
@@ -332,22 +351,17 @@ footer a{
     h4 {
         text-align: center;
     }
-
     footer p{
         font-size: 12px;
-       
     }
-
    #corpo a {
         margin-left: 0;
     }
-
     .btn, .btn-voltar {
         padding: 10px 15px;
         font-size: 14px;
         width: 100%; 
     }
-
     .button-container {
         display: flex;
         flex-direction: column;

@@ -262,17 +262,6 @@ const jogosDetalhes = await Promise.all(
 
       <hr />
 
-      <div className="summary-line">
-        <span>Subtotal</span>
-        <span>R$ {total}</span>
-      </div>
-
-      <hr />
-
-      <div className="summary-line total">
-        <span>Total</span>
-        <span>R$ {total}</span>
-      </div>
 
       <button
         className="btn-pay"

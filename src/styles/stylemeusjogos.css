@@ -14,8 +14,8 @@
   justify-content: space-between;
 }
 .meusjogos-logo { height: 60px; }
-nav a { color: #fff; text-decoration: none; margin-left: 60px; font-weight: bold; font-size: 16px; }
-nav a.active { text-decoration: underline; }
+.meusjogos-container nav a { color: #fff; text-decoration: none; margin-left: 60px; font-weight: bold; font-size: 16px; }
+.meusjogos-container nav a.active { text-decoration: underline; }
 
 .meusjogos-container-principal {
   max-width: 1200px;

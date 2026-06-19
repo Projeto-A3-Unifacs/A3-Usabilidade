@@ -15,21 +15,25 @@ header {
   justify-content: space-between;
   padding: 0 48px;
   color: white;
-  font-size: 14px;
-  font-family: "Inter", sans-serif;
+  
+}
+
+
+
+.navContainer {
+  display: flex;
+  gap: 48px;
 }
 
 .painel {
   font-size: 14px;
   font-family: "Inter", sans-serif;
+  color: white; /* Adicionado para sobrescrever o azul do navegador */
+  text-decoration: none; /* Remove o sublinhado */
 }
 
-.body nav {
-  display: flex;
-  gap: 48px;
-}
 
-.body nav a {
+.navContainer a {
   color: white;
   text-decoration: none;
   font-size: 14px;
@@ -41,9 +45,7 @@ header {
   opacity: 0.8;
 }
 
-.body nav a.active {
-  text-decoration: underline;
-}
+
 
 .container {
   max-width: 1130px;
