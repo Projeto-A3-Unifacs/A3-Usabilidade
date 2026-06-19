@@ -1,0 +1,89 @@
+body {
+  font-family: 'Yinmar', sans-serif;
+  margin: 0;
+  background-color: #FAF8FC;
+  color: #000;
+}
+
+/* Header */
+header {
+  background: linear-gradient(200deg, #C67097 5%, #583470 400%);
+  padding: 5px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+header img.logo { height: 60px; }
+nav a { color: #fff; text-decoration: none; margin-left: 60px; font-weight: bold; }
+nav a#perfil { text-decoration: underline; }
+
+/* Layout */
+.container { display: flex; max-width: 1200px; margin: 40px auto; gap: 40px; padding: 0 20px; min-height: calc(100vh - 400px); box-sizing: border-box; }
+.sidebar { width: 200px; background-color: none; border: none; border-radius: 15px; padding: 20px; }
+.sidebar ul { list-style: none; padding: 0; }
+.sidebar ul li { margin-bottom: 20px; }
+.sidebar ul li a { text-decoration: none; color: #5B1686; font-weight: bold; display: block; padding: 5px 10px; border-left: 3px solid transparent; }
+.sidebar ul li a.active { color: #C67097; border-left: 3px solid #C67097; }
+.main-content { flex: 1; }
+
+/* User Card */
+.user-card { display: flex; align-items: center; justify-content: space-between; background-color: #fff; border: 1px solid #F3F1F6; border-radius: 15px; padding: 20px; margin-bottom: 40px; }
+.user-card .avatar { width: 80px; height: 80px; border-radius: 50%; background-color: #583470; }
+.user-card .user-info { flex: 1; margin-left: 20px; }
+.user-card .user-info h2 { margin: 0; font-size: 20px; }
+.user-card .user-info p { margin: 5px 0 0; color: #737373; }
+.btn-edit { background-color: #F6F1FB; color: #50007F; padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+.btn-edit .edit-icon { width: 20px; height: 20px; }
+
+/* Título Alterar Senha */
+.title-section { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 20px; }
+.title-section .icon { width: 40px; height: 40px; margin-bottom: 10px; }
+.title-section h2 { font-size: 22px; margin: 0 0 5px 0; display: block; }
+.title-section p { color: #737373; margin: 0; display: block; }
+
+/* Form Cards Layout */
+.form-cards { display: flex; gap: 20px; flex-wrap: wrap; }
+.alter-senha-card { flex: 2; background-color: #fff; border: 1px solid #F3F1F6; border-radius: 15px; padding: 30px; box-sizing: border-box; max-width: 100%; }
+.security-tips-card { flex: 1; background-color: #fff; border-radius: 15px; padding: 20px; min-width: 250px; border: 1px solid #F3F1F6; }
+.security-tips-card h3 { margin-top: 0; display: flex; align-items: center; gap: 10px; }
+.shield-icon { width: 24px; height: 24px; }
+
+/* Alterar senha alinhamento */
+.title-section h2 + p { margin-top: 5px; }
+
+/* Form inside card */
+.card h2 { display: flex; align-items: center; gap: 15px; }
+.icon { width: 50px; height: 50px; }
+.form-group { margin-bottom: 30px; }
+label { display: block; margin-bottom: 10px; font-weight: bold; }
+input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #5B1686; font-size: 16px; box-sizing: border-box; }
+.requirements { margin-top: 10px; list-style: disc inside; color: red; font-size: 14px; }
+
+/* Buttons */
+.buttons { display: flex; gap: 20px; margin-top: 20px; }
+.center-buttons { justify-content: center; }
+.btn { padding: 12px 25px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; }
+.btn-cancel { background-color: #fff; border: 1px solid #5B1686; color: #5B1686; }
+.btn-save { background-color: #5B1686; color: #fff; }
+
+/* Security Tips Boxes */
+.security-tips-card ul { list-style: none; padding: 0; }
+.tip-box { display: flex; align-items: center; gap: 10px; padding: 15px; background-color: #fff; border-radius: 12px; margin-bottom: 10px; border: 1px solid #F3F1F6; }
+.tip-box img { width: 24px; height: 24px; }
+
+/* Footer */
+footer { background: linear-gradient(200deg, #C67097 5%, #583470 400%); padding: 3px 40px; color: #fff; display: flex; align-items: center; gap: 20px; }
+footer img { height: 60px; }
+footer span { flex: 1; }
+
+/* Responsivo */
+@media(max-width: 960px) { .container { flex-direction: column; } .form-cards { flex-direction: column; } .security-tips-card { order: 2; width: 100%; } }
+.fraca { color: red; }
+
+.sidebar ul li a.active {
+  color: #C30C80;
+}
+
+.perfil-link {
+  text-decoration: underline;
+}
