@@ -1,10 +1,13 @@
-import axios from 'axios';
-import { getToken } from '../utils/auth';
+import axios from "axios";
+import { getToken } from "../utils/auth";
 
 const api = axios.create({
   baseURL:
-    'https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1',
-  timeout: 30000
+    "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1",
+  timeout: 30000,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 api.interceptors.request.use(
@@ -12,13 +15,14 @@ api.interceptors.request.use(
     const token = getToken();
 
     if (token) {
-      config.headers.Authorization =
-        `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
 api.interceptors.response.use(
@@ -27,7 +31,8 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       console.error(
-        'Token ausente, expirado ou recusado pela API.'
+        error.response?.data?.message ||
+          "Requisição não autorizada."
       );
     }
 

@@ -14,6 +14,8 @@ import DetalheJogo from './pages/DetalheJogo';
 import PainelAdm from './pages/PainelAdm';
 import Historico  from './pages/HistoricoCompras'
 import Dashboard from './pages/Dashboard'
+import AlterarSenha from './pages/AlterarSenha'
+import EditarPerfil from './pages/EditarPerfil'
 
 function App() {
    return (
@@ -85,6 +87,16 @@ function App() {
         <Route
       path="/dashboard"
       element={<Dashboard/>}
+      />
+
+      <Route
+      path="/alterarsenha"
+      element={<AlterarSenha />}
+      />
+
+      <Route
+      path="/editarperfil"
+      element={<EditarPerfil />}
       />
 
       </Routes>
