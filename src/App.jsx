@@ -13,6 +13,7 @@ import Finalizarpagamento from './pages/Finalizarpagamento';
 import DetalheJogo from './pages/DetalheJogo';
 import PainelAdm from './pages/PainelAdm';
 import Historico  from './pages/HistoricoCompras'
+import Dashboard from './pages/Dashboard'
 
 function App() {
    return (
@@ -81,7 +82,10 @@ function App() {
       element={<Historico/>}
       />
 
-
+        <Route
+      path="/dashboard"
+      element={<Dashboard/>}
+      />
 
       </Routes>
 
