@@ -12,6 +12,7 @@ import Listadedesejos from './pages/Listadedesejos';
 import Finalizarpagamento from './pages/Finalizarpagamento';
 import DetalheJogo from './pages/DetalheJogo';
 import PainelAdm from './pages/PainelAdm';
+import Historico  from './pages/HistoricoCompras'
 
 function App() {
    return (
@@ -74,6 +75,12 @@ function App() {
           path="/paineladm"
           element={<PainelAdm />}
         />
+
+    <Route
+      path="/historico"
+      element={<Historico/>}
+      />
+
 
 
       </Routes>

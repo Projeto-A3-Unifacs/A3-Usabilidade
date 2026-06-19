@@ -38,45 +38,72 @@ function Pagamento() {
   }
 }, [token]);
 async function carregarCarrinho() {
-  try {
-    const carrinhoResponse = await axios.get(
-      "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/carrinho/ativo",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    try {
+      const carrinhoResponse = await axios.get(
+        "https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/carrinho/ativo",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    const itens = carrinhoResponse.data.carrinho.itens || [];
+      const itens = carrinhoResponse.data.carrinho.itens || [];
 
-   const jogos = await Promise.all(
-  itens.map(async (item) => {
-    const jogoResponse = await axios.get(
-      `https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/jogos/${item.fkJogo}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+      const jogos = await Promise.all(
+        itens.map(async (item) => {
+         
+          const jogoResponse = await axios.get(
+            `https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/jogos/${item.fkJogo}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
 
-    return jogoResponse.data;
-  })
-);
+          const jogoData = jogoResponse.data;
+          let nomeEmpresa = "Empresa não informada";
 
-setJogosCarrinho(jogos);
+          if (jogoData.fkEmpresa) {
+            try {
+              const empresaResponse = await axios.get(
+                `https://api-vendas-jogos-digitais-9fvp.onrender.com/api/v1/empresas/${jogoData.fkEmpresa}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+              
+              
+              if (empresaResponse.data && empresaResponse.data.nome) {
+                nomeEmpresa = empresaResponse.data.nome;
+              }
+            } catch (erroEmpresa) {
+              console.error(`Erro ao buscar empresa do jogo ${jogoData.id}:`, erroEmpresa);
+            
+            }
+          }
+          return {
+            ...jogoData,
+            empresa: nomeEmpresa
+          };
+        })
+      );
 
-const total = jogos.reduce(
-  (soma, jogo) => soma + Number(jogo.preco),
-  0
-);
+      setJogosCarrinho(jogos);
 
-setValorTotal(total);
-  } catch (error) {
-    console.error("Erro ao carregar carrinho:", error);
+      const total = jogos.reduce(
+        (soma, jogo) => soma + Number(jogo.preco),
+        0
+      );
+
+      setValorTotal(total);
+    } catch (error) {
+      console.error("Erro ao carregar carrinho:", error);
+    }
   }
-}
   function logout() {
     localStorage.removeItem("token");
     setUsuarioLogado(false);
